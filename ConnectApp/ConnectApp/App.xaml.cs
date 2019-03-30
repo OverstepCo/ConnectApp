@@ -7,11 +7,15 @@ namespace ConnectApp
 {
     public partial class App : Application
     {
+        bool loggedIn = false;
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            if (loggedIn)
+                MainPage = new Main();
+            else
+                MainPage = new NavigationPage(new Login());
         }
 
         protected override void OnStart()

@@ -14,11 +14,12 @@ namespace ConnectApp.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            base.OnCreate(savedInstanceState);
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
-            base.OnCreate(savedInstanceState);
+            Firebase.FirebaseApp.InitializeApp(Application.Context);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Firebase.FirebaseApp.InitializeApp(this);
             LoadApplication(new App());
         }
     }
