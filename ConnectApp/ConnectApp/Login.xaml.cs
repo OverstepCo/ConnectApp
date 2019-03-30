@@ -20,7 +20,7 @@ namespace ConnectApp
 
         async void Register_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new Register());
+            await Navigation.PushAsync(new SchoolSearch());
         }
 
         async void Login_Clicked(object sender, System.EventArgs e)

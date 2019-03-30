@@ -4,7 +4,9 @@
              x:Class="ConnectApp.Register">
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Padding="20">
-
+            <Label Text="Hello!" HorizontalOptions="Center" FontSize="Large"/>
+            <Entry Placeholder="First name" x:Name="txtFirstName" HorizontalOptions="FillAndExpand"/>
+            <Entry Placeholder="Last name" x:Name="txtLastName" HorizontalOptions="FillAndExpand"/>
             <Entry Placeholder="Email" x:Name="txtEmail" HorizontalOptions="FillAndExpand"/>
             <Entry Placeholder="Password" x:Name="txtPassword" HorizontalOptions="FillAndExpand" IsPassword="true"/>
             <Entry Placeholder="Confirm password" x:Name="txtConfirmPassword" HorizontalOptions="FillAndExpand" IsPassword="true"/>
