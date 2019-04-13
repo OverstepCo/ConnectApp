@@ -20,4 +20,7 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
-mainView.router.loadPage('login.html');
+function signIn() {
+    var username = document.getElementById("uname").value;
+    var password = document.getElementById("pword").value;
+}
