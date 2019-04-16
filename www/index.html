@@ -22,52 +22,92 @@
                     </div>
                 </div>
 
-                <div class="page-content">
-                    <div class="block-title">Example block</div>
-                    <div class="block">
-                        <a href="login.html">Login</a>
-                        <a href="signup.html" class="button">Sign Up</a>
-                    </div>
-
-                    <div class="block">
-                        <div class="login-screen-title">My App</div>
-                        <form>
-                            <div class="list">
-                                <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Username</div>
-                                            <div class="item-input-wrap">
-                                                <input id="uname" type="text" name="username" placeholder="Your username">
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Password</div>
-                                            <div class="item-input-wrap">
-                                                <input id="pword" type="password" name="password" placeholder="Your password">
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="list">
-                                <ul>
-                                    <li><a class="item-link list-button" href="#" onclick="signIn()">Sign In</a></li>
-                                </ul>
-                                <div class="block-footer">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                    <p><a class="back link" href="index.html">Cancel</a></p>
-                                </div>
-                            </div>
-                        </form>
+                <div class="toolbar tabbar tabbar-labels toolbar-top">
+                    <div class="toolbar-inner">
+                        <a href="#tab-1" class="tab-link tab-link-active">
+                            <!-- Different icons for iOS and MD themes -->
+                            <i class="icon f7-icons if-not-md">email_fill</i>
+                            <i class="icon material-icons md-only">email</i>
+                            <!-- Label text -->
+                            <span class="tabbar-label">Inbox</span>
+                        </a>
+                        <a href="#tab-2" class="tab-link">
+                            <i class="icon f7-icons if-not-md">today_fill<span class="badge color-red">5</span></i>
+                            <i class="icon material-icons md-only">today<span class="badge color-red">5</span></i>
+                            <span class="tabbar-label">Calendar</span>
+                        </a>
+                        <a href="#tab-3" class="tab-link">
+                            <i class="icon f7-icons if-not-md">cloud_fill</i>
+                            <i class="icon material-icons md-only">file_upload</i>
+                            <span class="tabbar-label">Upload</span>
+                        </a>
                     </div>
                 </div>
+
+
+                <div class="page-content">
+                    <div class="tabs-swipable-wrap">
+                        <div class="tabs">
+                            <div class="tab tab-active" id="tab-1">
+                                <div class="block-title">Example block</div>
+                                <div class="block">
+                                    <a href="login.html">Login</a>
+                                    <a href="signup.html" class="button">Sign Up</a>
+                                </div>
+
+                                <div class="block">
+                                    <div class="login-screen-title">My App</div>
+                                    <form>
+                                        <div class="list">
+                                            <ul>
+                                                <li class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Username</div>
+                                                        <div class="item-input-wrap">
+                                                            <input id="uname" type="text" name="username" placeholder="Your username">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Password</div>
+                                                        <div class="item-input-wrap">
+                                                            <input id="pword" type="password" name="password" placeholder="Your password">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="list">
+                                            <ul>
+                                                <li><a class="item-link list-button" href="#" onclick="signIn()">Sign In</a></li>
+                                            </ul>
+                                            <div class="block-footer">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                                <p><a class="back link" href="index.html">Cancel</a></p>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="tab" id="tab-2">such empty</div>
+
+                            <div class="tab" id="tab-3">such empty</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     <script type="text/javascript" src="js/framework7.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/framework7.bundle.js"></script>
+
+        <script type="text/javascript" src="js/routes.js"></script>
+
+        <script type="text/javascript" src="js/app.js"></script>
+
 </body>
 </html>
