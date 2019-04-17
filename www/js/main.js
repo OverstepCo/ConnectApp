@@ -1,8 +1,5 @@
 var $$ = Dom7;
 
-//firebase stuff
-//
-
 var app = new Framework7({
     root: '#app',
     name: 'My App',
@@ -23,4 +20,7 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
-
+function signIn() {
+    var username = document.getElementById("uname").value;
+    var password = document.getElementById("pword").value;
+}
