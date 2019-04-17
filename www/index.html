@@ -1,73 +1,288 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#2196f3">
     <title>Connect App</title>
     <link rel="stylesheet" href="css/framework7.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/framework7.bundle.min.css">
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
     <div id="app">
         <div class="statusbar"></div>
-        <div class="view view-main">
-            <div data-name="home" class="page">
+        <div class="view view-main" data-url="/">
+            <div data-page="index" class="page">
 
                 <div class="navbar">
                     <div class="navbar-inner">
                         <div class="title">Connect App</div>
                     </div>
                 </div>
-
-                <div class="page-content">
-                    <div class="block-title">Example block</div>
-                    <div class="block">
-                        <a href="login.html">Login</a>
-                        <a href="signup.html" class="button">Sign Up</a>
+                <div class="toolbar no-hairline tabbar toolbar-top">
+                    <div class="toolbar-inner">
+                        <a href="#tab-1" class="tab-link tab-link-active">
+                            Home
+                        </a>
+                        <a href="#tab-2" class="tab-link">
+                            My School
+                        </a>
+                        <a href="#tab-3" class="tab-link">
+                            Settings
+                        </a>
+                        <a href="#tab-4" class="tab-link">
+                            Temp Chat
+                        </a>
                     </div>
+                </div>
+                <div class="tabs-swipeable-wrap">
+                    <div class="tabs">
+                        <!-- First tab, active -->
+                        <div class="page-content tab tab-active" id="tab-1">
+                            <div class="block">
+                                <div class="text-center">
+                                    <h1>Upcoming Events</h1>
+                                </div>
+                                <div class="card card-outline card-header-pic">
+                                    <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
+                                    <div class="card-content card-content-padding">
+                                        <p class="date">Posted on January 21, 2015</p>
+                                        <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="#" class="link">Read more</a>
+                                    </div>
+                                </div>
+                                <div class="card card-outline">
+                                    <div class="card-header">Card header</div>
+                                    <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
+                                    <div class="card-footer">
+                                        <a href="pages/chat.html" class="link">Read more</a>
+                                    </div>
+                                </div>
+                                <button class="button">More</button>
+                            </div>
+                            <div class="block">
+                                <h1>My Group Chats</h1>
+                            </div>
 
-                    <div class="block">
-                        <div class="login-screen-title">My App</div>
-                        <form>
-                            <div class="list">
+                            <div class="list media-list">
                                 <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Username</div>
-                                            <div class="item-input-wrap">
-                                                <input id="uname" type="text" name="username" placeholder="Your username">
+                                    <li>
+                                        <a href="#" class="item-link item-content no-chevron">
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">Group Chat 1</div>
+                                                    <div class="item-after">12:14</div>
+                                                </div>
+                                                <div class="item-text"><b>Jaden Smith: </b>Are we on for Monday night?</div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Password</div>
-                                            <div class="item-input-wrap">
-                                                <input id="pword" type="password" name="password" placeholder="Your password">
+                                    <li>
+                                        <a href="pages/chat.html" class="item-link item-content no-chevron">
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">Group Chat 2</div>
+                                                    <div class="item-after">10:11</div>
+                                                </div>
+                                                <div class="item-text"><b>Krombopulos Mike: </b>Here I go killing again!</div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="list">
+                        </div>
+                        <!-- Second tab -->
+                        <div class="page-content tab" id="tab-2">
+                            <div class="school-header card-header align-items-flex-end">Demo School</div>
+                            <div class="block">
+                                <div class="text-center">
+                                    <h1>Upcoming Events</h1>
+                                </div>
+                                <div class="card card-outline card-header-pic">
+                                    <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
+                                    <div class="card-content card-content-padding">
+                                        <p class="date">Posted on January 21, 2015</p>
+                                        <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="#" class="link">Read more</a>
+                                    </div>
+                                </div>
+                                <div class="card card-outline">
+                                    <div class="card-header">Card header</div>
+                                    <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
+                                    <div class="card-footer">
+                                        <a href="#" class="link">Read more</a>
+                                    </div>
+                                </div>
+                                <button class="button">More</button>
+                            </div>
+                            <div class="block">
+                                <h1>School Group Chats</h1>
+                            </div>
+                            <div class="list media-list chevron-center">
                                 <ul>
-                                    <li><a class="item-link list-button" href="#" onclick="signIn()">Sign In</a></li>
+                                    <li>
+                                        <a href="#" class="item-link item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">Group Chat 1</div>
+                                                </div>
+                                                <div class="item-subtitle">7 Members</div>
+                                                <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="item-link item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">Group Chat 2</div>
+                                                </div>
+                                                <div class="item-subtitle">15 Members</div>
+                                                <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
+                                            </div>
+                                        </a>
+                                    </li>
                                 </ul>
-                                <div class="block-footer">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                    <p><a class="back link" href="index.html">Cancel</a></p>
+                            </div>
+                        </div>
+                        <!-- Third tab -->
+                        <div class="page-content tab" id="tab-3">
+                            <div class="block">
+                                <p><b>Tab 3 content</b></p>
+                                ...
+                            </div>
+                        </div>
+                        <!-- Fourth tab -->
+                        <div class="page-content tab" id="tab-4">
+
+
+
+
+                            <div class="page-content messages-content">
+                                <div class="messages">
+                                    <!-- Messages title -->
+                                    <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
+                                    <!-- Full layout sent message -->
+
+                                    <!-- Full layout received message -->
+                                    <div class="message message-received">
+                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
+                                        <div class="message-content">
+                                            <div class="message-name">John Doe</div>
+                                            <div class="message-header">Message header</div>
+                                            <div class="message-bubble">
+                                                <div class="message-text-header">Text header</div>
+                                                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                                                <div class="message-text-footer">Text footer</div>
+                                            </div>
+                                            <div class="message-footer">Message footer</div>
+                                        </div>
+                                    </div>
+                                    <!-- Messages -->
+                                    <div class="message message-sent">
+                                        <div class="message-content">
+                                            <div class="message-bubble">
+                                                <div class="message-text">Hi, Kate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="message message-received">
+                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
+                                        <div class="message-content">
+                                            <div class="message-name">Blue Ninja</div>
+                                            <div class="message-bubble">
+                                                <div class="message-text">Awesome!</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+
+                            <div class="toolbar messagebar">
+                                <div class="toolbar-inner">
+                                    <div class="messagebar-area">
+                                        <textarea class="resizable" placeholder="Message"></textarea>
+                                    </div><a class="link send-link" href="#">Send</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="js/framework7.js"></script>
+    <script type="text/javascript" src="js/framework7.bundle.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/chat.js"></script>
+
+    <script src="js/framework7.bundle.js"></script>
+
+    <!-- App routes -->
+    <script src="js/routes.js"></script>
+
+    <!-- Your custom app scripts -->
+    <script src="js/app.js"></script>
+
+    <!-- Firebase stuff-->
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+
+
+    <script>
+        var firebaseConfig = {
+
+            apiKey: "AIzaSyBUSM_BAQ81dWuIdGJEyIPWcGul6LQ4HEw",
+            authDomain: "connect-proj.firebaseapp.com",
+            databaseURL: "https://connect-proj.firebaseio.com",
+            projectId: "connect-proj",
+            storageBucket: "connect-proj.appspot.com",
+            messagingSenderId: "846822998925"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in.
+                var displayName = user.displayName;
+                var email = user.email;
+                var emailVerified = user.emailVerified;
+                var photoURL = user.photoURL;
+                var isAnonymous = user.isAnonymous;
+                var uid = user.uid;
+                var providerData = user.providerData;
+                console.log(uid);
+                // ...
+            } else {
+                // User is signed out.
+                // ...
+            }
+        });
+
+        function signIn() {
+            var username = document.getElementById("uname").value;
+            var password = document.getElementById("pword").value;
+            firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
+            });
+        }
+
+    </script>
 </body>
+
 </html>

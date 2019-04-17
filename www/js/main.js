@@ -20,7 +20,13 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
-function signIn() {
-    var username = document.getElementById("uname").value;
-    var password = document.getElementById("pword").value;
-}
+var loginScreen = app.loginScreen.create({
+  content: '<div class="login-screen">...</div>',
+  on: {
+    opened: function () {
+      console.log('Login Screen opened')
+    }
+  }
+})
+
+//loginScreen.open();
