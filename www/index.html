@@ -16,8 +16,8 @@
 <body>
     <div id="app">
         <div class="statusbar"></div>
-        <div class="view view-main">
-            <div data-name="home" class="page">
+        <div class="view view-main" data-url="/">
+            <div data-page="index" class="page">
 
                 <div class="navbar">
                     <div class="navbar-inner">
@@ -40,7 +40,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="tabs-animated-wrap">
+                <div class="tabs-swipeable-wrap">
                     <div class="tabs">
                         <!-- First tab, active -->
                         <div class="page-content tab tab-active" id="tab-1">
@@ -62,7 +62,7 @@
                                     <div class="card-header">Card header</div>
                                     <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
                                     <div class="card-footer">
-                                        <a href="#" class="link">Read more</a>
+                                        <a href="pages/chat.html" class="link">Read more</a>
                                     </div>
                                 </div>
                                 <button class="button">More</button>
@@ -85,7 +85,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="./pages/chat.html" class="item-link item-content no-chevron">
+                                        <a href="pages/chat.html" class="item-link item-content no-chevron">
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 2</div>
@@ -134,7 +134,6 @@
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 1</div>
-                                                    <div class="item-after">12:14</div>
                                                 </div>
                                                 <div class="item-subtitle">7 Members</div>
                                                 <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
@@ -146,7 +145,6 @@
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 2</div>
-                                                    <div class="item-after">10:11</div>
                                                 </div>
                                                 <div class="item-subtitle">15 Members</div>
                                                 <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
@@ -165,34 +163,16 @@
                         </div>
                         <!-- Fourth tab -->
                         <div class="page-content tab" id="tab-4">
-                            
-                            <div class="toolbar messagebar">
-                                <div class="toolbar-inner">
-                                    <div class="messagebar-area">
-                                        <textarea class="resizable" placeholder="Message"></textarea>
-                                    </div><a class="link send-link" href="#">Send</a>
-                                </div>
-                            </div>
-                            
-                            
+
+
+
+
                             <div class="page-content messages-content">
                                 <div class="messages">
                                     <!-- Messages title -->
                                     <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
                                     <!-- Full layout sent message -->
-                                    <div class="message message-sent">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">John Doe</div>
-                                            <div class="message-header">Message header</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text-header">Text header</div>
-                                                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                                <div class="message-text-footer">Text footer</div>
-                                            </div>
-                                            <div class="message-footer">Message footer</div>
-                                        </div>
-                                    </div>
+                                   
                                     <!-- Full layout received message -->
                                     <div class="message message-received">
                                         <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
@@ -215,70 +195,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">How are you?</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-9.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Kate</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hi, I am good!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Blue Ninja</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hi there, I am also fine, thanks! And how are you?</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hey, Blue Ninja! Glad to see you ;)</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hey, look, cutest kitten ever!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-image"><img src="https://cdn.framework7.io/placeholder/cats-200x260-4.jpg" style="width:200px; height: 260px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-9.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Kate</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Nice!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-9.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Kate</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Like it very much!</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
                                     <div class="message message-received">
                                         <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
                                         <div class="message-content">
@@ -290,16 +207,21 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="toolbar messagebar">
+                                <div class="toolbar-inner">
+                                    <div class="messagebar-area">
+                                        <textarea class="resizable" placeholder="Message"></textarea>
+                                    </div><a class="link send-link" href="#">Send</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="page-content">
-
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="js/framework7.js"></script>
+    <script type="text/javascript" src="js/framework7.bundle.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
 

@@ -8,7 +8,7 @@ var routes = [
   // Chat page
   {
     path: '/chat/',
-    url: './pages/chat.html',
+    url: '../pages/chat.html',
     name: 'chat',
   },
 ];
