@@ -122,6 +122,6 @@ function receiveMessage() {
       // Hide typing indicator
       messages.hideTyping();
       responseInProgress = false;
-    }, 4000);
-  }, 1000);
+    }, 500);
+  }, 200);
 }

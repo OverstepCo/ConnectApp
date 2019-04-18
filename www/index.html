@@ -273,6 +273,14 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 		var db = firebase.firestore();
+		var User = firebase.auth().currentUser;
+		if (User){
+		//profilepic stufff
+		}else {
+			///signIn();
+			///TODO open sign in page
+		}
+
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -292,20 +300,22 @@
             }
         });
 
+
         function signIn() {
-            var username = document.getElementById("uname").value;
-            var password = document.getElementById("pword").value;
+            var username = "ethandisilvestro@gmail.com";//document.getElementById("uname").value;
+            var password = "123456";//document.getElementById("pword").value;
             firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 // ...
-            });		
+            });	
+			console.log("signed in with email: " + username );
 		}
 
 		function addMessage() {
 			db.collection("messages").add({
-				name:"Overstep",
+				name:firebase.auth().currentUser.uid,
 				profilePicUrl:"https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
 				text:document.getElementById("messagebar").value,
 				timestamp:"TODO put time here"
