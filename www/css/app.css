@@ -26,3 +26,31 @@
     font-weight: bold;
 }
 
+
+
+/********** PANEL **********/
+.panel-header {
+    margin: 15px;
+    padding: 0;
+}
+
+
+.panel-header * {
+    margin: 0
+}
+
+
+.panel img {
+    width: 65px
+        
+}
+
+.panel .list {
+    margin: 5px;
+}
+
+.hairline {
+    height: 1px;
+    background-color: lightgray;
+}
+
