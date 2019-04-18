@@ -14,15 +14,13 @@ var app = new Framework7({
     routes: [
  // Index page
         {
-            path: '/',
-            url: './index.html',
-            name: 'home',
+            path: '/home/',
+            url: 'index.html',
   },
   // Chat page
         {
-            path: '/chat/',
-            url: '../pages/chat.html',
-            name: 'chat',
+            path: '/signup-screen/',
+            url: 'pages/signup.html',
   },
         // login page
         {
