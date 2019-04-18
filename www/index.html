@@ -229,8 +229,8 @@
                             <div class="toolbar messagebar">
                                 <div class="toolbar-inner">
                                     <div class="messagebar-area">
-                                        <textarea class="resizable" placeholder="Message"></textarea>
-                                    </div><a class="link send-link" href="#">Send</a>
+                                        <textarea id="messagebar" class="resizable" placeholder="Message"></textarea>
+                                    </div><a class="link send-link" href="#" onclick="addMessage()">Send</a>
                                 </div>
                             </div>
                         </div>
@@ -255,6 +255,8 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
+
 
 
     <script>
@@ -270,6 +272,7 @@
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+		var db = firebase.firestore();
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -297,7 +300,22 @@
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 // ...
-            });
+            });		
+		}
+
+		function addMessage() {
+			db.collection("messages").add({
+				name:"Overstep",
+				profilePicUrl:"https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
+				text:document.getElementById("messagebar").value,
+				timestamp:"TODO put time here"
+			})
+			.then(function(docRef) {
+				console.log("Document written with ID: ", docRef.id);
+			})
+			.catch(function(error) {
+				console.error("Error adding document: ", error);
+			});
         }
 
     </script>
