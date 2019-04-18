@@ -7,40 +7,94 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#2196f3">
     <title>Connect App</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/framework7.css">
     <link rel="stylesheet" href="css/framework7.bundle.min.css">
-    <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
     <div id="app">
         <div class="statusbar"></div>
-        <div class="view view-main">
-            <div data-name="home" class="page">
+
+        <div class="panel panel-left panel-cover panel-resizable">
+            <div class="block panel-header">
+                <img src="https://img.icons8.com/nolan/96/000000/connected.png">
+                <h2>Connect</h2>
+                <p>Connect App Description</p>
+            </div>
+            <div class="hairline"></div>
+            <div class="list no-hairlines">
+                <ul>
+                    <a href="#" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">school</i></div>
+                            <div class="item-inner">Change School</div>
+                        </li>
+                    </a>
+                    <a href="#" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">settings</i></div>
+                            <div class="item-inner">Settings</div>
+                        </li>
+                    </a>
+                    <a href="#" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">info</i></div>
+                            <div class="item-inner">About</div>
+                        </li>
+                    </a>
+                    <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">cloud_off</i></div>
+                            <div class="item-inner">Sign Out</div>
+                        </li>
+                    </a>
+                    <a href="/login-screen/" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">cloud</i></div>
+                            <div class="item-inner">Sign In</div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
+        <div class="view view-main" data-url="/">
+            <div data-page="index" class="page">
 
                 <div class="navbar">
                     <div class="navbar-inner">
-                        <div class="title">Connect App</div>
+                        <div class="left">
+                            <a class="panel-open link icon-only">
+                                <i class="material-icons  icon">menu</i>
+                            </a>
+                        </div>
+                        <div class="title">Connect</div>
                     </div>
                 </div>
-                <div class="toolbar no-hairline tabbar toolbar-top">
+
+                <div class="toolbar no-hairline tabbar tabbar-labels toolbar-top">
                     <div class="toolbar-inner">
                         <a href="#tab-1" class="tab-link tab-link-active">
-                            Home
+                            <i class="icon material-icons">home<span class="badge color-red">5</span></i>
+                            <span class="tabbar-label">Home</span>
                         </a>
                         <a href="#tab-2" class="tab-link">
-                            My School
+                            <i class="icon material-icons">school</i>
+                            <span class="tabbar-label">My School</span>
                         </a>
                         <a href="#tab-3" class="tab-link">
-                            Settings
+                            <i class="icon material-icons">people</i>
+                            <span class="tabbar-label">People</span>
                         </a>
                         <a href="#tab-4" class="tab-link">
-                            Temp Chat
+                            <i class="icon material-icons">chat</i>
+                            <span class="tabbar-label">Temp Chat</span>
                         </a>
                     </div>
                 </div>
-                <div class="tabs-animated-wrap">
+                <div class="tabs-swipeable-wrap">
                     <div class="tabs">
                         <!-- First tab, active -->
                         <div class="page-content tab tab-active" id="tab-1">
@@ -62,7 +116,7 @@
                                     <div class="card-header">Card header</div>
                                     <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
                                     <div class="card-footer">
-                                        <a href="#" class="link">Read more</a>
+                                        <a href="pages/chat.html" class="link">Read more</a>
                                     </div>
                                 </div>
                                 <button class="button">More</button>
@@ -85,7 +139,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="./pages/chat.html" class="item-link item-content no-chevron">
+                                        <a href="pages/chat.html" class="item-link item-content no-chevron">
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 2</div>
@@ -96,6 +150,8 @@
                                         </a>
                                     </li>
                                 </ul>
+                                <button class="button">Find More Chats</button>
+
                             </div>
                         </div>
                         <!-- Second tab -->
@@ -134,7 +190,6 @@
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 1</div>
-                                                    <div class="item-after">12:14</div>
                                                 </div>
                                                 <div class="item-subtitle">7 Members</div>
                                                 <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
@@ -146,7 +201,6 @@
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 2</div>
-                                                    <div class="item-after">10:11</div>
                                                 </div>
                                                 <div class="item-subtitle">15 Members</div>
                                                 <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
@@ -160,39 +214,20 @@
                         <div class="page-content tab" id="tab-3">
                             <div class="block">
                                 <p><b>Tab 3 content</b></p>
-                                ...
+                                ...hello
                             </div>
                         </div>
                         <!-- Fourth tab -->
                         <div class="page-content tab" id="tab-4">
-                            
-                            <div class="toolbar messagebar">
-                                <div class="toolbar-inner">
-                                    <div class="messagebar-area">
-                                        <textarea class="resizable" placeholder="Message"></textarea>
-                                    </div><a class="link send-link" href="#">Send</a>
-                                </div>
-                            </div>
-                            
-                            
+
+
+
                             <div class="page-content messages-content">
                                 <div class="messages">
                                     <!-- Messages title -->
                                     <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
                                     <!-- Full layout sent message -->
-                                    <div class="message message-sent">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">John Doe</div>
-                                            <div class="message-header">Message header</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text-header">Text header</div>
-                                                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                                <div class="message-text-footer">Text footer</div>
-                                            </div>
-                                            <div class="message-footer">Message footer</div>
-                                        </div>
-                                    </div>
+
                                     <!-- Full layout received message -->
                                     <div class="message message-received">
                                         <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
@@ -215,70 +250,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">How are you?</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-9.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Kate</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hi, I am good!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Blue Ninja</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hi there, I am also fine, thanks! And how are you?</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hey, Blue Ninja! Glad to see you ;)</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hey, look, cutest kitten ever!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-image"><img src="https://cdn.framework7.io/placeholder/cats-200x260-4.jpg" style="width:200px; height: 260px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-9.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Kate</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Nice!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-9.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Kate</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Like it very much!</div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div class="message message-received">
                                         <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
                                         <div class="message-content">
@@ -290,27 +262,125 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="toolbar messagebar">
+                                <div class="toolbar-inner">
+                                    <div class="messagebar-area">
+                                        <textarea class="resizable" placeholder="Message"></textarea>
+                                    </div><a class="link send-link" href="#">Send</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="page-content">
-
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="js/framework7.js"></script>
+
+
+    <script type="text/javascript" src="js/framework7.bundle.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
 
     <script src="js/framework7.bundle.js"></script>
 
-    <!-- App routes -->
-    <script src="js/routes.js"></script>
 
-    <!-- Your custom app scripts -->
-    <script src="js/app.js"></script>
 
+    <!-- Firebase stuff-->
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+
+
+    <script>
+        var firebaseConfig = {
+
+            apiKey: "AIzaSyBUSM_BAQ81dWuIdGJEyIPWcGul6LQ4HEw",
+            authDomain: "connect-proj.firebaseapp.com",
+            databaseURL: "https://connect-proj.firebaseio.com",
+            projectId: "connect-proj",
+            storageBucket: "connect-proj.appspot.com",
+            messagingSenderId: "846822998925"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in.
+                var displayName = user.displayName;
+                var email = user.email;
+                var emailVerified = user.emailVerified;
+                var photoURL = user.photoURL;
+                var isAnonymous = user.isAnonymous;
+                var uid = user.uid;
+                var providerData = user.providerData;
+                console.log(uid);
+
+                self.app.views.main.router.navigate('/home/', {
+                    reloadCurrent: true
+                });
+                app.preloader.hide();
+                // ...
+            } else {
+                // User is signed out.
+                self.app.views.main.router.navigate('/login-screen/', {
+                    reloadCurrent: true
+                });
+
+            }
+        });
+
+        function signUp() {
+            app.preloader.show();
+
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("newpword").value;
+            var err = document.getElementById("newerrmsg");
+            err.innerHTML = "";
+
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                app.preloader.hide();
+
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("Failed to sign up: " + errorMessage);
+                err.innerHTML = "Error: " + errorMessage;
+
+            });
+
+
+
+        }
+
+        function signIn() {
+
+            app.preloader.show();
+            var username = document.getElementById("uname").value;
+            var password = document.getElementById("pword").value;
+            var err = document.getElementById("errmsg");
+            err.innerHTML = "";
+
+            firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
+                app.preloader.hide();
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("Failed to login: " + error.message);
+                err.innerHTML = "Error: " + error.message;
+            });
+        }
+
+        function signOut() {
+            firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+            }).catch(function(error) {
+                console.log("Failed to sign out: " + error.message);
+            });
+        }
+    </script>
 </body>
 
 </html>
