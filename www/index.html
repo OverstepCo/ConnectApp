@@ -274,12 +274,7 @@
         firebase.initializeApp(firebaseConfig);
 		var db = firebase.firestore();
 		var User = firebase.auth().currentUser;
-		if (User){
-		//profilepic stufff
-		}else {
-			///signIn();
-			///TODO open sign in page
-		}
+		
 
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -293,9 +288,11 @@
                 var uid = user.uid;
                 var providerData = user.providerData;
                 console.log(uid);
+				User=firebase.auth().currentUser;
                 // ...
             } else {
                 // User is signed out.
+				////TODO redirect to sign in page
                 // ...
             }
         });
