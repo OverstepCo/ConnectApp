@@ -4,46 +4,38 @@ var app = new Framework7({
     root: '#app',
     name: 'My App',
     id: 'com.myapp.test',
-    panel: {
-        swipe: 'both',
-        swipeOnlyClose: true,
-        swipeActiveArea: 30,
-    },
-    navbar: {
-        hideOnPageScroll: false,
-    },
     routes: [
+<<<<<<< HEAD
         // Index page
         {
             path: '/home/',
             url: 'index.html',
   },
         // signup page
+=======
+        /*
+>>>>>>> 46f07ce76804747bc8ff6ceccc424c2e7874a194
         {
-            path: '/signup-screen/',
-            url: 'pages/signup.html',
-  },
-        // login page
+            path: '/login/',
+            url: 'login.html',
+    },
         {
-            path: '/login-screen/',
-            url: 'pages/login.html',
-  },
-         {
-            path: '/chat-screen/',
-            url: 'pages/chat.html',
-  },
+            path: '/signup/',
+            url: 'signup.html',
+    },
+*/
   ],
 });
 
 var mainView = app.views.create('.view-main');
 
 var loginScreen = app.loginScreen.create({
-    content: '<div class="login-screen">...</div>',
-    on: {
-        opened: function () {
-            console.log('Login Screen opened')
-        }
+  content: '<div class="login-screen">...</div>',
+  on: {
+    opened: function () {
+      console.log('Login Screen opened')
     }
+  }
 })
 
 //loginScreen.open();
