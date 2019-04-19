@@ -13,12 +13,12 @@ var app = new Framework7({
         hideOnPageScroll: false,
     },
     routes: [
- // Index page
+        // Index page
         {
             path: '/home/',
             url: 'index.html',
   },
-  // signup page
+        // signup page
         {
             path: '/signup-screen/',
             url: 'pages/signup.html',
