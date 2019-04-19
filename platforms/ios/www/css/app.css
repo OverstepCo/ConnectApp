@@ -55,3 +55,10 @@
     background-color: lightgray;
 }
 
+.list-title {
+    color: gray;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 32px 16px 16px 16px
+}
+

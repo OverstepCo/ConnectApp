@@ -6,6 +6,7 @@ var app = new Framework7({
     id: 'com.myapp.test',
     panel: {
         swipe: 'both',
+        swipeOnlyClose: true,
         swipeActiveArea: 30,
     },
     navbar: {
@@ -17,7 +18,7 @@ var app = new Framework7({
             path: '/home/',
             url: 'index.html',
   },
-  // Chat page
+  // signup page
         {
             path: '/signup-screen/',
             url: 'pages/signup.html',
@@ -26,6 +27,10 @@ var app = new Framework7({
         {
             path: '/login-screen/',
             url: 'pages/login.html',
+  },
+         {
+            path: '/chat-screen/',
+            url: 'pages/chat.html',
   },
   ],
 });
