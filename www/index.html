@@ -181,7 +181,7 @@
                                         <a href="#" class="item-link item-content">
                                             <div class="item-inner">
                                                 <div class="item-title-row">
-                                                    <div class="item-title" onClick=loadSchoolChats()>Group Chat 1</div>
+                                                    <div class="item-title" >Group Chat 1</div>
                                                 </div>
                                                 <div class="item-subtitle">7 Members</div>
                                                 <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
@@ -290,7 +290,7 @@
                 var uid = user.uid;
                 var providerData = user.providerData;
                 console.log(uid);
-
+                loadSchoolChats();
                 self.app.views.main.router.navigate('/home/', {
                     reloadCurrent: true
                 });
@@ -375,7 +375,7 @@
                     name: firebase.auth().currentUser.uid,
                     profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
                     text: document.getElementById("messagebar").value,
-                    timestamp: "TODO put time here"
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 })
                 .then(function(docRef) {
                     console.log("Document written with ID: ", docRef.id);
