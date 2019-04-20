@@ -189,7 +189,7 @@
                                         <a href="#" class="item-link item-content">
                                             <div class="item-inner">
                                                 <div class="item-title-row">
-                                                    <div class="item-title">Group Chat 1</div>
+                                                    <div class="item-title" onClick=loadSchoolChats()>Group Chat 1</div>
                                                 </div>
                                                 <div class="item-subtitle">7 Members</div>
                                                 <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
@@ -289,6 +289,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
 
 
     <script>
@@ -304,6 +305,7 @@
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -379,6 +381,38 @@
                 console.log("Failed to sign out: " + error.message);
             });
         }
+
+        //firestore stuff (chat things)
+        function loadSchoolChats() {
+
+            console.log("test"); ////TODO add the users school hereVVV                                                                        
+            db.collection("school").doc("school of ross").collection("chats").get().then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) { //this foreach loop runs once for every chat room in the school
+                    console.log(doc.get("name"));
+                    console.log(doc.get("nuberOfMembers"));
+                    console.log(doc.get("description"));
+                    //if any of these dont exist in the database they return null or undefined
+                });
+            });
+        }
+
+
+
+        function addMessage() {
+            db.collection("messages").add({
+                    name: firebase.auth().currentUser.uid,
+                    profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
+                    text: document.getElementById("messagebar").value,
+                    timestamp: "TODO put time here"
+                })
+                .then(function(docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                .catch(function(error) {
+                    console.error("Error adding document: ", error);
+                });
+        }
+
     </script>
 </body>
 
