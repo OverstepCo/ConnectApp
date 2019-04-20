@@ -5,51 +5,84 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#2196f3">
     <title>Connect App</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
     <link rel="stylesheet" href="css/framework7.css">
     <link rel="stylesheet" href="css/framework7.bundle.min.css">
-    <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
     <div id="app">
         <div class="statusbar"></div>
-        
+
         <div class="panel panel-left panel-cover panel-resizable">
-      <div class="block">
-          <img src="https://img.icons8.com/nolan/96/000000/connected.png" style="width: 75px">
-          <h2>Connect App</h2>
-          <p>Connect App Description</p>
-      </div>
-    </div>
-        
+            <div class="block panel-header">
+                <img src="https://img.icons8.com/nolan/96/000000/connected.png">
+                <h2>Connect</h2>
+                <p>Connect App Description</p>
+            </div>
+            <div class="hairline"></div>
+            <div class="list no-hairlines">
+                <ul>
+                    <a href="#" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">school</i></div>
+                            <div class="item-inner">Change School</div>
+                        </li>
+                    </a>
+                    <a href="#" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">settings</i></div>
+                            <div class="item-inner">Settings</div>
+                        </li>
+                    </a>
+                    <a href="#" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">info</i></div>
+                            <div class="item-inner">About</div>
+                        </li>
+                    </a>
+                    <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">cloud_off</i></div>
+                            <div class="item-inner">Sign Out</div>
+                        </li>
+                    </a>
+                    <a href="/login-screen/" class="panel-close item-link no-chevron">
+                        <li class="item-content">
+                            <div class="item-media"><i class="material-icons">cloud</i></div>
+                            <div class="item-inner">Sign In</div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
         <div class="view view-main" data-url="/">
             <div data-page="index" class="page">
 
                 <div class="navbar">
                     <div class="navbar-inner">
                         <div class="left">
-                        <img class="panel-open" style="width: 25px" src="https://img.icons8.com/material/50/000000/menu.png">
+                            <a class="panel-open link icon-only">
+                                <i class="material-icons  icon">menu</i>
+                            </a>
                         </div>
-                        <div class="title">Connect App</div>
+                        <div class="title">Connect</div>
                     </div>
                 </div>
-                
+
                 <div class="toolbar no-hairline tabbar toolbar-top">
                     <div class="toolbar-inner">
                         <a href="#tab-1" class="tab-link tab-link-active">
-                            Home
+                            <i class="icon material-icons">home<span class="badge color-red">5</span></i>
                         </a>
                         <a href="#tab-2" class="tab-link">
-                            My School
+                            <i class="icon material-icons">school</i>
                         </a>
                         <a href="#tab-3" class="tab-link">
-                            Settings
-                        </a>
-                        <a href="#tab-4" class="tab-link">
-                            Temp Chat
+                            <i class="icon material-icons">people</i>
                         </a>
                     </div>
                 </div>
@@ -98,7 +131,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="pages/chat.html" class="item-link item-content no-chevron">
+                                        <a href="/chat-screen/" class="item-link item-content no-chevron">
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">Group Chat 2</div>
@@ -109,11 +142,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                                                            <button class="button">Find More Chats</button>
+                                <button class="button">Find More Chats</button>
 
-                            </div>
-                            <div class="block">
-                            <button class="button">Find More Chats</button>
                             </div>
                         </div>
                         <!-- Second tab -->
@@ -174,67 +204,42 @@
                         </div>
                         <!-- Third tab -->
                         <div class="page-content tab" id="tab-3">
-                            <div class="block">
-                                <p><b>Tab 3 content</b></p>
-                                ...
-                            </div>
-                        </div>
-                        <!-- Fourth tab -->
-                        <div class="page-content tab" id="tab-4">
-
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 46f07ce76804747bc8ff6ceccc424c2e7874a194
-                            <div class="page-content messages-content">
-                                <div class="messages">
-                                    <!-- Messages title -->
-                                    <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
-                                    <!-- Full layout sent message -->
-
-                                    <!-- Full layout received message -->
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">John Doe</div>
-                                            <div class="message-header">Message header</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text-header">Text header</div>
-                                                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                                <div class="message-text-footer">Text footer</div>
-                                            </div>
-                                            <div class="message-footer">Message footer</div>
-                                        </div>
-                                    </div>
-                                    <!-- Messages -->
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hi, Kate</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Blue Ninja</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Awesome!</div>
-                                            </div>
-                                        </div>
+                            <div class="profile-bg">
+                                <div style="height: 150px">
+                                    <div class="float-right" style="padding: 16px">
+                                        <a onclick="editUser()" class="link">
+                                            <i class="material-icons" style="color: white; font-size: 20pt">edit</i>
+                                        </a>
                                     </div>
                                 </div>
+                                <img src="media/profile-bump.png" class="profile-bump" />
+                                <div class="profile-pic"></div>
                             </div>
+                            <div class="block no-margin-top">
+                                <div class="text-align-center no-margin-top">
+                                    <h2 class="profile-title">Bob Rosspool</h2>
 
-                            <div class="toolbar messagebar">
-                                <div class="toolbar-inner">
-                                    <div class="messagebar-area">
-                                        <textarea id="messagebar" class="resizable" placeholder="Message"></textarea>
-                                    </div><a class="link send-link" href="#" onclick="addMessage()">Send</a>
+                                    <p class="no-margin-top">Attends <a class="link">School Of Ross</a></p>
                                 </div>
+
+                            </div>
+                            <div class="list no-hairlines">
+                                <div class="block-title" style="margin-left: 16px">Friends</div>
+                                <ul>
+                                    <a href="#" class="item-link no-chevron">
+                                        <li class="item-content">
+                                            <div class="item-media"><i class="material-icons">person</i></div>
+                                            <div class="item-inner">Krombopulos Mike</div>
+                                        </li>
+                                    </a>
+                                    <a href="#" class="item-link no-chevron">
+                                        <li class="item-content">
+                                            <div class="item-media"><i class="material-icons">person</i></div>
+                                            <div class="item-inner">Jane Smith</div>
+                                        </li>
+                                    </a>
+
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -242,24 +247,20 @@
             </div>
         </div>
     </div>
+
+
     <script type="text/javascript" src="js/framework7.bundle.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
 
     <script src="js/framework7.bundle.js"></script>
 
-    <!-- App routes -->
-    <script src="js/routes.js"></script>
 
-    <!-- Your custom app scripts -->
-    <script src="js/app.js"></script>
 
     <!-- Firebase stuff-->
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
-
 
 
     <script>
@@ -275,10 +276,6 @@
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-		var db = firebase.firestore();
-		var User = firebase.auth().currentUser;
-		
-
 
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -291,41 +288,68 @@
                 var uid = user.uid;
                 var providerData = user.providerData;
                 console.log(uid);
-				User=firebase.auth().currentUser;
+
+                self.app.views.main.router.navigate('/home/', {
+                    reloadCurrent: true
+                });
+                app.preloader.hide();
                 // ...
             } else {
                 // User is signed out.
-				////TODO redirect to sign in page
-                // ...
+                self.app.views.main.router.navigate('/login-screen/', {
+                    reloadCurrent: true
+                });
+
             }
         });
 
+        function signUp() {
+            app.preloader.show();
 
-        function signIn() {
-            var username = "ethandisilvestro@gmail.com";//document.getElementById("uname").value;
-            var password = "123456";//document.getElementById("pword").value;
-            firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("newpword").value;
+            var err = document.getElementById("newerrmsg");
+            err.innerHTML = "";
+
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                app.preloader.hide();
+
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                // ...
-            });	
-			console.log("signed in with email: " + username );
-		}
+                console.log("Failed to sign up: " + errorMessage);
+                err.innerHTML = "Error: " + errorMessage;
 
-		function addMessage() {
-			db.collection("messages").add({
-				name:firebase.auth().currentUser.uid,
-				profilePicUrl:"https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
-				text:document.getElementById("messagebar").value,
-				timestamp:"TODO put time here"
-			})
-			.then(function(docRef) {
-				console.log("Document written with ID: ", docRef.id);
-			})
-			.catch(function(error) {
-				console.error("Error adding document: ", error);
-			});
+            });
+
+
+
+        }
+
+        function signIn() {
+
+            app.preloader.show();
+            var username = document.getElementById("uname").value;
+            var password = document.getElementById("pword").value;
+            var err = document.getElementById("errmsg");
+            err.innerHTML = "";
+
+            firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
+                app.preloader.hide();
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("Failed to login: " + error.message);
+                err.innerHTML = "Error: " + error.message;
+            });
+        }
+
+        function signOut() {
+            firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+            }).catch(function(error) {
+                console.log("Failed to sign out: " + error.message);
+            });
         }
 
     </script>

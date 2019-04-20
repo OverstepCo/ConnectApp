@@ -5,9 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#2196f3">
     <title>Connect App</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
     <link rel="stylesheet" href="css/framework7.css">
     <link rel="stylesheet" href="css/framework7.bundle.min.css">
     <link rel="stylesheet" href="css/app.css">
@@ -74,23 +73,16 @@
                     </div>
                 </div>
 
-                <div class="toolbar no-hairline tabbar tabbar-labels toolbar-top">
+                <div class="toolbar no-hairline tabbar toolbar-top">
                     <div class="toolbar-inner">
                         <a href="#tab-1" class="tab-link tab-link-active">
                             <i class="icon material-icons">home<span class="badge color-red">5</span></i>
-                            <span class="tabbar-label">Home</span>
                         </a>
                         <a href="#tab-2" class="tab-link">
                             <i class="icon material-icons">school</i>
-                            <span class="tabbar-label">My School</span>
                         </a>
                         <a href="#tab-3" class="tab-link">
                             <i class="icon material-icons">people</i>
-                            <span class="tabbar-label">People</span>
-                        </a>
-                        <a href="#tab-4" class="tab-link">
-                            <i class="icon material-icons">chat</i>
-                            <span class="tabbar-label">Temp Chat</span>
                         </a>
                     </div>
                 </div>
@@ -212,62 +204,42 @@
                         </div>
                         <!-- Third tab -->
                         <div class="page-content tab" id="tab-3">
-                            <div class="block">
-                                <p><b>Tab 3 content</b></p>
-                                ...hello
-                            </div>
-                        </div>
-                        <!-- Fourth tab -->
-                        <div class="page-content tab" id="tab-4">
-
-
-                            <div class="page-content messages-content">
-                                <div class="messages">
-                                    <!-- Messages title -->
-                                    <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
-                                    <!-- Full layout sent message -->
-
-                                    <!-- Full layout received message -->
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">John Doe</div>
-                                            <div class="message-header">Message header</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text-header">Text header</div>
-                                                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                                                <div class="message-text-footer">Text footer</div>
-                                            </div>
-                                            <div class="message-footer">Message footer</div>
-                                        </div>
-                                    </div>
-                                    <!-- Messages -->
-                                    <div class="message message-sent">
-                                        <div class="message-content">
-                                            <div class="message-bubble">
-                                                <div class="message-text">Hi, Kate</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="message message-received">
-                                        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                                        <div class="message-content">
-                                            <div class="message-name">Blue Ninja</div>
-                                            <div class="message-bubble">
-                                                <div class="message-text">Awesome!</div>
-                                            </div>
-                                        </div>
+                            <div class="profile-bg">
+                                <div style="height: 150px">
+                                    <div class="float-right" style="padding: 16px">
+                                        <a onclick="editUser()" class="link">
+                                            <i class="material-icons" style="color: white; font-size: 20pt">edit</i>
+                                        </a>
                                     </div>
                                 </div>
+                                <img src="media/profile-bump.png" class="profile-bump" />
+                                <div class="profile-pic"></div>
                             </div>
+                            <div class="block no-margin-top">
+                                <div class="text-align-center no-margin-top">
+                                    <h2 class="profile-title">Bob Rosspool</h2>
 
-                            <div class="toolbar messagebar">
-                                <div class="toolbar-inner">
-                                    <div class="messagebar-area">
-                                        <textarea class="resizable" placeholder="Message"></textarea>
-                                    </div><a class="link send-link" href="#">Send</a>
+                                    <p class="no-margin-top">Attends <a class="link">School Of Ross</a></p>
                                 </div>
+
+                            </div>
+                            <div class="list no-hairlines">
+                                <div class="block-title" style="margin-left: 16px">Friends</div>
+                                <ul>
+                                    <a href="#" class="item-link no-chevron">
+                                        <li class="item-content">
+                                            <div class="item-media"><i class="material-icons">person</i></div>
+                                            <div class="item-inner">Krombopulos Mike</div>
+                                        </li>
+                                    </a>
+                                    <a href="#" class="item-link no-chevron">
+                                        <li class="item-content">
+                                            <div class="item-media"><i class="material-icons">person</i></div>
+                                            <div class="item-inner">Jane Smith</div>
+                                        </li>
+                                    </a>
+
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -379,6 +351,7 @@
                 console.log("Failed to sign out: " + error.message);
             });
         }
+
     </script>
 </body>
 

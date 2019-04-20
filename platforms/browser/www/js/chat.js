@@ -72,7 +72,7 @@ $$('.send-link').on('click', function () {
 
 // Dummy response
 var answers = [
-  'all you problems are happy litte clouds',
+  'Yes!',
   'No',
   'Hm...',
   'I am not sure',
@@ -87,8 +87,8 @@ var answers = [
 ]
 var people = [
   {
-    name: 'Bob ross',
-    avatar: 'js/download.jpg'
+    name: 'Kate Johnson',
+    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg'
   },
   {
     name: 'Blue Ninja',
@@ -99,12 +99,9 @@ function receiveMessage() {
   responseInProgress = true;
   setTimeout(function () {
     // Get random answer and random person
+    var answer = answers[Math.floor(Math.random() * answers.length)];
     var person = people[Math.floor(Math.random() * people.length)];
-	var answer = answers[Math.floor(Math.random() * answers.length)];
 
-	if (person==0){
-	answer=1;
-	}
     // Show typing indicator
     messages.showTyping({
       header: person.name + ' is typing',
@@ -122,6 +119,6 @@ function receiveMessage() {
       // Hide typing indicator
       messages.hideTyping();
       responseInProgress = false;
-    }, 500);
-  }, 200);
+    }, 4000);
+  }, 1000);
 }
