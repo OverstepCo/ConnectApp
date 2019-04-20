@@ -278,10 +278,11 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         var db = firebase.firestore();
-
+        var User;
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 // User is signed in.
+                User=user;
                 var displayName = user.displayName;
                 var email = user.email;
                 var emailVerified = user.emailVerified;
@@ -290,11 +291,13 @@
                 var uid = user.uid;
                 var providerData = user.providerData;
                 console.log(uid);
-                loadSchoolChats();
+
                 self.app.views.main.router.navigate('/home/', {
                     reloadCurrent: true
                 });
                 app.preloader.hide();
+                loadSchoolChats();
+                loadSubscribedChats();
                 // ...
             } else {
                 // User is signed out.
@@ -356,18 +359,29 @@
 
         //firestore stuff (chat things)
         function loadSchoolChats() {
-
-            console.log("test"); ////TODO add the users school hereVVV
+            console.log("loading school chats"); ////TODO add the users school hereVVV
             db.collection("school").doc("school of ross").collection("chats").get().then(function(querySnapshot) {
                 querySnapshot.forEach(function(doc) { //this foreach loop runs once for every chat room in the school
                     console.log(doc.get("name"));
-                    console.log(doc.get("nuberOfMembers"));
+                    console.log(doc.get("numberOfMembers"));
                     console.log(doc.get("description"));
+
                     //if any of these dont exist in the database they return null or undefined
                 });
             });
         }
 
+        function loadSubscribedChats() {
+            console.log("loading Subscribed Chats"); ////TODO add the users school hereVVV
+            db.collection("users").doc(User.uid).get().then(function(doc) {
+                    console.log("subbed chats");
+                    console.log(doc.get("chats"));
+                    console.log(doc.get("firstName"));
+                    console.log(doc.get("description"));
+
+                    //if any of these dont exist in the database they return null or undefined
+            });
+        }
 
 
         function addMessage() {
