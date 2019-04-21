@@ -2,7 +2,6 @@
 .ios .tabbar-labels .tab-link:not(.tab-link-active) .icon-ios-fill {
   display: none;
 }
-
 .ios .tabbar-labels .tab-link.tab-link-active .icon:not(.icon-ios-fill) {
   display: none;
 }
@@ -13,91 +12,85 @@
   background-position: center;
   color: #fff;
 }
-
-.card-header-pic .card-content-padding .date {
+.card-header-pic .card-content-padding .date{
   color: #8e8e93;
 }
 
 .school-header {
-  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/International_School_of_Hamburg.jpg/1200px-International_School_of_Hamburg.jpg);
-  height: 200px;
-  color: white;
+    background-image:url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/International_School_of_Hamburg.jpg/1200px-International_School_of_Hamburg.jpg);
+    height: 200px;
+    color: white;
 }
 
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }
+
 
 /********** PANEL **********/
 .panel-header {
-  margin: 15px;
-  padding: 0;
+    margin: 15px;
+    padding: 0;
 }
+
 
 .panel-header * {
-  margin: 0
+    margin: 0
 }
 
+
 .panel img {
-  width: 65px
+    width: 65px
+        
 }
 
 .panel .list {
-  margin: 5px;
+    margin: 5px;
 }
 
 .hairline {
-  height: 1px;
-  background-color: lightgray;
+    height: 1px;
+    background-color: lightgray;
 }
 
 .list-title {
-  color: gray;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 32px 16px 16px 16px
-}
-
-.gradient-background {
-  background: linear-gradient(135deg, #30D9FF, #007AFF);
-}
-
-/********** MAIN **********/
-.row-cards {
-  margin: 16px;
-}
-
-.colored-shadow {
-  box-shadow: 0 5px 20px 0px rgba(0, 122, 255, 0.4);
+    color: gray;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 32px 16px 16px 16px
 }
 
 /********** PROFILE **********/
+
 .profile-bg {
-  height: 200px;
-  background: linear-gradient(135deg, #30D9FF, #007AFF);
+    height: 200px;
+     background: linear-gradient(135deg, #30D9FF, #007AFF);
 }
 
 .profile-pic {
-  width: 150px;
-  height: 150px;
-  background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png');
-  border-radius: 50%;
-  background-size: cover;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, .3);
+    width: 150px;
+    height: 150px;
+    background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png');
+    border-radius: 50%;
+    background-size: cover;
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, .3);
+    
 }
 
 .profile-bump {
-  height: 50px;
-  width: 100%;
+    height: 50px;
+    width: 100%;
+
 }
 
 .profile-title {
-  margin: 0;
-  font-size: 20pt;
-  letter-spacing: 1px;
-  color: #007AFF;
+    margin: 0;
+    font-size: 20pt;
+    letter-spacing: 1px;
+    color: #007AFF;
 }
+
