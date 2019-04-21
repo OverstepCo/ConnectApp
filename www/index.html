@@ -14,16 +14,13 @@
 
 <body>
   <div id="app">
-    <div class="statusbar"></div>
-
     <div class="panel panel-left panel-cover panel-resizable">
-      <div class="block panel-header">
-        <img src="https://img.icons8.com/nolan/96/000000/connected.png">
+      <div class="block panel-header gradient-background">
+        <img src="media/logo.png">
         <h2>Connect</h2>
         <p>Connect App Description</p>
       </div>
-      <div class="hairline"></div>
-      <div class="list no-hairlines">
+      <div class="list no-hairlines" style="margin-top: 10px">
         <ul>
           <a href="#" class="panel-close item-link no-chevron">
             <li class="item-content">
@@ -62,7 +59,7 @@
     <div class="view view-main" data-url="/">
       <div data-page="index" class="page">
 
-        <div class="navbar">
+        <!--<div class="navbar">
           <div class="navbar-inner">
             <div class="left">
               <a class="panel-open link icon-only">
@@ -71,7 +68,7 @@
             </div>
             <div class="title">Connect</div>
           </div>
-        </div>
+        </div>-->
 
         <div class="toolbar tabbar toolbar-bottom">
           <div class="toolbar-inner">
@@ -79,9 +76,6 @@
               <i class="icon material-icons">home<span class="badge color-red">5</span></i>
             </a>
             <a href="#tab-2" class="tab-link">
-              <i class="icon material-icons">school</i>
-            </a>
-            <a href="#tab-3" class="tab-link">
               <i class="icon material-icons">person</i>
             </a>
           </div>
@@ -90,78 +84,52 @@
           <div class="tabs">
             <!-- First tab, active -->
             <div class="page-content tab tab-active" id="tab-1">
-              <div class="row row-cards">
-                <div class="col">
-                  <div class="card card-expandable colored-shadow" style=" height: 200px">
-                    <div class="card-content">
-                      <div class="gradient-background" style="height: 200px">
-                        <div class="card-header text-color-white display-block">
-                          Framework7
-                          <br>
-                          <small style="opacity: 0.7">Build Mobile Apps</small>
-                        </div>
-                        <a href="#" class="link card-close card-opened-fade-in color-white" style="position: absolute; right: 15px; top: 15px">
-                          <i class="material-icons">close</i>
-                        </a>
-                      </div>
-                      <div class="card-content-padding">
-                        <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile apps or web apps with iOS or Android (Material) native look and feel. It is also an indispensable prototyping apps tool to show working
-                          app
-                          prototype as soon as possible in case you need to.</p>
-                      </div>
+              <div class="school-header gradient-background">
+                <i class="menu material-icons panel-open">menu</i>
+                <h1>School Of Ross</h1>
+                <p>32 Members | 12 Groups | 7 Events</p>
+              </div>
+              <h2 style="margin-left:16px; margin-bottom:0">Upcoming Events</h2>
+              <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="0" data-slides-per-view="auto" class="swiper-container swiper-init event-swiper">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <div class="slide-content">
+                      <h4 class="slide-title">Bob Ross Club</h4>
+                      <p>Every Wednesday</p>
+                      <p>7:30-9</p>
+                      <p>Art Room</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="slide-content">
+                      <h4 class="slide-title">Nature Painting</h4>
+                      <p> S M T W T F S</p>
+                      <p>7:30-9:00</p>
+                      <p>Cafeteria</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="slide-content">
+                      <h4 class="slide-title">Ross Club</h4>
+                      <p>Every Wednesday</p>
+                      <p>7:30-9</p>
+                      <p>Cafeteria</p>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="slide-content">
+                      <h4 class="slide-title">Ross Club</h4>
+                      <p>Every Wednesday</p>
+                      <p>7:30-9</p>
+                      <p>Cafeteria</p>
                     </div>
                   </div>
                 </div>
-                <div class="col">
-                  <div class="card card-expandable colored-shadow" style="height: 200px">
-                    <div class="card-content">
-                      <div class="gradient-background" style="height: 200px">
-                        <div class="card-header text-color-white display-block">
-                          Framework7
-                          <br>
-                          <small style="opacity: 0.7">Build Mobile Apps</small>
-                        </div>
-                        <a href="#" class="link card-close card-opened-fade-in color-white" style="position: absolute; right: 15px; top: 15px">
-                          <i class="material-icons">close</i>
-                        </a>
-                      </div>
-                      <div class="card-content-padding">
-                        <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile apps or web apps with iOS or Android (Material) native look and feel. It is also an indispensable prototyping apps tool to show working
-                          app
-                          prototype as soon as possible in case you need to.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
-              <div class="block">
-                <div class="text-center">
-                  <h1>Upcoming Events</h1>
-                </div>
-                <div class="card card-outline card-header-pic">
-                  <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
-                  <div class="card-content card-content-padding">
-                    <p class="date">Posted on January 21, 2015</p>
-                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
-                  </div>
-                  <div class="card-footer">
-                    <a href="#" class="link">Read more</a>
-                  </div>
-                </div>
-                <div class="card card-outline">
-                  <div class="card-header">Card header</div>
-                  <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
-                  <div class="card-footer">
-                    <a href="pages/chat.html" class="link">Read more</a>
-                  </div>
-                </div>
-                <button class="button">More</button>
-              </div>
-              <div class="block">
-                <h1>My Group Chats</h1>
-              </div>
+              <div class="hairline"></div>
+              <h2 style="margin-bottom: 0; margin-left: 16px;">Subscribed Chats</h2>
 
-              <div class="list media-list no-margin-bottom">
+              <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
                 <ul>
                   <li>
                     <a href="#" class="item-link item-content no-chevron">
@@ -186,40 +154,11 @@
                     </a>
                   </li>
                 </ul>
-                <button class="button">Find More Chats</button>
+              </div>
+              <div class="hairline"></div>
+              <h2 style="margin-bottom: 0; margin-left: 16px;">Unsubscribed Chats</h2>
 
-              </div>
-            </div>
-            <!-- Second tab -->
-            <div class="page-content tab" id="tab-2">
-              <div class="school-header card-header align-items-flex-end">Demo School</div>
-              <div class="block">
-                <div class="text-center">
-                  <h1>Upcoming Events</h1>
-                </div>
-                <div class="card card-outline card-header-pic">
-                  <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
-                  <div class="card-content card-content-padding">
-                    <p class="date">Posted on January 21, 2015</p>
-                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
-                  </div>
-                  <div class="card-footer">
-                    <a href="#" class="link">Read more</a>
-                  </div>
-                </div>
-                <div class="card card-outline">
-                  <div class="card-header">Card header</div>
-                  <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
-                  <div class="card-footer">
-                    <a href="#" class="link">Read more</a>
-                  </div>
-                </div>
-                <button class="button">More</button>
-              </div>
-              <div class="block">
-                <h1>School Group Chats</h1>
-              </div>
-              <div id="school-group-chats-skeleton" class="list media-list skeleton-text">
+              <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between">
                 <ul>
                   <li class="item-content skeleton-effect-pulse">
                     <div class="item-media">
@@ -251,14 +190,47 @@
                   </li>
                 </ul>
               </div>
-              <div class="list media-list chevron-center no-margin-bottom">
+              <div class="list media-list chevron-center no-margin-bottom no-hairlines no-hairlines-between">
                 <ul class="school-group-chats" id="school-group-chats">
 
                 </ul>
               </div>
+              <div class="hairline">
+
+              </div>
+              <h2 style="margin-bottom: 0; margin-left: 16px;">School Members</h2>
+
+              <div class="searchbar searchbar-inline">
+                <div class="searchbar-input-wrap row">
+                  <input class="no-padding" type="search" placeholder="Search List">
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+              <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+                <ul>
+                  <a href="#" class="item-link no-chevron">
+                    <li class="item-content">
+                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-inner">Krombopulos Mike</div>
+                    </li>
+                  </a>
+                  <a href="#" class="item-link no-chevron">
+                    <li class="item-content">
+                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-inner">Jane Smith</div>
+                    </li>
+                  </a>
+
+                </ul>
+              </div>
+              <!-- Nothing found message -->
+              <div class="block searchbar-not-found">
+                <div class="block-inner">Nothing found</div>
+              </div>
+
             </div>
-            <!-- Third tab -->
-            <div class="page-content tab" id="tab-3">
+            <!-- Second tab -->
+            <div class="page-content tab" id="tab-2">
               <div class="profile-bg">
                 <div style="height: 150px">
                   <div class="float-right" style="padding: 16px">
@@ -296,7 +268,9 @@
 
                 </ul>
               </div>
+
             </div>
+
           </div>
         </div>
       </div>

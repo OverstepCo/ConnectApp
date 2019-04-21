@@ -18,37 +18,39 @@
   color: #8e8e93;
 }
 
-.school-header {
-  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/International_School_of_Hamburg.jpg/1200px-International_School_of_Hamburg.jpg);
-  height: 200px;
-  color: white;
-}
-
 .bold {
   font-weight: bold;
 }
 
 /********** PANEL **********/
 .panel-header {
-  margin: 15px;
-  padding: 0;
+  margin: 0;
+  padding: 16px;
+  box-shadow: 0 0px 10px 0px rgba(0, 122, 255, 0.3);
+  color: white;
+}
+
+.panel-header p {
+  opacity: 0.7;
 }
 
 .panel-header * {
   margin: 0
 }
 
-.panel img {
+.panel-header img {
   width: 65px
 }
 
-.panel .list {
+.panel-header .list {
   margin: 5px;
 }
 
 .hairline {
-  height: 1px;
-  background-color: lightgray;
+  height: 2px;
+  margin-left: 16px;
+  margin-right: 16px;
+  background-color: rgba(0, 0, 0, .05);
 }
 
 .list-title {
@@ -62,13 +64,64 @@
   background: linear-gradient(135deg, #30D9FF, #007AFF);
 }
 
-/********** MAIN **********/
-.row-cards {
-  margin: 16px;
+/********** HOME **********/
+.menu {
+  color: white;
+  position: absolute;
+  left: 16px;
+  top: 16px;
 }
 
-.colored-shadow {
-  box-shadow: 0 5px 20px 0px rgba(0, 122, 255, 0.4);
+.school-header {
+  color: white;
+  text-align: center;
+  box-shadow: 0 0px 10px 0px rgba(0, 122, 255, 0.3);
+}
+
+.school-header h1 {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 20pt;
+  margin: 0;
+  padding-top: 16px;
+}
+
+.school-header p {
+  margin-top: 0;
+  opacity: .7;
+  padding-bottom: 16px;
+}
+
+.event-swiper .swiper-slide {
+  width: auto;
+  max-width: 300px;
+  max-height: 200px;
+}
+
+.event-swiper .slide-content {
+  font-size: 25px;
+  background: linear-gradient(135deg, #30D9FF, #007AFF);
+  box-shadow: 0 5px 10px 0px rgba(0, 122, 255, 0.3);
+  color: white;
+  border-radius: 10px;
+  margin: 15px;
+  padding: 20px;
+}
+
+.slide-content .slide-title {
+  font-size: 18pt;
+  letter-spacing: 1px;
+  margin: 0
+}
+
+.slide-content p {
+  font-size: 12pt;
+  opacity: 0.7;
+  margin: 0
+}
+
+.searchbar-input-wrap {
+  margin: 16px;
 }
 
 /********** PROFILE **********/
@@ -84,7 +137,7 @@
   border-radius: 50%;
   background-size: cover;
   position: absolute;
-  top: 100px;
+  top: 50px;
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, .3);
