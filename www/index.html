@@ -2,390 +2,458 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Connect App</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
-    <link rel="stylesheet" href="css/framework7.css">
-    <link rel="stylesheet" href="css/framework7.bundle.min.css">
-    <link rel="stylesheet" href="css/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Connect App</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
+  <link rel="stylesheet" href="css/framework7.css">
+  <link rel="stylesheet" href="css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
-    <div id="app">
-        <div class="statusbar"></div>
+  <div id="app">
+    <div class="statusbar"></div>
 
-        <div class="panel panel-left panel-cover panel-resizable">
-            <div class="block panel-header">
-                <img src="https://img.icons8.com/nolan/96/000000/connected.png">
-                <h2>Connect</h2>
-                <p>Connect App Description</p>
-            </div>
-            <div class="hairline"></div>
-            <div class="list no-hairlines">
-                <ul>
-                    <a href="#" class="panel-close item-link no-chevron">
-                        <li class="item-content">
-                            <div class="item-media"><i class="material-icons">school</i></div>
-                            <div class="item-inner">Change School</div>
-                        </li>
-                    </a>
-                    <a href="#" class="panel-close item-link no-chevron">
-                        <li class="item-content">
-                            <div class="item-media"><i class="material-icons">settings</i></div>
-                            <div class="item-inner">Settings</div>
-                        </li>
-                    </a>
-                    <a href="#" class="panel-close item-link no-chevron">
-                        <li class="item-content">
-                            <div class="item-media"><i class="material-icons">info</i></div>
-                            <div class="item-inner">About</div>
-                        </li>
-                    </a>
-                    <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
-                        <li class="item-content">
-                            <div class="item-media"><i class="material-icons">cloud_off</i></div>
-                            <div class="item-inner">Sign Out</div>
-                        </li>
-                    </a>
-                    <a href="/login-screen/" class="panel-close item-link no-chevron">
-                        <li class="item-content">
-                            <div class="item-media"><i class="material-icons">cloud</i></div>
-                            <div class="item-inner">Sign In</div>
-                        </li>
-                    </a>
-                </ul>
-            </div>
-        </div>
-
-        <div class="view view-main" data-url="/">
-            <div data-page="index" class="page">
-
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a class="panel-open link icon-only">
-                                <i class="material-icons  icon">menu</i>
-                            </a>
-                        </div>
-                        <div class="title">Connect</div>
-                    </div>
-                </div>
-
-                <div class="toolbar no-hairline tabbar toolbar-top">
-                    <div class="toolbar-inner">
-                        <a href="#tab-1" class="tab-link tab-link-active">
-                            <i class="icon material-icons">home<span class="badge color-red">5</span></i>
-                        </a>
-                        <a href="#tab-2" class="tab-link">
-                            <i class="icon material-icons">school</i>
-                        </a>
-                        <a href="#tab-3" class="tab-link">
-                            <i class="icon material-icons">people</i>
-                        </a>
-                    </div>
-                </div>
-                <div class="tabs-swipeable-wrap">
-                    <div class="tabs">
-                        <!-- First tab, active -->
-                        <div class="page-content tab tab-active" id="tab-1">
-                            <div class="block">
-                                <div class="text-center">
-                                    <h1>Upcoming Events</h1>
-                                </div>
-                                <div class="card card-outline card-header-pic">
-                                    <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
-                                    <div class="card-content card-content-padding">
-                                        <p class="date">Posted on January 21, 2015</p>
-                                        <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="#" class="link">Read more</a>
-                                    </div>
-                                </div>
-                                <div class="card card-outline">
-                                    <div class="card-header">Card header</div>
-                                    <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
-                                    <div class="card-footer">
-                                        <a href="pages/chat.html" class="link">Read more</a>
-                                    </div>
-                                </div>
-                                <button class="button">More</button>
-                            </div>
-                            <div class="block">
-                                <h1>My Group Chats</h1>
-                            </div>
-
-                            <div class="list media-list">
-                                <ul>
-                                    <li>
-                                        <a href="#" class="item-link item-content no-chevron">
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Group Chat 1</div>
-                                                    <div class="item-after">12:14</div>
-                                                </div>
-                                                <div class="item-text"><b>Jaden Smith: </b>Are we on for Monday night?</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/chat-screen/" class="item-link item-content no-chevron">
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Group Chat 2</div>
-                                                    <div class="item-after">10:11</div>
-                                                </div>
-                                                <div class="item-text"><b>Krombopulos Mike: </b>Here I go killing again!</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <button class="button">Find More Chats</button>
-
-                            </div>
-                        </div>
-                        <!-- Second tab -->
-                        <div class="page-content tab" id="tab-2">
-                            <div class="school-header card-header align-items-flex-end">Demo School</div>
-                            <div class="block">
-                                <div class="text-center">
-                                    <h1>Upcoming Events</h1>
-                                </div>
-                                <div class="card card-outline card-header-pic">
-                                    <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
-                                    <div class="card-content card-content-padding">
-                                        <p class="date">Posted on January 21, 2015</p>
-                                        <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="#" class="link">Read more</a>
-                                    </div>
-                                </div>
-                                <div class="card card-outline">
-                                    <div class="card-header">Card header</div>
-                                    <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
-                                    <div class="card-footer">
-                                        <a href="#" class="link">Read more</a>
-                                    </div>
-                                </div>
-                                <button class="button">More</button>
-                            </div>
-                            <div class="block">
-                                <h1>School Group Chats</h1>
-                            </div>
-                            <div class="list media-list chevron-center">
-                                <ul>
-                                    <li>
-                                        <a href="#" class="item-link item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title" >Group Chat 1</div>
-                                                </div>
-                                                <div class="item-subtitle">7 Members</div>
-                                                <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="item-link item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Group Chat 2</div>
-                                                </div>
-                                                <div class="item-subtitle">15 Members</div>
-                                                <div class="item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Third tab -->
-                        <div class="page-content tab" id="tab-3">
-                            <div class="profile-bg">
-                                <div style="height: 150px">
-                                    <div class="float-right" style="padding: 16px">
-                                        <a onclick="editUser()" class="link">
-                                            <i class="material-icons" style="color: white; font-size: 20pt">edit</i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <img src="media/profile-bump.png" class="profile-bump" />
-                                <div class="profile-pic"></div>
-                            </div>
-                            <div class="block no-margin-top">
-                                <div class="text-align-center no-margin-top">
-                                    <h2 class="profile-title">Bob Rosspool</h2>
-
-                                    <p class="no-margin-top">Attends <a class="link">School Of Ross</a></p>
-                                </div>
-
-                            </div>
-                            <div class="list no-hairlines">
-                                <div class="block-title" style="margin-left: 16px">Friends</div>
-                                <ul>
-                                    <a href="#" class="item-link no-chevron">
-                                        <li class="item-content">
-                                            <div class="item-media"><i class="material-icons">person</i></div>
-                                            <div class="item-inner">Krombopulos Mike</div>
-                                        </li>
-                                    </a>
-                                    <a href="#" class="item-link no-chevron">
-                                        <li class="item-content">
-                                            <div class="item-media"><i class="material-icons">person</i></div>
-                                            <div class="item-inner">Jane Smith</div>
-                                        </li>
-                                    </a>
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="panel panel-left panel-cover panel-resizable">
+      <div class="block panel-header">
+        <img src="https://img.icons8.com/nolan/96/000000/connected.png">
+        <h2>Connect</h2>
+        <p>Connect App Description</p>
+      </div>
+      <div class="hairline"></div>
+      <div class="list no-hairlines">
+        <ul>
+          <a href="#" class="panel-close item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons">school</i></div>
+              <div class="item-inner">Change School</div>
+            </li>
+          </a>
+          <a href="#" class="panel-close item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons">settings</i></div>
+              <div class="item-inner">Settings</div>
+            </li>
+          </a>
+          <a href="#" class="panel-close item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons">info</i></div>
+              <div class="item-inner">About</div>
+            </li>
+          </a>
+          <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons">cloud_off</i></div>
+              <div class="item-inner">Sign Out</div>
+            </li>
+          </a>
+          <a href="/login-screen/" class="panel-close item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons">cloud</i></div>
+              <div class="item-inner">Sign In</div>
+            </li>
+          </a>
+        </ul>
+      </div>
     </div>
 
+    <div class="view view-main" data-url="/">
+      <div data-page="index" class="page">
 
-    <script type="text/javascript" src="js/framework7.bundle.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/chat.js"></script>
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a class="panel-open link icon-only">
+                <i class="material-icons  icon">menu</i>
+              </a>
+            </div>
+            <div class="title">Connect</div>
+          </div>
+        </div>
 
-    <script src="js/framework7.bundle.js"></script>
+        <div class="toolbar tabbar toolbar-bottom">
+          <div class="toolbar-inner">
+            <a href="#tab-1" class="tab-link tab-link-active">
+              <i class="icon material-icons">home<span class="badge color-red">5</span></i>
+            </a>
+            <a href="#tab-2" class="tab-link">
+              <i class="icon material-icons">school</i>
+            </a>
+            <a href="#tab-3" class="tab-link">
+              <i class="icon material-icons">person</i>
+            </a>
+          </div>
+        </div>
+        <div class="tabs-swipeable-wrap">
+          <div class="tabs">
+            <!-- First tab, active -->
+            <div class="page-content tab tab-active" id="tab-1">
+              <div class="row row-cards">
+                <div class="col">
+                  <div class="card card-expandable colored-shadow" style=" height: 200px">
+                    <div class="card-content">
+                      <div class="gradient-background" style="height: 200px">
+                        <div class="card-header text-color-white display-block">
+                          Framework7
+                          <br>
+                          <small style="opacity: 0.7">Build Mobile Apps</small>
+                        </div>
+                        <a href="#" class="link card-close card-opened-fade-in color-white" style="position: absolute; right: 15px; top: 15px">
+                          <i class="material-icons">close</i>
+                        </a>
+                      </div>
+                      <div class="card-content-padding">
+                        <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile apps or web apps with iOS or Android (Material) native look and feel. It is also an indispensable prototyping apps tool to show working
+                          app
+                          prototype as soon as possible in case you need to.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card card-expandable colored-shadow" style="height: 200px">
+                    <div class="card-content">
+                      <div class="gradient-background" style="height: 200px">
+                        <div class="card-header text-color-white display-block">
+                          Framework7
+                          <br>
+                          <small style="opacity: 0.7">Build Mobile Apps</small>
+                        </div>
+                        <a href="#" class="link card-close card-opened-fade-in color-white" style="position: absolute; right: 15px; top: 15px">
+                          <i class="material-icons">close</i>
+                        </a>
+                      </div>
+                      <div class="card-content-padding">
+                        <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile apps or web apps with iOS or Android (Material) native look and feel. It is also an indispensable prototyping apps tool to show working
+                          app
+                          prototype as soon as possible in case you need to.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="block">
+                <div class="text-center">
+                  <h1>Upcoming Events</h1>
+                </div>
+                <div class="card card-outline card-header-pic">
+                  <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
+                  <div class="card-content card-content-padding">
+                    <p class="date">Posted on January 21, 2015</p>
+                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+                  </div>
+                  <div class="card-footer">
+                    <a href="#" class="link">Read more</a>
+                  </div>
+                </div>
+                <div class="card card-outline">
+                  <div class="card-header">Card header</div>
+                  <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
+                  <div class="card-footer">
+                    <a href="pages/chat.html" class="link">Read more</a>
+                  </div>
+                </div>
+                <button class="button">More</button>
+              </div>
+              <div class="block">
+                <h1>My Group Chats</h1>
+              </div>
+
+              <div class="list media-list no-margin-bottom">
+                <ul>
+                  <li>
+                    <a href="#" class="item-link item-content no-chevron">
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Group Chat 1</div>
+                          <div class="item-after">12:14</div>
+                        </div>
+                        <div class="item-text"><b>Jaden Smith: </b>Are we on for Monday night?</div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/chat-screen/" class="item-link item-content no-chevron">
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Group Chat 2</div>
+                          <div class="item-after">10:11</div>
+                        </div>
+                        <div class="item-text"><b>Krombopulos Mike: </b>Here I go killing again!</div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+                <button class="button">Find More Chats</button>
+
+              </div>
+            </div>
+            <!-- Second tab -->
+            <div class="page-content tab" id="tab-2">
+              <div class="school-header card-header align-items-flex-end">Demo School</div>
+              <div class="block">
+                <div class="text-center">
+                  <h1>Upcoming Events</h1>
+                </div>
+                <div class="card card-outline card-header-pic">
+                  <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>
+                  <div class="card-content card-content-padding">
+                    <p class="date">Posted on January 21, 2015</p>
+                    <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+                  </div>
+                  <div class="card-footer">
+                    <a href="#" class="link">Read more</a>
+                  </div>
+                </div>
+                <div class="card card-outline">
+                  <div class="card-header">Card header</div>
+                  <div class="card-content card-content-padding">Card with header and footer. Card headers are used to display card titles and footers for additional information or just for custom actions.</div>
+                  <div class="card-footer">
+                    <a href="#" class="link">Read more</a>
+                  </div>
+                </div>
+                <button class="button">More</button>
+              </div>
+              <div class="block">
+                <h1>School Group Chats</h1>
+              </div>
+              <div id="school-group-chats-skeleton" class="list media-list skeleton-text">
+                <ul>
+                  <li class="item-content skeleton-effect-pulse">
+                    <div class="item-media">
+                      <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">This is Title</div>
+                      </div>
+                      <div class="item-subtitle">Subtitle</div>
+                      <div class="item-text">
+                        Placeholder text line 1 Text line 2
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content skeleton-effect-pulse">
+                    <div class="item-media">
+                      <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">This is Title</div>
+                      </div>
+                      <div class="item-subtitle">Subtitle</div>
+                      <div class="item-text">
+                        Placeholder text line 1 Text
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="list media-list chevron-center no-margin-bottom">
+                <ul class="school-group-chats" id="school-group-chats">
+
+                </ul>
+              </div>
+            </div>
+            <!-- Third tab -->
+            <div class="page-content tab" id="tab-3">
+              <div class="profile-bg">
+                <div style="height: 150px">
+                  <div class="float-right" style="padding: 16px">
+                    <a onclick="editUser()" class="link">
+                      <i class="material-icons" style="color: white; font-size: 20pt">edit</i>
+                    </a>
+                  </div>
+                </div>
+                <img src="media/profile-bump.png" class="profile-bump" />
+                <div class="profile-pic"></div>
+              </div>
+              <div class="block no-margin-top">
+                <div class="text-align-center no-margin-top">
+                  <h2 class="profile-title">Bob Rosspool</h2>
+
+                  <p class="no-margin-top">Attends <a class="link">School Of Ross</a></p>
+                </div>
+
+              </div>
+              <div class="list no-hairlines">
+                <div class="block-title" style="margin-left: 16px">Friends</div>
+                <ul>
+                  <a href="#" class="item-link no-chevron">
+                    <li class="item-content">
+                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-inner">Krombopulos Mike</div>
+                    </li>
+                  </a>
+                  <a href="#" class="item-link no-chevron">
+                    <li class="item-content">
+                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-inner">Jane Smith</div>
+                    </li>
+                  </a>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src="js/framework7.bundle.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/chat.js"></script>
+
+  <script src="js/framework7.bundle.js"></script>
 
 
 
-    <!-- Firebase stuff-->
-    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
+  <!-- Firebase stuff-->
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
 
 
-    <script>
-        var firebaseConfig = {
+  <script>
+    var firebaseConfig = {
 
-            apiKey: "AIzaSyBUSM_BAQ81dWuIdGJEyIPWcGul6LQ4HEw",
-            authDomain: "connect-proj.firebaseapp.com",
-            databaseURL: "https://connect-proj.firebaseio.com",
-            projectId: "connect-proj",
-            storageBucket: "connect-proj.appspot.com",
-            messagingSenderId: "846822998925"
+      apiKey: "AIzaSyBUSM_BAQ81dWuIdGJEyIPWcGul6LQ4HEw",
+      authDomain: "connect-proj.firebaseapp.com",
+      databaseURL: "https://connect-proj.firebaseio.com",
+      projectId: "connect-proj",
+      storageBucket: "connect-proj.appspot.com",
+      messagingSenderId: "846822998925"
 
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        var db = firebase.firestore();
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
 
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                // User is signed in.
-                var displayName = user.displayName;
-                var email = user.email;
-                var emailVerified = user.emailVerified;
-                var photoURL = user.photoURL;
-                var isAnonymous = user.isAnonymous;
-                var uid = user.uid;
-                var providerData = user.providerData;
-                console.log(uid);
-                loadSchoolChats();
-                self.app.views.main.router.navigate('/home/', {
-                    reloadCurrent: true
-                });
-                app.preloader.hide();
-                // ...
-            } else {
-                // User is signed out.
-                self.app.views.main.router.navigate('/login-screen/', {
-                    reloadCurrent: true
-                });
-
-            }
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        var providerData = user.providerData;
+        console.log(uid);
+        loadSchoolChats();
+        //self.app.views.main.router.navigate('/home/', {
+        //  reloadCurrent: true
+        //});
+        app.preloader.hide();
+        // ...
+      } else {
+        // User is signed out.
+        self.app.views.main.router.navigate('/login-screen/', {
+          reloadCurrent: true
         });
 
-        function signUp() {
-            app.preloader.show();
+      }
+    });
 
-            var email = document.getElementById("email").value;
-            var password = document.getElementById("newpword").value;
-            var err = document.getElementById("newerrmsg");
-            err.innerHTML = "";
+    function signUp() {
+      app.preloader.show();
 
-            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-                app.preloader.hide();
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("newpword").value;
+      var err = document.getElementById("newerrmsg");
+      err.innerHTML = "";
 
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log("Failed to sign up: " + errorMessage);
-                err.innerHTML = "Error: " + errorMessage;
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        app.preloader.hide();
 
-            });
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log("Failed to sign up: " + errorMessage);
+        err.innerHTML = "Error: " + errorMessage;
 
-
-
-        }
-
-        function signIn() {
-
-            app.preloader.show();
-            var username = document.getElementById("uname").value;
-            var password = document.getElementById("pword").value;
-            var err = document.getElementById("errmsg");
-            err.innerHTML = "";
-
-            firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
-                app.preloader.hide();
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log("Failed to login: " + error.message);
-                err.innerHTML = "Error: " + error.message;
-            });
-        }
-
-        function signOut() {
-            firebase.auth().signOut().then(function() {
-                // Sign-out successful.
-            }).catch(function(error) {
-                console.log("Failed to sign out: " + error.message);
-            });
-        }
-
-        //firestore stuff (chat things)
-        function loadSchoolChats() {
-
-            console.log("test"); ////TODO add the users school hereVVV
-            db.collection("school").doc("school of ross").collection("chats").get().then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) { //this foreach loop runs once for every chat room in the school
-                    console.log(doc.get("name"));
-                    console.log(doc.get("nuberOfMembers"));
-                    console.log(doc.get("description"));
-                    //if any of these dont exist in the database they return null or undefined
-                });
-            });
-        }
+      });
 
 
 
-        function addMessage() {
-            db.collection("messages").add({
-                    name: firebase.auth().currentUser.uid,
-                    profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
-                    text: document.getElementById("messagebar").value,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                })
-                .then(function(docRef) {
-                    console.log("Document written with ID: ", docRef.id);
-                })
-                .catch(function(error) {
-                    console.error("Error adding document: ", error);
-                });
-        }
+    }
 
-    </script>
+    function signIn() {
+
+      app.preloader.show();
+      var username = document.getElementById("uname").value;
+      var password = document.getElementById("pword").value;
+      var err = document.getElementById("errmsg");
+      err.innerHTML = "";
+
+      firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
+        app.preloader.hide();
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log("Failed to login: " + error.message);
+        err.innerHTML = "Error: " + error.message;
+      });
+    }
+
+    function signOut() {
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+      }).catch(function(error) {
+        console.log("Failed to sign out: " + error.message);
+      });
+    }
+
+    //firestore stuff (chat things)
+    function loadSchoolChats() {
+
+      ////TODO add the users school here
+      db.collection("school").doc("school of ross").collection("chats").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every chat room in the school
+          var ls = document.getElementById("school-group-chats");
+          var li = document.createElement('li')
+          li.innerHTML = '<a href="#" class="item-link item-content">\
+            <div class="item-inner">\
+              <div class="item-title-row">\
+                <div class="item-title">' + doc.get("name") + '</div>\
+              </div>\
+              <div class="item-subtitle">' + doc.get("nuberOfMembers") + '</div>\
+              <div class="item-text">' + doc.get("description") + '</div>\
+            </div>\
+          </a>';
+          ls.appendChild(li);
+
+          var skeleton = document.getElementById('school-group-chats-skeleton');
+          skeleton.remove();
+
+          //if any of these dont exist in the database they return null or undefined
+        });
+      });
+    }
+
+
+
+    function addMessage() {
+      db.collection("messages").add({
+          name: firebase.auth().currentUser.uid,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
+          text: document.getElementById("messagebar").value,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    }
+  </script>
 </body>
 
 </html>
