@@ -418,11 +418,16 @@
     function loadSubscribedChats() {
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          //this loop runs once for every chat room the current user is subbscribed to
-
+          //this loop runs once for every chat room the current user is subscribed to
           db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
-            console.log(doc.id);
-            console.log(chat.get("name"));
+            db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timeStamp", "desc").limit(1).get().then(function(messages) {
+              messages.forEach(function(message) {
+                console.log(chat.get("name")); //the name of the chat
+                console.log(message.get("userID")); //TODO get the name intead of the ID//the name of the person who sent the last message
+                console.log(message.get("text")); //the last message sent
+              });
+            });
+
             //if any of these dont exist in the database they return null or undefined
           });
         });
@@ -451,7 +456,7 @@
 
     function addMessage() {
       db.collection("messages").add({
-          name: firebase.auth().currentUser.uid,
+          userID: User.uid,
           profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
           text: document.getElementById("messagebar").value,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
