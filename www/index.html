@@ -320,7 +320,7 @@
         var providerData = user.providerData;
         console.log(uid);
         User = user;
-        subscribeToChat("test", "testSchool");
+
         loadSchoolChats();
         loadSubscribedChats();
         //self.app.views.main.router.navigate('/home/', {
@@ -430,14 +430,23 @@
     }
 
     //managing user data (subscribing and unsubscribing from chats and stuff like that)
-    function subscribeToChat(chatName, chatSchool) {
+    function subscribeToChat(chatID, chatSchool) {
       console.log("subscribing to chat")
-      db.collection("users").doc(User.uid).collection("chats").doc(chatName).set({
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
         school: chatSchool
       });
-
     }
 
+    function unsubscribeFromChat(chatID, chatSchool) {
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
+        school: firebase.firestore.FieldValue.delete()
+      });
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).delete().then(function() {
+        console.log("successfully unsubscribed from chat");
+      }).catch(function(error) {
+        console.error("Error removing document: ", error);
+      });;
+    }
 
 
     function addMessage() {
