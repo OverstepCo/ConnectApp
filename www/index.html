@@ -320,6 +320,7 @@
         var providerData = user.providerData;
         console.log(uid);
         User = user;
+        subscribeToChat("test", "testSchool");
         loadSchoolChats();
         loadSubscribedChats();
         //self.app.views.main.router.navigate('/home/', {
@@ -399,7 +400,7 @@
               <div class="item-title-row">\
                 <div class="item-title">' + doc.get("name") + '</div>\
               </div>\
-              <div class="item-subtitle">' + doc.get("nuberOfMembers") + '</div>\
+              <div class="item-subtitle">' + doc.get("numberOfMembers") + '</div>\
               <div class="item-text">' + doc.get("description") + '</div>\
             </div>\
           </a>';
@@ -415,37 +416,44 @@
     }
 
     function loadSubscribedChats() {
-
-      console.log("userid:" + User.uid);
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-              //this loop runs once for every chat room the current user is subbscribed to
-              console.log(doc.id); //this is the name of the chat
-              console.log(doc.get("school"); //this is the school that the chat is associated with
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every chat room the current user is subbscribed to
 
-
-                //if any of these dont exist in the database they return null or undefined
-              });
+          db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
+            console.log(doc.id);
+            console.log(chat.get("name"));
+            //if any of these dont exist in the database they return null or undefined
           });
+        });
+      });
+    }
 
-      }
+    //managing user data (subscribing and unsubscribing from chats and stuff like that)
+    function subscribeToChat(chatName, chatSchool) {
+      console.log("subscribing to chat")
+      db.collection("users").doc(User.uid).collection("chats").doc(chatName).set({
+        school: chatSchool
+      });
+
+    }
 
 
 
-      function addMessage() {
-        db.collection("messages").add({
-            name: firebase.auth().currentUser.uid,
-            profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
-            text: document.getElementById("messagebar").value,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          })
-          .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-          })
-          .catch(function(error) {
-            console.error("Error adding document: ", error);
-          });
-      }
+    function addMessage() {
+      db.collection("messages").add({
+          name: firebase.auth().currentUser.uid,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
+          text: document.getElementById("messagebar").value,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    }
   </script>
 </body>
 
