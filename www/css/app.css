@@ -1,12 +1,3 @@
-/* Your app styles here */
-.ios .tabbar-labels .tab-link:not(.tab-link-active) .icon-ios-fill {
-  display: none;
-}
-
-.ios .tabbar-labels .tab-link.tab-link-active .icon:not(.icon-ios-fill) {
-  display: none;
-}
-
 .card-header-pic .card-header {
   height: 40vw;
   background-size: cover;
@@ -20,6 +11,16 @@
 
 .bold {
   font-weight: bold;
+}
+
+.white {
+  color: white;
+}
+
+.gradient-icon {
+  background: -webkit-linear-gradient(135deg, #30D9FF, #007AFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /********** PANEL **********/
@@ -65,13 +66,6 @@
 }
 
 /********** HOME **********/
-.menu {
-  color: white;
-  position: absolute;
-  left: 16px;
-  top: 16px;
-}
-
 .school-header {
   color: white;
   text-align: center;
@@ -81,21 +75,23 @@
 .school-header h1 {
   text-transform: uppercase;
   letter-spacing: 3px;
-  font-size: 20pt;
+  font-size: 15pt;
   margin: 0;
-  padding-top: 16px;
 }
 
 .school-header p {
-  margin-top: 0;
+  font-size: 8pt;
+  margin: 0;
   opacity: .7;
-  padding-bottom: 16px;
 }
 
 .event-swiper .swiper-slide {
   width: auto;
-  max-width: 300px;
-  max-height: 200px;
+}
+
+.event-swiper .slide-content:hover {
+  width: 100%;
+  height: 100%;
 }
 
 .event-swiper .slide-content {
@@ -106,6 +102,7 @@
   border-radius: 10px;
   margin: 15px;
   padding: 20px;
+  transition: all .2s;
 }
 
 .slide-content .slide-title {

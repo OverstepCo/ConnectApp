@@ -22,33 +22,39 @@
       </div>
       <div class="list no-hairlines" style="margin-top: 10px">
         <ul>
+          <a href="/profile-screen/" class="panel-close item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+              <div class="item-inner">My Profile</div>
+            </li>
+          </a>
           <a href="#" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons">school</i></div>
+              <div class="item-media"><i class="material-icons gradient-icon">school</i></div>
               <div class="item-inner">Change School</div>
             </li>
           </a>
           <a href="#" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons">settings</i></div>
+              <div class="item-media"><i class="material-icons gradient-icon">settings</i></div>
               <div class="item-inner">Settings</div>
             </li>
           </a>
           <a href="#" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons">info</i></div>
+              <div class="item-media"><i class="material-icons gradient-icon">info</i></div>
               <div class="item-inner">About</div>
             </li>
           </a>
           <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons">cloud_off</i></div>
+              <div class="item-media"><i class="material-icons gradient-icon">cloud_off</i></div>
               <div class="item-inner">Sign Out</div>
             </li>
           </a>
           <a href="/login-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons">cloud</i></div>
+              <div class="item-media"><i class="material-icons gradient-icon">cloud</i></div>
               <div class="item-inner">Sign In</div>
             </li>
           </a>
@@ -59,16 +65,24 @@
     <div class="view view-main" data-url="/">
       <div data-page="index" class="page">
 
-        <!--<div class="navbar">
-          <div class="navbar-inner">
+        <div class="navbar gradient-background no-shadow no-harline">
+          <div class="navbar-inner school-header">
             <div class="left">
               <a class="panel-open link icon-only">
-                <i class="material-icons  icon">menu</i>
+                <i class="material-icons icon white">menu</i>
               </a>
             </div>
-            <div class="title">Connect</div>
+            <div class="title">
+              <h1>School Of Ross</h1>
+              <p>32 Members | 12 Groups | 7 Events</p>
+            </div>
+            <div class="right">
+              <a class="link icon-only">
+                <i class="material-icons icon white">person</i>
+              </a>
+            </div>
           </div>
-        </div>-->
+        </div>
 
         <div class="toolbar tabbar toolbar-bottom">
           <div class="toolbar-inner">
@@ -83,14 +97,9 @@
         <div class="tabs-swipeable-wrap">
           <div class="tabs">
             <!-- First tab, active -->
-            <div class="page-content tab tab-active" id="tab-1">
-              <div class="school-header gradient-background">
-                <i class="menu material-icons panel-open">menu</i>
-                <h1>School Of Ross</h1>
-                <p>32 Members | 12 Groups | 7 Events</p>
-              </div>
+            <div class="page-content tab tab-active" id="tab-1" style="overflow-x: hidden">
               <h2 style="margin-left:16px; margin-bottom:0">Upcoming Events</h2>
-              <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="0" data-slides-per-view="auto" class="swiper-container swiper-init event-swiper">
+              <div data-space-between="0" data-slides-per-view="auto" class="swiper-container swiper-init event-swiper">
                 <div class="swiper-wrapper">
                   <div class="swiper-slide">
                     <div class="slide-content">
@@ -210,13 +219,13 @@
                 <ul>
                   <a href="#" class="item-link no-chevron">
                     <li class="item-content">
-                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
                       <div class="item-inner">Krombopulos Mike</div>
                     </li>
                   </a>
                   <a href="#" class="item-link no-chevron">
                     <li class="item-content">
-                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
                       <div class="item-inner">Jane Smith</div>
                     </li>
                   </a>
@@ -235,7 +244,7 @@
                 <div style="height: 150px">
                   <div class="float-right" style="padding: 16px">
                     <a onclick="editUser()" class="link">
-                      <i class="material-icons" style="color: white; font-size: 20pt">edit</i>
+                      <i class="material-icons white">edit</i>
                     </a>
                   </div>
                 </div>
@@ -255,13 +264,13 @@
                 <ul>
                   <a href="#" class="item-link no-chevron">
                     <li class="item-content">
-                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
                       <div class="item-inner">Krombopulos Mike</div>
                     </li>
                   </a>
                   <a href="#" class="item-link no-chevron">
                     <li class="item-content">
-                      <div class="item-media"><i class="material-icons">person</i></div>
+                      <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
                       <div class="item-inner">Jane Smith</div>
                     </li>
                   </a>
@@ -281,9 +290,6 @@
   <script type="text/javascript" src="js/framework7.bundle.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/chat.js"></script>
-
-  <script src="js/framework7.bundle.js"></script>
-
 
 
   <!-- Firebase stuff-->
@@ -418,34 +424,34 @@
 
       console.log("userid:" + User.uid);
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-              //this loop runs once for every chat room the current user is subbscribed to
-              console.log(doc.id); //this is the name of the chat
-              console.log(doc.get("school"); //this is the school that the chat is associated with
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every chat room the current user is subbscribed to
+          console.log(doc.id); //this is the name of the chat
+          console.log(doc.get("school")); //this is the school that the chat is associated with
 
 
-                //if any of these dont exist in the database they return null or undefined
-              });
-          });
+          //if any of these dont exist in the database they return null or undefined
+        });
+      });
 
-      }
+    }
 
 
 
-      function addMessage() {
-        db.collection("messages").add({
-            name: firebase.auth().currentUser.uid,
-            profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
-            text: document.getElementById("messagebar").value,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          })
-          .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-          })
-          .catch(function(error) {
-            console.error("Error adding document: ", error);
-          });
-      }
+    function addMessage() {
+      db.collection("messages").add({
+          name: firebase.auth().currentUser.uid,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
+          text: document.getElementById("messagebar").value,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    }
   </script>
 </body>
 

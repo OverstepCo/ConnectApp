@@ -18,6 +18,11 @@ var app = new Framework7({
       path: '/home/',
       url: 'index.html',
     },
+    // profile page
+    {
+      path: '/profile-screen/',
+      url: 'pages/profile.html',
+    },
     // signup page
     {
       path: '/signup-screen/',
@@ -28,6 +33,7 @@ var app = new Framework7({
       path: '/login-screen/',
       url: 'pages/login.html',
     },
+    // chat page
     {
       path: '/chat-screen/',
       url: 'pages/chat.html',
