@@ -326,6 +326,7 @@
         var providerData = user.providerData;
         console.log(uid);
         User = user;
+
         loadSchoolChats();
         loadSubscribedChats();
         //self.app.views.main.router.navigate('/home/', {
@@ -405,7 +406,7 @@
               <div class="item-title-row">\
                 <div class="item-title">' + doc.get("name") + '</div>\
               </div>\
-              <div class="item-subtitle">' + doc.get("nuberOfMembers") + '</div>\
+              <div class="item-subtitle">' + doc.get("numberOfMembers") + '</div>\
               <div class="item-text">' + doc.get("description") + '</div>\
             </div>\
           </a>';
@@ -421,21 +422,37 @@
     }
 
     function loadSubscribedChats() {
-
-      console.log("userid:" + User.uid);
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           //this loop runs once for every chat room the current user is subbscribed to
-          console.log(doc.id); //this is the name of the chat
-          console.log(doc.get("school")); //this is the school that the chat is associated with
 
-
-          //if any of these dont exist in the database they return null or undefined
+          db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
+            console.log(doc.id);
+            console.log(chat.get("name"));
+            //if any of these dont exist in the database they return null or undefined
+          });
         });
       });
-
     }
 
+    //managing user data (subscribing and unsubscribing from chats and stuff like that)
+    function subscribeToChat(chatID, chatSchool) {
+      console.log("subscribing to chat")
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
+        school: chatSchool
+      });
+    }
+
+    function unsubscribeFromChat(chatID, chatSchool) {
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
+        school: firebase.firestore.FieldValue.delete()
+      });
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).delete().then(function() {
+        console.log("successfully unsubscribed from chat");
+      }).catch(function(error) {
+        console.error("Error removing document: ", error);
+      });;
+    }
 
 
     function addMessage() {
