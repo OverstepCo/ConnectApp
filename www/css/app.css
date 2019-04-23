@@ -18,9 +18,13 @@
 }
 
 .gradient-icon {
-  background: -webkit-linear-gradient(135deg, #92FE9D, #00C9FF);
+  background: -webkit-linear-gradient(90deg, #007bff, #2245f5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.navbar {
+  background-color: rgba(255, 255, 255, .9);
 }
 
 /********** PANEL **********/
@@ -62,14 +66,13 @@
 }
 
 .gradient-background {
-  background: linear-gradient(135deg, #92FE9D, #00C9FF);
+  background: linear-gradient(90deg, #007bff, #2245f5);
 }
 
 /********** HOME **********/
 .school-header {
-  color: white;
   text-align: center;
-  box-shadow: 0 0px 10px 0px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 0px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
 .school-header h1 {
@@ -96,8 +99,8 @@
 
 .event-swiper .slide-content {
   font-size: 25px;
-  background: linear-gradient(135deg, #92FE9D, #00C9FF);
-  box-shadow: 0 5px 10px 0px rgba(0, 122, 255, 0.3);
+  background: linear-gradient(90deg, #007bff, #2245f5);
+  box-shadow: 0 5px 10px 0px rgba(0, 123, 255, 0.3);
   color: white;
   border-radius: 10px;
   margin: 15px;
@@ -124,7 +127,7 @@
 /********** PROFILE **********/
 .profile-bg {
   height: 200px;
-  background: linear-gradient(135deg, #92FE9D, #00C9FF);
+  background: linear-gradient(90deg, #007bff, #2245f5);
 }
 
 .profile-pic {
@@ -140,6 +143,18 @@
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, .3);
 }
 
+.edit-profile-pic {
+  background-image: url('https://www.teslarati.com/wp-content/uploads/2019/02/elon-tusk.jpg');
+  background-size: cover;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
 .profile-bump {
   height: 50px;
   width: 100%;
@@ -149,5 +164,5 @@
   margin: 0;
   font-size: 20pt;
   letter-spacing: 1px;
-  color: #00C9FF;
+  color: #2245f5;
 }

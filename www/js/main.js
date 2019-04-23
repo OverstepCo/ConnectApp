@@ -38,6 +38,16 @@ var app = new Framework7({
       path: '/chat-screen/',
       url: 'pages/chat.html',
     },
+    // settings page
+    {
+      path: '/settings-screen/',
+      url: 'pages/settings.html',
+    },
+    // edit profile page
+    {
+      path: '/edit-profile-screen/',
+      url: 'pages/edit_profile.html',
+    },
   ],
 });
 
