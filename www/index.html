@@ -20,7 +20,7 @@
         <h2>Connect</h2>
         <p>Connect App Description</p>
       </div>
-      <div class="list no-hairlines" style="margin-top: 10px">
+      <div class="list no-hairlines" style="margin-top: 10px;">
         <ul>
           <a href="/profile-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
@@ -65,14 +65,14 @@
     <div class="view view-main" data-url="/">
       <div data-page="index" class="page">
 
-        <div class="navbar no-shadow no-harline">
-          <div class="navbar-inner school-header">
+        <div class="navbar no-shadow no-harline transparent-background">
+          <div id="navbar" class="navbar-inner school-header">
             <div class="left">
               <a class="panel-open link icon-only">
                 <i class="material-icons icon">menu</i>
               </a>
             </div>
-            <div class="title">
+            <div>
               <h1>School Of Ross</h1>
               <p>32 Members | 12 Groups | 7 Events</p>
             </div>
@@ -83,16 +83,22 @@
             </div>
           </div>
         </div>
-        <div class="page-content" style="overflow-x: hidden">
-          <h2 style="margin-left:16px; margin-bottom:0">Upcoming Events</h2>
-          <div data-space-between="0" data-slides-per-view="auto" class="swiper-container swiper-init event-swiper">
+        <div class="page-content" style="overflow-x: hidden; background-color: #edeff2">
+          <div class="title">Upcoming Events</div>
+          <div class="hairline"></div>
+          <div data-space-between="0" data-slides-per-view="1" class="swiper-container swiper-init event-swiper">
             <div class="swiper-wrapper">
               <div class="swiper-slide">
                 <div class="slide-content">
-                  <h4 class="slide-title">Bob Ross Club</h4>
-                  <p>Every Wednesday</p>
-                  <p>7:30-9</p>
-                  <p>Art Room</p>
+                  <div class="row">
+                    <div class="col">
+                      <h4 class="slide-title">Bob Ross Club</h4>
+                      <p>Every Wednesday</p>
+                      <p>7:30-9</p>
+                      <p>Art Room</p>
+                    </div>
+                    <div class="col slide-content-image"></div>
+                  </div>
                 </div>
               </div>
               <div class="swiper-slide">
@@ -121,106 +127,110 @@
               </div>
             </div>
           </div>
-          <div class="hairline"></div>
-          <h2 style="margin-bottom: 0; margin-left: 16px;">Subscribed Chats</h2>
-
-          <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
-            <ul>
-              <li>
-                <a href="#" class="item-link item-content no-chevron">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">Group Chat 1</div>
-                      <div class="item-after">12:14</div>
+          <div class="card-block">
+            <div class="title">Subscribed Chats</div>
+            <div class="hairline"></div>
+            <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
+              <ul>
+                <li>
+                  <a href="#" class="item-link item-content no-chevron">
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Group Chat 1</div>
+                        <div class="item-after">12:14</div>
+                      </div>
+                      <div class="item-text"><b>Jaden Smith: </b>Are we on for Monday night?</div>
                     </div>
-                    <div class="item-text"><b>Jaden Smith: </b>Are we on for Monday night?</div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="/chat-screen/" class="item-link item-content no-chevron">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">Group Chat 2</div>
-                      <div class="item-after">10:11</div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/chat-screen/" class="item-link item-content no-chevron">
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Group Chat 2</div>
+                        <div class="item-after">10:11</div>
+                      </div>
+                      <div class="item-text"><b>Krombopulos Mike: </b>Here I go killing again!</div>
                     </div>
-                    <div class="item-text"><b>Krombopulos Mike: </b>Here I go killing again!</div>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="hairline"></div>
-          <h2 style="margin-bottom: 0; margin-left: 16px;">Unsubscribed Chats</h2>
-
-          <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between">
-            <ul>
-              <li class="item-content skeleton-effect-pulse">
-                <div class="item-media">
-                  <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title-row">
-                    <div class="item-title">This is Title</div>
-                  </div>
-                  <div class="item-subtitle">Subtitle</div>
-                  <div class="item-text">
-                    Placeholder text line 1 Text line 2
-                  </div>
-                </div>
-              </li>
-              <li class="item-content skeleton-effect-pulse">
-                <div class="item-media">
-                  <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title-row">
-                    <div class="item-title">This is Title</div>
-                  </div>
-                  <div class="item-subtitle">Subtitle</div>
-                  <div class="item-text">
-                    Placeholder text line 1 Text
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="list media-list chevron-center no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
-            <ul class="school-group-chats" id="school-group-chats">
-
-            </ul>
-          </div>
-          <div class="hairline">
-
-          </div>
-          <h2 style="margin-bottom: 0; margin-left: 16px;">School Members</h2>
-
-          <div class="searchbar searchbar-inline">
-            <div class="searchbar-input-wrap row">
-              <input class="no-padding" type="search" placeholder="Search List">
-              <span class="input-clear-button"></span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-          <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-            <ul>
-              <a href="#" class="item-link no-chevron">
-                <li class="item-content">
-                  <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
-                  <div class="item-inner">Krombopulos Mike</div>
-                </li>
-              </a>
-              <a href="#" class="item-link no-chevron">
-                <li class="item-content">
-                  <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
-                  <div class="item-inner">Jane Smith</div>
-                </li>
-              </a>
+          <div class="card-block">
+            <div class="title">Unsubscribed Chats</div>
+            <div class="hairline"></div>
 
-            </ul>
+            <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between">
+              <ul>
+                <li class="item-content skeleton-effect-pulse">
+                  <div class="item-media">
+                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">This is Title</div>
+                    </div>
+                    <div class="item-subtitle">Subtitle</div>
+                    <div class="item-text">
+                      Placeholder text line 1 Text line 2
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content skeleton-effect-pulse">
+                  <div class="item-media">
+                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">This is Title</div>
+                    </div>
+                    <div class="item-subtitle">Subtitle</div>
+                    <div class="item-text">
+                      Placeholder text line 1 Text
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="list media-list chevron-center no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
+              <ul class="school-group-chats" id="school-group-chats">
+
+              </ul>
+            </div>
+            <div class="row justify-content-center"><a class="link"><i class="material-icons">keyboard_arrow_down</i></a></div>
           </div>
-          <!-- Nothing found message -->
-          <div class="block searchbar-not-found">
-            <div class="block-inner">Nothing found</div>
+          <div class="card-block">
+            <div class="title">School Members</div>
+            <div class="hairline"></div>
+
+            <div class="searchbar searchbar-inline">
+              <div class="searchbar-input-wrap row">
+                <input class="no-padding" type="search" placeholder="Search List">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+            <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+              <ul>
+                <a href="#" class="item-link no-chevron">
+                  <li class="item-content">
+                    <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+                    <div class="item-inner">Krombopulos Mike</div>
+                  </li>
+                </a>
+                <a href="#" class="item-link no-chevron">
+                  <li class="item-content">
+                    <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+                    <div class="item-inner">Jane Smith</div>
+                  </li>
+                </a>
+
+              </ul>
+            </div>
+            <!-- Nothing found message -->
+            <div class="block searchbar-not-found">
+              <div class="block-inner">Nothing found</div>
+            </div>
           </div>
 
 

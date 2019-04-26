@@ -1,14 +1,3 @@
-.card-header-pic .card-header {
-  height: 40vw;
-  background-size: cover;
-  background-position: center;
-  color: #fff;
-}
-
-.card-header-pic .card-content-padding .date {
-  color: #8e8e93;
-}
-
 .bold {
   font-weight: bold;
 }
@@ -24,7 +13,23 @@
 }
 
 .navbar {
-  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(237, 239, 242, .9);
+}
+
+.title {
+  margin: 16px 16px 8px 16px;
+  font-size: 15pt;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.card-block {
+  margin: 16px;
+  padding: 8px;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.05);
+  transition: all .2s;
 }
 
 /********** PANEL **********/
@@ -40,7 +45,7 @@
 }
 
 .panel-header * {
-  margin: 0
+  margin: 0;
 }
 
 .panel-header img {
@@ -70,11 +75,6 @@
 }
 
 /********** HOME **********/
-.school-header {
-  text-align: center;
-  box-shadow: 0 0px 10px 0px rgba(0, 0, 0, 0.3);
-}
-
 .school-header h1 {
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -99,18 +99,24 @@
 
 .event-swiper .slide-content {
   font-size: 25px;
-  background: linear-gradient(90deg, #007bff, #2245f5);
-  box-shadow: 0 5px 10px 0px rgba(0, 123, 255, 0.3);
   color: white;
+  background-color: #2245F5;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   margin: 15px;
   padding: 20px;
-  transition: all .2s;
+}
+
+.slide-content-image {
+  background-image: url(https://images05.military.com/sites/default/files/styles/full/public/media/people/2013/05/bobrosspainting.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100px;
+  border-radius: 7.5px;
 }
 
 .slide-content .slide-title {
   font-size: 18pt;
-  letter-spacing: 1px;
   margin: 0
 }
 
