@@ -53,6 +53,9 @@ var app = new Framework7({
 
 
 var mainView = app.views.create('.view-main');
+var swiper;
+
+//get event swiper
 
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -60,3 +63,16 @@ var searchbar = app.searchbar.create({
   searchContainer: '.members-list',
   searchIn: '.item-inner',
 });
+
+//next/prev event card
+function swipeRight() {
+  swiper.slideNext();
+}
+
+function swipeLeft() {
+  swiper.slidePrev();
+}
+
+function updateSwiper() {
+  swiper = app.swiper.get('.swiper-container');
+}
