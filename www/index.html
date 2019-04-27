@@ -243,19 +243,26 @@
     //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
 
     var db = firebase.firestore();
-    var User;
+    var User; //TODO change this to referance the custom userdata intead of firebases auth user
+    function getUserData(uid) { ///gets the users data from the server
+      db.collection("users").doc(uid).get().then(function(user) {
+        User = {
+          firstName: user.get("firstName"),
+          lastName: user.get("lastName"),
+          school: user.get("school"),
+          firstName: user.get("picUrl"),
+          fullName: function() {
+            return this.firstName + " " + this.lastName;
+          }
+        }
+      });
+    }
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
         var uid = user.uid;
-        var providerData = user.providerData;
         console.log(uid);
-        User = user;
+        getUserData(uid)
 
         loadSchoolChats();
         loadSubscribedChats();
@@ -267,6 +274,12 @@
             reloadCurrent: true
           });
         }
+        addMessage("school of ross", "room1", "testmessage");
+        loadChatMessages("school of ross", "room1");
+        //self.app.views.main.router.navigate('/home/', {
+        //  reloadCurrent: true
+        //});
+
         app.preloader.hide();
         // ...
       } else {
@@ -328,11 +341,84 @@
         console.log("Failed to sign out: " + error.message);
       });
     }
+    ///////////Events
+    function loadSchoolEvents() {
+      db.collection("school").doc(user.get("school")).collection("event").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every event in the current school
+          addEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
+        });
+      });
+    }
+    //adds a event so the school database with the provided data
+    function addSchoolEvent(name, image, day, time, location, description, guests) {
+      db.collection("school").doc(User.school).collection("event").add({
+        name: name,
+        image,
+        day,
+        time,
+        location,
+        description,
+        guests,
+        owner: User.uid
+      });
 
-    //firestore stuff (chat things)
+    }
+    addSchoolEvent('Bob Ross Club', 'https://img1.grunge.com/img/gallery/what-you-didnt-know-about-the-life-of-bob-ross/intro-1523462862.jpg', 'Thursday', '7:30-9', 'Art Room', 'Come watch bob ross with us!', '');
+    addSchoolEvent('Ugly Face Day', 'https://cdn.mos.cms.futurecdn.net/Rmtq8KDLagPDutJTp5ZViE.jpg', 'Friday', '4:20', 'Oblivion', 'why do these faces even exist?', '');
+
+    function addEvent(name, image, day, time, location, description, guests) {
+      app.swiper.destroy('.swiper-container');
+
+      var swiper = document.getElementById('event-swiper');
+      var event = document.createElement('div');
+      event.classList.add("swiper-slide");
+      event.innerHTML = '<div class="slide-content">\
+      <div class="row" style="margin-bottom: 0">\
+      <div class="col-33">\
+      <div class="slide-image" style="background-image: url(' + image + ');"></div>\
+      </div>\
+      <div class="col-66">\
+      <div class="slide-text">\
+      <h4 class="slide-title">' + name + '</h4>\
+      <p>' + day + '</p>\
+      <p>' + time + ' | ' + location + '</p>\
+      </div>\
+      </div>\
+      </div>\
+      <div class="collapsible">\
+      <div class="collapsible-content">' + description + '</div>\
+      <div style="background-color: white">\
+      <div class="hairline"></div>\
+      </div>\
+      </div>\
+      <div class=" row slide-guests">\
+      <div class="row left" style="display:flex;justify-content: center;align-items: center;">\
+      <div class="col img" style="background-image: url(https://cdn.mos.cms.futurecdn.net/Rmtq8KDLagPDutJTp5ZViE.jpg)"></div>\
+      <div class="col img" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyMQl7f1VtadBUijAqRzqzM0KG0cYEoA5aXeqLmuzUQUJENZHN5A)"></div>\
+      <p>+3 more</p>\
+      </div>\
+      <div class="right"><a class="link collapsible-toggle"><i class="material-icons">expand_more</i></a></div>\
+      </div>\
+      </div>';
+
+      swiper.appendChild(event);
+      app.swiper.create('.swiper-container');
+
+      var collToggle = document.getElementsByClassName("collapsible-toggle");
+
+      collToggle[collToggle.length - 1].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var coll = this.parentElement.parentElement.previousElementSibling;
+        coll.classList.toggle("expanded");
+      });
+      updateSwiper();
+
+    }
+    //Loads all the chats in the users cunent school
     function loadSchoolChats() {
       //TODO clear the currently loaded chats if there are any
-      db.collection("users").doc(User.uid).get().then(function(user) {
+      db.collection("users").doc(User.uid).get().then(function(user) { //TODO this will be removed when i change the user to referance the correct data
         db.collection("school").doc(user.get("school")).collection("chats").get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             //this loop runs once for every chat room in the school
@@ -358,11 +444,27 @@
         });
       });
     }
-
+    //load subscribed chats
     function loadSubscribedChats() {
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-
+          //this loop runs once for every chat room the current user is subscribed to
+          db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
+            db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timeStamp", "desc").limit(1).get().then(function(messages) {
+              messages.forEach(function(message) {
+                console.log(chat.get("name")); //the name of the chat
+                console.log(message.get("userID")); //TODO get the name intead of the ID//the name of the person who sent the last message
+                console.log(message.get("text")); //the last message sent
+              });
+            });
+            //if any of these dont exist in the database they return null or undefined
+          });
+        });
+      });
+    } //TODO merge with above
+    function loadSubscribedChats() {
+      db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
           //this loop runs once for every chat room the current user is subscribed to
           db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
             var ls = document.getElementById("subscribed-chats");
@@ -377,7 +479,6 @@
               </div>\
             </a>';
             ls.appendChild(li);
-
             //if any of these dont exist in the database they return null or undefined
           });
         });
@@ -385,15 +486,37 @@
       var skeleton = document.getElementById('subscribed-chats-skeleton');
       skeleton.parentNode.removeChild(skeleton);
     }
+    //adds a message to the specified chatroom
+    function addMessage(school, chatID, message) {
+      db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
+          userID: User.uid,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
+          text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    }
+    /*
+    ///managing user data (subscribing and unsubscribing from chats and stuff like that
+    */
+    //edits the users profile data
+    function editUserData(firstName, LastName, profilePicUrl) {
 
-    //managing user data (subscribing and unsubscribing from chats and stuff like that)
+
+    }
+    //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
     function subscribeToChat(chatID, chatSchool) {
       console.log("subscribing to chat")
       db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
         school: chatSchool
       });
     }
-
+    //unsubscribes the user to the specified chat
     function unsubscribeFromChat(chatID, chatSchool) {
       db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
         school: firebase.firestore.FieldValue.delete()
@@ -415,57 +538,7 @@
     function previewChat(chatID) {
       self.app.views.main.router.navigate('/preview-chat-screen/');
     }
-    addEvent('Bob Ross Club', 'https://img1.grunge.com/img/gallery/what-you-didnt-know-about-the-life-of-bob-ross/intro-1523462862.jpg', 'Thursday', '7:30-9', 'Art Room', 'Come watch bob ross with us!', '');
-    addEvent('Ugly Face Day', 'https://cdn.mos.cms.futurecdn.net/Rmtq8KDLagPDutJTp5ZViE.jpg', 'Friday', '4:20', 'Oblivion', 'why do these faces even exist?', '');
 
-    function addEvent(name, image, day, time, location, description, guests) {
-      app.swiper.destroy('.swiper-container');
-
-      var swiper = document.getElementById('event-swiper');
-      var event = document.createElement('div');
-      event.classList.add("swiper-slide");
-      event.innerHTML = '<div class="slide-content">\
-        <div class="row" style="margin-bottom: 0">\
-          <div class="col-33">\
-            <div class="slide-image" style="background-image: url(' + image + ');"></div>\
-          </div>\
-          <div class="col-66">\
-            <div class="slide-text">\
-              <h4 class="slide-title">' + name + '</h4>\
-              <p>' + day + '</p>\
-              <p>' + time + ' | ' + location + '</p>\
-            </div>\
-          </div>\
-        </div>\
-        <div class="collapsible">\
-          <div class="collapsible-content">' + description + '</div>\
-          <div style="background-color: white">\
-            <div class="hairline"></div>\
-          </div>\
-        </div>\
-        <div class=" row slide-guests">\
-          <div class="row left" style="display:flex;justify-content: center;align-items: center;">\
-            <div class="col img" style="background-image: url(https://cdn.mos.cms.futurecdn.net/Rmtq8KDLagPDutJTp5ZViE.jpg)"></div>\
-            <div class="col img" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyMQl7f1VtadBUijAqRzqzM0KG0cYEoA5aXeqLmuzUQUJENZHN5A)"></div>\
-            <p>+3 more</p>\
-          </div>\
-          <div class="right"><a class="link collapsible-toggle"><i class="material-icons">expand_more</i></a></div>\
-        </div>\
-      </div>';
-
-      swiper.appendChild(event);
-      app.swiper.create('.swiper-container');
-
-      var collToggle = document.getElementsByClassName("collapsible-toggle");
-
-      collToggle[collToggle.length - 1].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var coll = this.parentElement.parentElement.previousElementSibling;
-        coll.classList.toggle("expanded");
-      });
-      updateSwiper();
-
-    }
 
     function addMessage() {
       db.collection("messages").add({
