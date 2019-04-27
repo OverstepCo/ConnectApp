@@ -323,7 +323,8 @@
 
         loadSchoolChats();
         loadSubscribedChats();
-        loadChatMessages("school of ross", "1")
+        addMessage("school of ross", "room1", "testmessage");
+        loadChatMessages("school of ross", "room1");
         //self.app.views.main.router.navigate('/home/', {
         //  reloadCurrent: true
         //});
@@ -471,11 +472,11 @@
       });
     }
     //adds a message to the specified chatroom
-    function addMessage(school, chatID, ) {
+    function addMessage(school, chatID, message) {
       db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
           userID: User.uid,
           profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
-          text: document.getElementById("messagebar").value, //not sure if this is the best way to do this
+          text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then(function(docRef) {
