@@ -323,6 +323,7 @@
 
         loadSchoolChats();
         loadSubscribedChats();
+        loadChatMessages("school of ross", "1")
         //self.app.views.main.router.navigate('/home/', {
         //  reloadCurrent: true
         //});
@@ -389,39 +390,36 @@
     //firestore stuff (chat things)
     function loadSchoolEvents() {
       db.collection("school").doc(user.get("school")).collection("event").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every event in the current school
+          console.log(doc.get("name")); //event name
+          console.log(doc.get("date")); //event date/dates
+          console.log(doc.get("discription")); //event discription
+          console.log(doc.get("picture")); //event picture
+
+        });
+      });
+    }
+
+    function addShoolEvent() {
+      db.collection("school").doc(user.get("school")).collection("event").add({
+        userID: User.uid,
+        profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
+        text: document.getElementById("messagebar").value, //not sure if this is the best way to do this
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+    }
+    //Loads all the chats in the users cunent school
+    function loadSchoolChats() {
+      //TODO clear the currently loaded chats if there are any
+      db.collection("users").doc(User.uid).get().then(function(user) { //TODO this will be removed when i change the user to referance the correct data
+        db.collection("school").doc(user.get("school")).collection("chats").get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
-            //this loop runs once for every event in the current school
-            console.log(doc.get("name")); //event name
-            console.log(doc.get("date")); //event date/dates
-            console.log(doc.get("discription")); //event discription
-            console.log(doc.get("picture")); //event picture
-
-          });
-        }
-      }
-
-      function addShoolEvent() {
-        db.collection("school").doc(user.get("school")).collection("event").get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-              //this loop runs once for every event in the current school
-              console.log(doc.get("name")); //event name
-              console.log(doc.get("date")); //event date/dates
-              console.log(doc.get("discription")); //event discription
-              console.log(doc.get("picture")); //event picture
-
-            });
-          }
-        }
-        //Loads all the chats in the users cunent school
-        function loadSchoolChats() {
-          //TODO clear the currently loaded chats if there are any
-          db.collection("users").doc(User.uid).get().then(function(user) { //TODO this will be removed when i change the user to referance the correct data
-            db.collection("school").doc(user.get("school")).collection("chats").get().then(function(querySnapshot) {
-              querySnapshot.forEach(function(doc) {
-                //this loop runs once for every chat room in the school
-                var ls = document.getElementById("school-group-chats");
-                var li = document.createElement('li')
-                li.innerHTML = '<a href="#" class="item-link item-content">\
+            //this loop runs once for every chat room in the school
+            var ls = document.getElementById("school-group-chats");
+            var li = document.createElement('li')
+            li.innerHTML = '<a href="#" class="item-link item-content">\
             <div class="item-inner">\
               <div class="item-title-row">\
                 <div class="item-title">' + doc.get("name") + '</div>\
@@ -430,89 +428,89 @@
               <div class="item-text">' + doc.get("description") + '</div>\
             </div>\
           </a>';
-                ls.appendChild(li);
+            ls.appendChild(li);
 
-                var skeleton = document.getElementById('school-group-chats-skeleton');
-                skeleton.remove();
+            var skeleton = document.getElementById('school-group-chats-skeleton');
+            skeleton.remove();
 
-                //if any of these dont exist in the database they return null or undefined
+            //if any of these dont exist in the database they return null or undefined
+          });
+        });
+      });
+    }
+    //load subscribed chats
+    function loadSubscribedChats() {
+      db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every chat room the current user is subscribed to
+          db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
+            db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timeStamp", "desc").limit(1).get().then(function(messages) {
+              messages.forEach(function(message) {
+                console.log(chat.get("name")); //the name of the chat
+                console.log(message.get("userID")); //TODO get the name intead of the ID//the name of the person who sent the last message
+                console.log(message.get("text")); //the last message sent
               });
             });
-          });
-        }
-        //load subscribed chats
-        function loadSubscribedChats() {
-          db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-              //this loop runs once for every chat room the current user is subscribed to
-              db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
-                db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timeStamp", "desc").limit(1).get().then(function(messages) {
-                  messages.forEach(function(message) {
-                    console.log(chat.get("name")); //the name of the chat
-                    console.log(message.get("userID")); //TODO get the name intead of the ID//the name of the person who sent the last message
-                    console.log(message.get("text")); //the last message sent
-                  });
-                });
 
-                //if any of these dont exist in the database they return null or undefined
-              });
-            });
+            //if any of these dont exist in the database they return null or undefined
           });
-        }
+        });
+      });
+    }
 
-        /*
-        ///managing user data (subscribing and unsubscribing from chats and stuff like that
-        */
-        //edits the users profile data
-        function editUserData(firstName, LastName, profilePicUrl) {
+    //load all messages in a chat room //TODO limit to the last 20 messages
+    function loadChatMessages(school, chatID) {
+      console.log("attempted to load chat loadChatMessages");
+      db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").orderBy("timeStamp", "desc").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(message) {
+          //Runs once for every message with the latest message first
+          console.log(message.get("userID")); //The id of the useer who sent this message
+          console.log(message.get("text")); //The text in the message.
+          console.log(message.get("timeStamp")); //the time the message was uploaded to the server
+        });
+      });
+    }
+    //adds a message to the specified chatroom
+    function addMessage(school, chatID, ) {
+      db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
+          userID: User.uid,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
+          text: document.getElementById("messagebar").value, //not sure if this is the best way to do this
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    }
+    /*
+    ///managing user data (subscribing and unsubscribing from chats and stuff like that
+    */
+    //edits the users profile data
+    function editUserData(firstName, LastName, profilePicUrl) {
 
 
-        }
-        //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
-        function subscribeToChat(chatID, chatSchool) {
-          console.log("subscribing to chat")
-          db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
-            school: chatSchool
-          });
-        }
-        //unsubscribes the user to the specified chat
-        function unsubscribeFromChat(chatID, chatSchool) {
-          db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
-            school: firebase.firestore.FieldValue.delete()
-          });
-          db.collection("users").doc(User.uid).collection("chats").doc(chatID).delete().then(function() {
-            console.log("successfully unsubscribed from chat");
-          }).catch(function(error) {
-            console.error("Error removing document: ", error);
-          });;
-        }
-
-        //load all messages in a chat room //TODO limit to the last 20 messages
-        function loadChatMessages(school, chatID) {
-          db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").orderBy("timeStamp", "desc").then(function(querySnapshot) {
-            querySnapshot.forEach(message) {
-              //Runs once for every message with the latest message first
-              consol.log(message.get("userID")); //The id of the useer who sent this message
-              consol.log(message.get("text")); //The text in the message.
-              consol.log(message.get("timeStamp")); //the time the message was uploaded to the server
-            }
-          });
-        }
-        //adds a message to the specified chatroom
-        function addMessage(school, chatID, ) {
-          db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
-              userID: User.uid,
-              profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
-              text: document.getElementById("messagebar").value, //not sure if this is the best way to do this
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(function(docRef) {
-              console.log("Document written with ID: ", docRef.id);
-            })
-            .catch(function(error) {
-              console.error("Error adding document: ", error);
-            });
-        }
+    }
+    //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
+    function subscribeToChat(chatID, chatSchool) {
+      console.log("subscribing to chat")
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
+        school: chatSchool
+      });
+    }
+    //unsubscribes the user to the specified chat
+    function unsubscribeFromChat(chatID, chatSchool) {
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
+        school: firebase.firestore.FieldValue.delete()
+      });
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).delete().then(function() {
+        console.log("successfully unsubscribed from chat");
+      }).catch(function(error) {
+        console.error("Error removing document: ", error);
+      });;
+    }
   </script>
 </body>
 
