@@ -241,42 +241,33 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
-
     var db = firebase.firestore();
     var User; //TODO change this to referance the custom userdata intead of firebases auth user
-    var uid
+    var uid;
 
-    function getUserData(uid) { ///gets the users data from the server
-      db.collection("users").doc(uid).get().then(function(user) {
-        User = {
-          uid: uid,
-          firstName: user.get("firstName"),
-          lastName: user.get("lastName"),
-          school: user.get("school"),
-          firstName: user.get("picUrl"),
-          fullName: function() {
-            return this.firstName + " " + this.lastName;
-          }
-        }
-        console.log(User);
+    /////////authentication section
 
-      });
-    }
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // User is signed in.
+    firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
+      if (user) { // User is signed in.
         uid = user.uid;
         console.log(uid);
-        getUserData(uid)
-
-        setTimeout(function() { //delay  until the user is done loading
+        db.collection("users").doc(uid).get().then(function(user) {
+          User = {
+            uid: uid,
+            firstName: user.get("firstName"),
+            lastName: user.get("lastName"),
+            school: user.get("school"),
+            firstName: user.get("picUrl"),
+            fullName: function() {
+              return this.firstName + " " + this.lastName;
+            }
+          }
           loadSchoolEvents();
           loadSchoolChats();
           loadSubscribedChats();
           addMessage("school of ross", "room1", "testmessage");
           loadChatMessages("school of ross", "room1");
-        }, 2000);
-
+        });
 
         //close the login screen if it is open
         var currentPage = app.views.main.router.url;
@@ -285,23 +276,19 @@
             reloadCurrent: true
           });
         }
-
         //self.app.views.main.router.navigate('/home/', {
         //  reloadCurrent: true
         //});
-
         app.preloader.hide();
         // ...
-      } else {
-        // User is signed out.
+      } else { //User is signed out.
         self.app.views.main.router.navigate('/login-screen/', {
           reloadCurrent: true
         });
-
       }
     });
 
-    function signUp() {
+    function signUp() { //signs up a new user
       app.preloader.show();
 
       var email = document.getElementById("email").value;
@@ -319,19 +306,14 @@
         err.innerHTML = "Error: " + errorMessage;
 
       });
-
-
-
     }
 
-    function signIn() {
-
+    function signIn() { //Signs in a user
       app.preloader.show();
       var username = document.getElementById("uname").value;
       var password = document.getElementById("pword").value;
       var err = document.getElementById("errmsg");
       err.innerHTML = "";
-
       firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
         app.preloader.hide();
         // Handle Errors here.
@@ -340,18 +322,21 @@
         console.log("Failed to login: " + error.message);
         err.innerHTML = "Error: " + error.message;
       });
-
       console.log(app.views.main.router.url);
     }
 
-    function signOut() {
+    function signOut() { //Signs out the user
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
       }).catch(function(error) {
         console.log("Failed to sign out: " + error.message);
       });
     }
-    ////////
+
+    function editUserData(firstName, LastName, profilePicUrl) { //Edits the users profile data.
+
+    }
+
     ///////////Events
     function loadSchoolEvents() {
       db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
@@ -375,8 +360,9 @@
       });
 
     }
-    //adds a event to the local UI
-    function addEvent(name, image, day, time, location, description, guests) {
+
+    function addEvent(name, image, day, time, location, description, guests) { //Adds an event to the local UI.
+
       app.swiper.destroy('.swiper-container');
 
       var swiper = document.getElementById('event-swiper');
@@ -424,8 +410,9 @@
       updateSwiper();
 
     }
-    //Loads all the chats in the users cunent school
-    function loadSchoolChats() {
+
+    //////Chats
+    function loadSchoolChats() { //Loads all the chats in the users current school.
       //TODO clear the currently loaded chats if there are any
       db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
@@ -442,16 +429,15 @@
             </div>\
           </a>';
           ls.appendChild(li);
-
           //if any of these dont exist in the database they return null or undefined
         });
         var skeleton = document.getElementById('school-group-chats-skeleton');
         skeleton.parentNode.removeChild(skeleton);
-
       });
     }
-    //load subscribed chats
-    function loadSubscribedChats() {
+
+    function loadSubscribedChats() { //Loads the chats that the user is subscribed to.
+
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           //this loop runs once for every chat room the current user is subscribed to
@@ -479,8 +465,10 @@
       var skeleton = document.getElementById('subscribed-chats-skeleton');
       skeleton.parentNode.removeChild(skeleton);
     }
-    //adds a message to the specified chatroom
-    function addMessage(school, chatID, message) {
+
+
+    function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
+
       db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
           userID: User.uid,
           profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
@@ -494,14 +482,22 @@
           console.error("Error adding document: ", error);
         });
     }
-    /*
-    ///managing user data (subscribing and unsubscribing from chats and stuff like that
-    */
-    //edits the users profile data
-    function editUserData(firstName, LastName, profilePicUrl) {
 
-
+    function addMessage() {
+      db.collection("messages").add({
+          name: firebase.auth().currentUser.uid,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
+          text: document.getElementById("messagebar").value,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
     }
+
     //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
     function subscribeToChat(chatID, chatSchool) {
       console.log("subscribing to chat")
@@ -509,7 +505,7 @@
         school: chatSchool
       });
     }
-    //unsubscribes the user to the specified chat
+    //unsubscribes the user from the specified chat
     function unsubscribeFromChat(chatID, chatSchool) {
       db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
         school: firebase.firestore.FieldValue.delete()
@@ -530,22 +526,6 @@
 
     function previewChat(chatID) {
       self.app.views.main.router.navigate('/preview-chat-screen/');
-    }
-
-
-    function addMessage() {
-      db.collection("messages").add({
-          name: firebase.auth().currentUser.uid,
-          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg",
-          text: document.getElementById("messagebar").value,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(function(docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
     }
   </script>
 </body>
