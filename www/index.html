@@ -244,9 +244,12 @@
 
     var db = firebase.firestore();
     var User; //TODO change this to referance the custom userdata intead of firebases auth user
+    var uid
+
     function getUserData(uid) { ///gets the users data from the server
       db.collection("users").doc(uid).get().then(function(user) {
         User = {
+          uid: uid,
           firstName: user.get("firstName"),
           lastName: user.get("lastName"),
           school: user.get("school"),
@@ -255,17 +258,25 @@
             return this.firstName + " " + this.lastName;
           }
         }
+        console.log(User);
+
       });
     }
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
-        var uid = user.uid;
+        uid = user.uid;
         console.log(uid);
         getUserData(uid)
 
-        loadSchoolChats();
-        loadSubscribedChats();
+        setTimeout(function() { //delay  until the user is done loading
+          loadSchoolEvents();
+          loadSchoolChats();
+          loadSubscribedChats();
+          addMessage("school of ross", "room1", "testmessage");
+          loadChatMessages("school of ross", "room1");
+        }, 2000);
+
 
         //close the login screen if it is open
         var currentPage = app.views.main.router.url;
@@ -274,8 +285,7 @@
             reloadCurrent: true
           });
         }
-        addMessage("school of ross", "room1", "testmessage");
-        loadChatMessages("school of ross", "room1");
+
         //self.app.views.main.router.navigate('/home/', {
         //  reloadCurrent: true
         //});
@@ -341,9 +351,10 @@
         console.log("Failed to sign out: " + error.message);
       });
     }
+    ////////
     ///////////Events
     function loadSchoolEvents() {
-      db.collection("school").doc(user.get("school")).collection("event").get().then(function(querySnapshot) {
+      db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           //this loop runs once for every event in the current school
           addEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
@@ -364,9 +375,7 @@
       });
 
     }
-    addSchoolEvent('Bob Ross Club', 'https://img1.grunge.com/img/gallery/what-you-didnt-know-about-the-life-of-bob-ross/intro-1523462862.jpg', 'Thursday', '7:30-9', 'Art Room', 'Come watch bob ross with us!', '');
-    addSchoolEvent('Ugly Face Day', 'https://cdn.mos.cms.futurecdn.net/Rmtq8KDLagPDutJTp5ZViE.jpg', 'Friday', '4:20', 'Oblivion', 'why do these faces even exist?', '');
-
+    //adds a event to the local UI
     function addEvent(name, image, day, time, location, description, guests) {
       app.swiper.destroy('.swiper-container');
 
@@ -418,13 +427,12 @@
     //Loads all the chats in the users cunent school
     function loadSchoolChats() {
       //TODO clear the currently loaded chats if there are any
-      db.collection("users").doc(User.uid).get().then(function(user) { //TODO this will be removed when i change the user to referance the correct data
-        db.collection("school").doc(user.get("school")).collection("chats").get().then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            //this loop runs once for every chat room in the school
-            var ls = document.getElementById("school-group-chats");
-            var li = document.createElement('li')
-            li.innerHTML = '<a href="#" class="item-link item-content">\
+      db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every chat room in the school
+          var ls = document.getElementById("school-group-chats");
+          var li = document.createElement('li')
+          li.innerHTML = '<a href="#" class="item-link item-content">\
             <div class="item-inner">\
               <div class="item-title-row">\
                 <div class="item-title">' + doc.get("name") + '</div>\
@@ -433,15 +441,13 @@
               <div class="item-text">' + doc.get("description") + '</div>\
             </div>\
           </a>';
-            ls.appendChild(li);
+          ls.appendChild(li);
 
-
-            //if any of these dont exist in the database they return null or undefined
-          });
-          var skeleton = document.getElementById('school-group-chats-skeleton');
-          skeleton.parentNode.removeChild(skeleton);
-
+          //if any of these dont exist in the database they return null or undefined
         });
+        var skeleton = document.getElementById('school-group-chats-skeleton');
+        skeleton.parentNode.removeChild(skeleton);
+
       });
     }
     //load subscribed chats
@@ -452,34 +458,21 @@
           db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
             db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timeStamp", "desc").limit(1).get().then(function(messages) {
               messages.forEach(function(message) {
-                console.log(chat.get("name")); //the name of the chat
-                console.log(message.get("userID")); //TODO get the name intead of the ID//the name of the person who sent the last message
-                console.log(message.get("text")); //the last message sent
-              });
-            });
-            //if any of these dont exist in the database they return null or undefined
-          });
-        });
-      });
-    } //TODO merge with above
-    function loadSubscribedChats() {
-      db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          //this loop runs once for every chat room the current user is subscribed to
-          db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).get().then(function(chat) {
-            var ls = document.getElementById("subscribed-chats");
-            var li = document.createElement('li');
-            li.innerHTML = '<a onclick="(loadChat(\'' + doc.id + '\'))" class="item-link item-content no-chevron">\
+                var ls = document.getElementById("subscribed-chats");
+                var li = document.createElement('li');
+                li.innerHTML = '<a onclick="(loadChat(\'' + doc.id + ',' + doc.get("school") + '\'))" class="item-link item-content no-chevron">\
               <div class="item-inner">\
                 <div class="item-title-row">\
                   <div class="item-title">' + chat.get("name") + '</div>\
-                  <div class="item-after">12:14</div>\
+                  <div class="item-after">' + '12:14' + '</div>\
                 </div>\
-                <div class="item-text"><b>Jaden Smith: </b>Are we on for Monday night?</div>\
+                <div class="item-text"><b>' + message.get("userID") + ': </b>' + message.get("text") + '</div>\
               </div>\
             </a>';
-            ls.appendChild(li);
-            //if any of these dont exist in the database they return null or undefined
+                ls.appendChild(li);
+                //if any of these dont exist in the database they return null or undefined
+              });
+            });
           });
         });
       });
@@ -528,7 +521,7 @@
       });;
     }
 
-    function loadChat(chatID) {
+    function loadChat(chatID, chatSchool) {
       self.app.views.main.router.navigate('/chat-screen/');
       console.log(app.views.main.router.url);
       document.getElementById("group-name").innerinnerHTML = "GROUP NAME";
