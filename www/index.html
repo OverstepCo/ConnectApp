@@ -73,8 +73,8 @@
               </a>
             </div>
             <div>
-              <h1>School Of Ross</h1>
-              <p>32 Members | 12 Groups | 7 Events</p>
+              <h1 id="school-name">My School</h1>
+              <p id="school-description">32 Members | 12 Groups | 7 Events</p>
             </div>
             <div class="right">
               <a href="/profile-screen/" class="link icon-only">
@@ -245,7 +245,12 @@
     var User; //TODO change this to referance the custom userdata intead of firebases auth user
     var uid;
 
-    /////////authentication section
+
+
+
+
+
+    /**********AUTHENTICATION**********/
 
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
       if (user) { // User is signed in.
@@ -262,6 +267,7 @@
               return this.firstName + " " + this.lastName;
             }
           }
+          updateHeaderInfo(User);
           loadSchoolEvents();
           loadSchoolChats();
           loadSubscribedChats();
@@ -288,7 +294,7 @@
       }
     });
 
-    function signUp() { //signs up a new user
+    function signUp() {
       app.preloader.show();
 
       var email = document.getElementById("email").value;
@@ -308,7 +314,7 @@
       });
     }
 
-    function signIn() { //Signs in a user
+    function signIn() {
       app.preloader.show();
       var username = document.getElementById("uname").value;
       var password = document.getElementById("pword").value;
@@ -325,7 +331,7 @@
       console.log(app.views.main.router.url);
     }
 
-    function signOut() { //Signs out the user
+    function signOut() {
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
       }).catch(function(error) {
@@ -333,19 +339,29 @@
       });
     }
 
-    function editUserData(firstName, LastName, profilePicUrl) { //Edits the users profile data.
+    function updateUserData() {
+      var firstName = document.getElementById("update-first-name");
+      var lastName = document.getElementById("update-last-name");
+      var profilePicUrl = document.getElementById("update-profile-pic");
 
     }
 
-    ///////////Events
+
+
+
+
+    /**********EVENTS**********/
+
+    //loads school events from the database
     function loadSchoolEvents() {
       db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           //this loop runs once for every event in the current school
-          addEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
+          showSchoolEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
         });
       });
     }
+
     //adds a event so the school database with the provided data
     function addSchoolEvent(name, image, day, time, location, description, guests) {
       db.collection("school").doc(User.school).collection("event").add({
@@ -361,7 +377,8 @@
 
     }
 
-    function addEvent(name, image, day, time, location, description, guests) { //Adds an event to the local UI.
+    //Shows an event on the local UI.
+    function showSchoolEvent(name, image, day, time, location, description, guests) {
 
       app.swiper.destroy('.swiper-container');
 
@@ -411,8 +428,14 @@
 
     }
 
-    //////Chats
-    function loadSchoolChats() { //Loads all the chats in the users current school.
+
+
+
+
+    /**********CHATS**********/
+
+    //Loads all the chats in the users current school from the database and displays them
+    function loadSchoolChats() {
       //TODO clear the currently loaded chats if there are any
       db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
@@ -436,7 +459,8 @@
       });
     }
 
-    function loadSubscribedChats() { //Loads the chats that the user is subscribed to.
+    //Loads all the chats that the user is subscribed to
+    function loadSubscribedChats() {
 
       db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
@@ -466,8 +490,8 @@
       skeleton.parentNode.removeChild(skeleton);
     }
 
-
-    function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
+    //Adds a message to the specified chatroom
+    function addMessage(school, chatID, message) {
 
       db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
           userID: User.uid,
@@ -498,13 +522,15 @@
         });
     }
 
-    //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
+    //subscribes the user to the specified chat
+    //TODO get the chat school variable dynamicly
     function subscribeToChat(chatID, chatSchool) {
       console.log("subscribing to chat")
       db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
         school: chatSchool
       });
     }
+
     //unsubscribes the user from the specified chat
     function unsubscribeFromChat(chatID, chatSchool) {
       db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({

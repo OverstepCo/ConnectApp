@@ -55,7 +55,10 @@ var app = new Framework7({
 var mainView = app.views.create('.view-main');
 var swiper;
 
-//get event swiper
+function updateHeaderInfo(user) {
+  var title = document.getElementById("school-name");
+  title.innerHTML = user.school;
+}
 
 // create searchbar
 var searchbar = app.searchbar.create({
