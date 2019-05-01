@@ -242,7 +242,7 @@
     firebase.initializeApp(firebaseConfig);
     //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
     var db = firebase.firestore();
-    var User; //TODO change this to referance the custom userdata intead of firebases auth user
+    var User;
     var uid;
 
     /////////authentication section
@@ -262,6 +262,7 @@
               return this.firstName + " " + this.lastName;
             }
           }
+          testFunction();
           loadSchoolEvents();
           loadSchoolChats();
           loadSubscribedChats();
@@ -466,6 +467,45 @@
       skeleton.parentNode.removeChild(skeleton);
     }
 
+    //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
+    function subscribeToChat(chatID, chatSchool) {
+      console.log("subscribing to chat")
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
+        school: chatSchool
+      });
+    }
+    //unsubscribes the user from the specified chat
+    function unsubscribeFromChat(chatID, chatSchool) {
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
+        school: firebase.firestore.FieldValue.delete()
+      });
+      db.collection("users").doc(User.uid).collection("chats").doc(chatID).delete().then(function() {
+        console.log("successfully unsubscribed from chat");
+      }).catch(function(error) {
+        console.error("Error removing document: ", error);
+      });;
+    }
+
+    function loadChat(chatID, chatSchool) {
+      self.app.views.main.router.navigate('/chat-screen/');
+      console.log(app.views.main.router.url);
+      document.getElementById("group-name").innerinnerHTML = "GROUP NAME";
+
+
+      //this loop runs once for every chat room the current user is subscribed to
+      db.collection("school").doc(chatSchool).collection("chats").doc(chatID).collection("messages").orderBy("timeStamp", "desc").limit(20).get().then(function(
+        messages) { //TODO add this to a seperate function for organization and to elilminate repetition
+        messages.forEach(function(message) { //this loop runs once for the last 20 loadChatMessages
+          message.get("text"); //the text of the message
+          //if any of these dont exist in the database they return null or undefined
+        });
+      });
+
+    }
+
+    function previewChat(chatID) {
+      self.app.views.main.router.navigate('/preview-chat-screen/');
+    }
 
     function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
 
@@ -496,36 +536,6 @@
         .catch(function(error) {
           console.error("Error adding document: ", error);
         });
-    }
-
-    //subscribes the user to the specified chat//TODO get the chat school variable dynamicly
-    function subscribeToChat(chatID, chatSchool) {
-      console.log("subscribing to chat")
-      db.collection("users").doc(User.uid).collection("chats").doc(chatID).set({
-        school: chatSchool
-      });
-    }
-    //unsubscribes the user from the specified chat
-    function unsubscribeFromChat(chatID, chatSchool) {
-      db.collection("users").doc(User.uid).collection("chats").doc(chatID).update({
-        school: firebase.firestore.FieldValue.delete()
-      });
-      db.collection("users").doc(User.uid).collection("chats").doc(chatID).delete().then(function() {
-        console.log("successfully unsubscribed from chat");
-      }).catch(function(error) {
-        console.error("Error removing document: ", error);
-      });;
-    }
-
-    function loadChat(chatID, chatSchool) {
-      self.app.views.main.router.navigate('/chat-screen/');
-      console.log(app.views.main.router.url);
-      document.getElementById("group-name").innerinnerHTML = "GROUP NAME";
-
-    }
-
-    function previewChat(chatID) {
-      self.app.views.main.router.navigate('/preview-chat-screen/');
     }
   </script>
 </body>
