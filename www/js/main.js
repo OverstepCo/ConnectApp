@@ -55,7 +55,10 @@ var app = new Framework7({
 var mainView = app.views.create('.view-main');
 var swiper;
 
-//get event swiper
+function updateHeaderInfo(user) {
+  var title = document.getElementById("school-name");
+  title.innerHTML = user.school;
+}
 
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -75,15 +78,4 @@ function swipeLeft() {
 
 function updateSwiper() {
   swiper = app.swiper.get('.swiper-container');
-}
-
-
-function testFunction() {
-  db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      //this loop runs once for every event in the current school
-      //addEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
-      console.log(doc.get("name"));
-    });
-  });
 }
