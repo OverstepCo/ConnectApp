@@ -43,6 +43,11 @@ var app = new Framework7({
       path: '/settings-screen/',
       url: 'pages/settings.html',
     },
+    // about page
+    {
+      path: '/about-screen/',
+      url: 'pages/about.html',
+    },
     // edit profile page
     {
       path: '/edit-profile-screen/',
