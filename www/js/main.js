@@ -76,14 +76,3 @@ function swipeLeft() {
 function updateSwiper() {
   swiper = app.swiper.get('.swiper-container');
 }
-
-
-function testFunction() {
-  db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      //this loop runs once for every event in the current school
-      //addEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
-      console.log(doc.get("name"));
-    });
-  });
-}
