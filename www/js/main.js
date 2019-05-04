@@ -4,6 +4,7 @@ var app = new Framework7({
   root: '#app',
   name: 'My App',
   id: 'com.myapp.test',
+  theme: 'md',
   panel: {
     swipe: 'both',
     swipeOnlyClose: true,
@@ -52,6 +53,16 @@ var app = new Framework7({
     {
       path: '/edit-profile-screen/',
       url: 'pages/edit_profile.html',
+    },
+    // edit new event page
+    {
+      path: '/new-event-screen/',
+      url: 'pages/new_event.html',
+    },
+    // edit new chat page
+    {
+      path: '/new-chat-screen/',
+      url: 'pages/new_chat.html',
     },
   ],
 });

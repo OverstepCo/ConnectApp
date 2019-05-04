@@ -228,6 +228,17 @@
   margin: 16px;
 }
 
+.lightbox {
+  position: fixed;
+  width: 80%;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  box-shadow: 0 0 0 100vh rgba(0, 0, 0, 0.2);
+}
+
 /********** PROFILE **********/
 .profile-bg {
   height: 200px;
@@ -269,4 +280,13 @@
   font-size: 20pt;
   letter-spacing: 1px;
   color: #2245f5;
+}
+
+/********** NEW EVENT **********/
+.event-image {
+  background-size: cover;
+  background-position: center;
+  margin: 16px;
+  padding-top: 100%;
+  border-radius: 10px;
 }
