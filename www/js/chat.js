@@ -3,7 +3,7 @@ var messages = app.messages.create({
   el: '.messages',
 
   // First message rule
-  firstMessageRule: function (message, previousMessage, nextMessage) {
+  firstMessageRule: function(message, previousMessage, nextMessage) {
     // Skip if title
     if (message.isTitle) return false;
     /* if:
@@ -15,7 +15,7 @@ var messages = app.messages.create({
     return false;
   },
   // Last message rule
-  lastMessageRule: function (message, previousMessage, nextMessage) {
+  lastMessageRule: function(message, previousMessage, nextMessage) {
     // Skip if title
     if (message.isTitle) return false;
     /* if:
@@ -27,10 +27,10 @@ var messages = app.messages.create({
     return false;
   },
   // Last message rule
-  tailMessageRule: function (message, previousMessage, nextMessage) {
+  tailMessageRule: function(message, previousMessage, nextMessage) {
     // Skip if title
     if (message.isTitle) return false;
-      /* if (bascially same as lastMessageRule):
+    /* if (bascially same as lastMessageRule):
       - there is no next message
       - or next message type (send/received) is different
       - or next message sender name is different
@@ -49,7 +49,7 @@ var messagebar = app.messagebar.create({
 var responseInProgress = false;
 
 // Send Message
-$$('.send-link').on('click', function () {
+$$('.send-link').on('click', function() {
   var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
   // return if empty message
   if (!text.length) return;
@@ -85,8 +85,7 @@ var answers = [
   'Need to think about it',
   'Amazing!!!'
 ]
-var people = [
-  {
+var people = [{
     name: 'Kate Johnson',
     avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg'
   },
@@ -95,9 +94,10 @@ var people = [
     avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg'
   }
 ];
+
 function receiveMessage() {
   responseInProgress = true;
-  setTimeout(function () {
+  setTimeout(function() {
     // Get random answer and random person
     var answer = answers[Math.floor(Math.random() * answers.length)];
     var person = people[Math.floor(Math.random() * people.length)];
@@ -108,7 +108,7 @@ function receiveMessage() {
       avatar: person.avatar
     });
 
-    setTimeout(function () {
+    setTimeout(function() {
       // Add received dummy message
       messages.addMessage({
         text: answer,
