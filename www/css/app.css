@@ -290,3 +290,10 @@
   padding-top: 100%;
   border-radius: 10px;
 }
+
+/********** PREVIEW CHAT **********/
+.chat-description {
+  margin-top: var(--f7-navbar-height);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  padding: 16px;
+}

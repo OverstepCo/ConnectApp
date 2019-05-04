@@ -13,6 +13,9 @@ var app = new Framework7({
   navbar: {
     hideOnPageScroll: false,
   },
+  toolbar: {
+   showOnPageScrollEnd: true,
+ },
   routes: [
     // Index page
     {
@@ -38,6 +41,11 @@ var app = new Framework7({
     {
       path: '/chat-screen/',
       url: 'pages/chat.html',
+    },
+    // preview chat page
+    {
+      path: '/preview-chat-screen/',
+      url: 'pages/preview_chat.html',
     },
     // settings page
     {
