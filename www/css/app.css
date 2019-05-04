@@ -1,3 +1,40 @@
+@font-face {
+  font-family: 'Framework7 Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/Framework7Icons-Regular.eot");
+  src: local('Framework7 Icons'),
+    local('Framework7Icons-Regular'),
+    url("../fonts/Framework7Icons-Regular.woff2") format("woff2"),
+    url("../fonts/Framework7Icons-Regular.woff") format("woff"),
+    url("../fonts/Framework7Icons-Regular.ttf") format("truetype");
+}
+
+.f7-icons, .framework7-icons {
+  font-family: 'Framework7 Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+}
+
+.page {
+  background-color: white;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -13,6 +50,10 @@
 }
 
 .navbar {
+  background-color: white;
+}
+
+.navbar-home {
   background-color: rgba(237, 239, 242, .9);
 }
 
@@ -28,7 +69,7 @@
   padding: 8px;
   border-radius: 15px;
   background-color: white;
-  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
   transition: all .2s;
 }
 
@@ -96,7 +137,7 @@
   font-size: 25px;
   color: white;
   background-color: #2245F5;
-  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin: 32px 16px 16px 16px;
 }
@@ -187,6 +228,17 @@
   margin: 16px;
 }
 
+.lightbox {
+  position: fixed;
+  width: 80%;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  box-shadow: 0 0 0 100vh rgba(0, 0, 0, 0.2);
+}
+
 /********** PROFILE **********/
 .profile-bg {
   height: 200px;
@@ -228,4 +280,13 @@
   font-size: 20pt;
   letter-spacing: 1px;
   color: #2245f5;
+}
+
+/********** NEW EVENT **********/
+.event-image {
+  background-size: cover;
+  background-position: center;
+  margin: 16px;
+  padding-top: 100%;
+  border-radius: 10px;
 }

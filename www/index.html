@@ -40,7 +40,7 @@
               <div class="item-inner">Settings</div>
             </li>
           </a>
-          <a href="#" class="panel-close item-link no-chevron">
+          <a href="/about-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
               <div class="item-media"><i class="material-icons gradient-icon">info</i></div>
               <div class="item-inner">About</div>
@@ -65,7 +65,8 @@
     <div class="view view-main" data-url="/">
       <div data-page="index" class="page">
 
-        <div class="navbar no-shadow no-harline transparent-background">
+
+        <div class="navbar no-shadow no-harline navbar-home">
           <div id="navbar" class="navbar-inner school-header">
             <div class="left">
               <a class="panel-open link icon-only">
@@ -83,8 +84,28 @@
             </div>
           </div>
         </div>
+
+        <!-- Floating Action Button -->
+        <div class="fab fab-right-bottom">
+          <a href="#">
+            <i class="icon material-icons">add</i>
+            <i class="icon material-icons">close</i>
+          </a>
+          <!-- FAB speed dial actions with labels -->
+          <div class="fab-buttons fab-buttons-top fab-morf" data-morph-to=".card-block">
+            <a href="#" class="fab-label-button fab-close">
+              <i class="icon material-icons" style="font-size: 15pt">message</i>
+              <span class="fab-label">New Chat</span>
+            </a>
+            <a href="/new-event-screen/" class="fab-label-button fab-close">
+              <i class="icon material-icons">event_note</i>
+              <span class="fab-label">New Event</span>
+            </a>
+          </div>
+        </div>
+
         <div class="page-content" style="overflow-x: hidden; background-color: #edeff2">
-          <div class="row title justify-items-left">
+          <div class="row title justify-items-left no-margin-bottom">
             <div>Upcoming Events</div>
             <div class="left">
               <i onclick="swipeLeft()" class="material-icons">keyboard_arrow_left</i>
