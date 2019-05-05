@@ -1,5 +1,5 @@
 <div class="page" data-page="new-event">
-  <div class="page-content">
+  <div class="page-content testclass">
 
     <div class="block no-margin-top">
       <div class="row" style="display:flex;  align-items: center;">
@@ -32,7 +32,7 @@
               </li>
               <li class="item-content item-input no-padding-left">
                 <div class="item-inner">
-                  <div class="item-title item-floating-label">Date</div>
+                  <div class="item-title item-floating-label">Day</div>
                   <div class="item-input-wrap">
                     <input type="text">
                     <span class="input-clear-button"></span>
@@ -43,7 +43,16 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Time</div>
                   <div class="item-input-wrap">
-                    <input type="text" placeholder="eg. 9-11:30, 2nd period">
+                    <input type="text" placeholder="e.g. 9-11:30, 2nd period">
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input no-padding-left">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Location</div>
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="e.g. cafeteria, art room">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -64,6 +73,26 @@
             </li>
           </ul>
         </div>
+        <div class="list no-hairlines">
+          <ul>
+            <li class="no-hairlines">
+              <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search People">
+                <select name="Invite People" multiple>
+                  <option value="USERID" data-option-image="https://cdn.framework7.io/placeholder/abstract-29x29-2.jpg">Bob</option>
+                </select>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Invite People</div>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <a onclick="addEvent()" class="button button-fill">Add Event</a>
+
       </div>
 
     </div>

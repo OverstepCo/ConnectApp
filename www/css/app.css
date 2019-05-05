@@ -73,6 +73,10 @@
   transition: all .2s;
 }
 
+img {
+  border-radius: 50%;
+}
+
 /********** PANEL **********/
 .panel-header {
   margin: 0;
