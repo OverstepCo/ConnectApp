@@ -234,6 +234,10 @@
 
   <script type="text/javascript" src="js/framework7.bundle.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/chats.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+
+
 
 
   <!-- Firebase stuff-->
@@ -267,6 +271,7 @@
       if (user) { // User is signed in.
         uid = user.uid;
         console.log(uid);
+        //TODO if user has no school redirict to school selection page
         db.collection("users").doc(uid).get().then(function(user) {
           User = {
             uid: uid,
@@ -278,6 +283,7 @@
               return this.firstName + " " + this.lastName;
             }
           }
+
           loadSchoolEvents();
           loadSchoolChats();
           loadSubscribedChats();
