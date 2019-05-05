@@ -49,7 +49,6 @@ function editUserData() { //Edits the users profile data.
 
   if (firstName != "") {
     db.collection("users").doc(User.uid).update({
-
         firstName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value
       })

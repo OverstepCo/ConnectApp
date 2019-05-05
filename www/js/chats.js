@@ -161,7 +161,7 @@ function setupChat() {
             messages.addMessage({
               text: change.doc.get("text"),
               type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
-              name: change.doc.get("userID"),
+              name: change.doc.get("name"),
               avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
             });
           }
@@ -194,6 +194,7 @@ function loadChatMessages(chatID, chatSchool) {
 function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
   db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
       userID: User.uid,
+      name: User.fullName(),
       profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
       text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
