@@ -84,9 +84,11 @@ function loadChat(chatID, chatSchool) {
 
 }
 
+var listener; //This is here so w can stop the listener when the page is destroyed
+
 function setupChat() {
   console.log("setting up chat " + currentChatSchool + currentChat);
-  var messages = app.messages.create({
+  var messages = app.messages.create({ //Some rules and stuff
     el: '.messages',
     // First message rule
     firstMessageRule: function(message, previousMessage, nextMessage) {
@@ -144,66 +146,31 @@ function setupChat() {
     messagebar.clear();
     // Return focus to area
     messagebar.focus();
-    // Add message to messages
-    messages.addMessage({
-      text: text,
-    });
+    //Add message to the server.
     addMessage(currentChatSchool, currentChat, text);
     if (responseInProgress) return;
     // Receive dummy message
-    receiveMessage();
   });
 
-  // Dummy response
-  var answers = [
-    'Yes!',
-    'Woo'
-  ]
-  var people = [{
-    name: 'Bob Ross',
-    avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg'
-  }];
-
-  function receiveMessage() {
-    responseInProgress = true;
-    setTimeout(function() {
-      // Get random answer and random person
-      var answer = answers[Math.floor(Math.random() * answers.length)];
-      var person = people[Math.floor(Math.random() * people.length)];
-      // Show typing indicator
-      messages.showTyping({
-        header: person.name + ' is typing',
-        avatar: person.avatar
-      });
-
-      setTimeout(function() {
-        // Add received dummy message
-        messages.addMessage({
-          text: answer,
-          type: 'received',
-          name: person.name,
-          avatar: person.avatar
+  //loads the chat messages and add a listener for any new chat messages
+  listener = db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc")
+    .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
+        snapshot.docChanges().forEach(function(change) {
+          if (change.type === "added") {
+            console.log(change.doc.get("text"));
+            messages.addMessage({
+              text: change.doc.get("text"),
+              type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
+              name: change.doc.get("userID"),
+              avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+            });
+          }
         });
-        // Hide typing indicator
-        messages.hideTyping();
-        responseInProgress = false;
-      }, 1000);
-    }, 1000);
-  }
-
-  //  loadChatMessages(currentChat, currentChatSchool);
-  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc").limit(30).get().then(function(messagesDB) {
-    messagesDB.forEach(function(message) { ///This lop runs once for each message in the chat room
-      messages.addMessage({
-        text: message.get("text"),
-
-        type: (message.get("userID") == User.userID) ? 'received' : 'sent',
-        name: message.get("userID"),
-        avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+        //...
+      },
+      function(error) {
+        //...
       });
-    });
-  });
-
 
   //document.getElementById("group-name").innerHTML = "whaaa";
   //  messages.addMessage({

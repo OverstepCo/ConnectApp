@@ -53,6 +53,7 @@ var app = new Framework7({
         },
         pageBeforeRemove: function(e, page) {
           console.log('page before remove');
+          listener();
           app.messages.destroy('.messages');
         },
       }
