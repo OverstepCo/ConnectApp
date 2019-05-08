@@ -171,7 +171,6 @@ function setupChat() {
       function(error) {
         //...
       });
-
   //document.getElementById("group-name").innerHTML = "whaaa";
   //  messages.addMessage({
   //  text: "helooo",

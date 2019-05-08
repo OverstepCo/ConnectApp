@@ -301,3 +301,12 @@ img {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   padding: 16px;
 }
+
+/********** SCHOOL SEARCH **********/
+.school-attributes {
+  margin-left: 16px;
+}
+
+.school-attributes p {
+  margin: 8px 0;
+}
