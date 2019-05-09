@@ -14,7 +14,7 @@
       </div>
       <div class="row">
         <div class="col-33">
-          <div class="event-image" style="background-image: url(media/stock/event_pattern.jpg)">
+          <div id="event-image" class="event-image" style="background-image: url(media/stock/event_pattern.jpg)">
             <a class="link"><i class="material-icons">edit</i></a>
           </div>
         </div>
@@ -25,7 +25,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Event Name</div>
                   <div class="item-input-wrap">
-                    <input type="text">
+                    <input id="event-name" type="text">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Day</div>
                   <div class="item-input-wrap">
-                    <input type="text">
+                    <input id="event-day" type="text">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Time</div>
                   <div class="item-input-wrap">
-                    <input type="text" placeholder="e.g. 9-11:30, 2nd period">
+                    <input id="event-time" type="text" placeholder="e.g. 9-11:30, 2nd period">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Location</div>
                   <div class="item-input-wrap">
-                    <input type="text" placeholder="e.g. cafeteria, art room">
+                    <input id="event-location" type="text" placeholder="e.g. cafeteria, art room">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -66,7 +66,7 @@
               <div class="item-inner">
                 <div class="item-title item-floating-label">Description</div>
                 <div class="item-input-wrap">
-                  <textarea class="resizable"></textarea>
+                  <textarea id="event-description" class="resizable"></textarea>
                   <span class="input-clear-button"></span>
                 </div>
               </div>
@@ -91,7 +91,7 @@
         </div>
       </div>
       <div class="row justify-content-center">
-        <a onclick="addEvent()" class="button button-fill">Add Event</a>
+        <a onclick="createNewEvent()" class="button button-fill back">Add Event</a>
 
       </div>
 

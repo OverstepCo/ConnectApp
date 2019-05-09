@@ -3,7 +3,7 @@ function loadSchoolEvents() {
   db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
       //this loop runs once for every event in the current school
-      addEvent(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
+      addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
     });
   });
 
@@ -22,7 +22,7 @@ function addSchoolEvent(name, image, day, time, location, description, guests) {
   });
 }
 
-function addEvent(name, image, day, time, location, description, guests) { //Adds an event to the local UI.
+function addEventToPage(name, image, day, time, location, description, guests) { //Adds an event to the local UI.
   app.swiper.destroy('.swiper-container');
   var swiper = document.getElementById('event-swiper');
   var event = document.createElement('div');
@@ -67,6 +67,20 @@ function addEvent(name, image, day, time, location, description, guests) { //Add
     coll.classList.toggle("expanded");
   });
   updateSwiper();
+
+}
+
+function createNewEvent() {
+  var name = document.getElementById("event-name").value;
+  var day = document.getElementById("event-day").value;
+  var time = document.getElementById("event-time").value;
+  var location = document.getElementById("event-location").value;
+  var description = document.getElementById("event-description").value;
+  var image = document.getElementById("event-image"),
+    style = image.currentStyle || window.getComputedStyle(image, false),
+    bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
+  addSchoolEvent(name, bi, day, time, location, description, '');
+  addEventToPage(name, bi, day, time, location, description, '');
 
 }
 ////////////////
