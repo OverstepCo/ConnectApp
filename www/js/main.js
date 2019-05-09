@@ -140,7 +140,7 @@ function searchSchools() {
         <p>' + doc.address + ' ' + doc.city + ', ' + doc.state + '</p>\
         <p>' + doc.level + ' School</p>\
         </div>\
-        <button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>\';
+        <button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
         schoolsList.appendChild(li);
       });
     })
