@@ -9,6 +9,19 @@ function loadSchoolEvents() {
 
 }
 
+function addNewEvent() { //Gets the data we need from the ui and posts it to the server may eventually merrge this with addSchoolEvent()
+
+  var name = document.getElementById("newEventName").value;
+  var imageUrl = "media/stock/event_pattern.jpg"; //TODO get this from the new event page
+  var day = document.getElementById("newEventDay").value;
+  var time = document.getElementById("newEventTime").value;
+  var location = document.getElementById("newEventLocation").value;
+  var description = document.getElementById("newEventDescription").value;
+  var guests = null; //TODO store on server as an array
+  addSchoolEvent(name, imageUrl, day, time, location, description, guests);
+
+}
+
 function addSchoolEvent(name, image, day, time, location, description, guests) { //Adds a event to the school database with the provided data
   db.collection("school").doc(User.school).collection("event").add({
     name: name,
@@ -19,6 +32,8 @@ function addSchoolEvent(name, image, day, time, location, description, guests) {
     description,
     guests,
     owner: User.uid
+  }).then(function() {
+    console.log("Added a new event to the server");
   });
 }
 

@@ -282,7 +282,9 @@
             school: user.get("school"),
             fullName: function() {
               return "" + this.firstName + " " + this.lastName;
-            }
+            },
+            chats: db.collection("users").doc(uid).collection("chats").get()
+
           }
 
           loadSchoolEvents();

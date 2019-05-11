@@ -25,7 +25,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Event Name</div>
                   <div class="item-input-wrap">
-                    <input type="text">
+                    <input id="newEventName" type="text">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Day</div>
                   <div class="item-input-wrap">
-                    <input type="text">
+                    <input id="newEventDay" type="text">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Time</div>
                   <div class="item-input-wrap">
-                    <input type="text" placeholder="e.g. 9-11:30, 2nd period">
+                    <input id="newEventTime" type="text" placeholder="e.g. 9-11:30, 2nd period">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Location</div>
                   <div class="item-input-wrap">
-                    <input type="text" placeholder="e.g. cafeteria, art room">
+                    <input id="newEventLocation" type="text" placeholder="e.g. cafeteria, art room">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -66,7 +66,7 @@
               <div class="item-inner">
                 <div class="item-title item-floating-label">Description</div>
                 <div class="item-input-wrap">
-                  <textarea class="resizable"></textarea>
+                  <textarea id="newEventDescription" class="resizable"></textarea>
                   <span class="input-clear-button"></span>
                 </div>
               </div>
@@ -91,7 +91,7 @@
         </div>
       </div>
       <div class="row justify-content-center">
-        <a onclick="addEvent()" class="button button-fill">Add Event</a>
+        <a onclick="addNewEvent()" class="button button-fill">Add Event</a>
 
       </div>
 
