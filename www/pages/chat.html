@@ -19,7 +19,7 @@
       </ul>
     </div>
     <div class="hairline"></div>
-    <div class="row justify-content-center" style="margin: 16px"><a onclick="unsubscribeFromChat()" class="link panel-close text-align-center back">Leave Group</a></div>
+    <div class="row justify-content-center" style="margin: 16px"><button onclick="unsubscribeFromChat()" class="button panel-close text-align-center back">Leave Group</button></div>
   </div>
   <div class="navbar">
     <div class="navbar-inner">
@@ -35,40 +35,13 @@
       </div><a class="link send-link" href="#">Send</a>
     </div>
   </div>
-  <div class="page-content messages-content">
+  <div class="page-content messages-content infinite-scroll-content infinite-scroll-top">
+    <div class="preloader infinite-scroll-preloader"></div>
     <div class="messages">
+
       <!-- Messages title -->
       <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
-      <!-- Full layout sent message -->
-      <div class="message message-sent">
-        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-        <div class="message-content">
-          <div class="message-name">John Doe</div>
-          <div class="message-header">Message header</div>
-          <div class="message-bubble">
-            <div class="message-text-header">Text header</div>
-            <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-            <div class="message-text-footer">Text footer</div>
-          </div>
-          <div class="message-footer">Message footer</div>
-        </div>
-      </div>
-      <!-- Full layout received message -->
-      <div class="message message-received">
-        <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-        <div class="message-content">
-          <div class="message-name">John Doe</div>
-          <div class="message-header">Message header</div>
-          <div class="message-bubble">
-            <div class="message-text-header">Text header</div>
-            <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-            <div class="message-text-footer">Text footer</div>
-          </div>
-          <div class="message-footer">Message footer</div>
-        </div>
-      </div>
       <!-- Messages -->
-
 
     </div>
   </div>

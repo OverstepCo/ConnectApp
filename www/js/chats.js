@@ -171,7 +171,6 @@ function setupChat() {
       function(error) {
         //...
       });
-
   //document.getElementById("group-name").innerHTML = "whaaa";
   //  messages.addMessage({
   //  text: "helooo",
@@ -205,4 +204,46 @@ function addMessage(school, chatID, message) { //Adds a message to the specified
     .catch(function(error) {
       console.error("Error adding document: ", error);
     });
+}
+
+
+//----------Lazy Load----------//
+// Loading flag
+var allowInfinite = true;
+
+var totalMessages = 0;
+
+// Max items to load
+var maxItems = 2000;
+
+// Append items per load
+var messagesPerLoad = 20;
+
+// Attach 'infinite' event handler
+$$('.infinite-scroll-content').on('infinite', function() {
+  // Exit, if loading in progress
+  if (!allowInfinite) return;
+
+  // Set loading flag
+  allowInfinite = false;
+
+  lazyLoad();
+});
+
+function lazyLoad() {
+
+
+  if (totalMessages >= maxItems) {
+    // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+    app.infiniteScroll.destroy('.infinite-scroll-content');
+    // Remove preloader
+    $$('.infinite-scroll-preloader').remove();
+    return;
+  }
+
+  // TODO: load messages from DB
+  totalMessages++;
+
+  // Reset loading flag
+  allowInfinite = true;
 }
