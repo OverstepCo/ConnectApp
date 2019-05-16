@@ -1,0 +1,80 @@
+<div class="page" data-page="chat">
+  <div class="navbar no-shadow no-harline">
+    <div class="navbar-inner">
+      <div class="left">
+        <a class="link icon-only back">
+          <i class="material-icons">arrow_back</i>
+        </a>
+      </div>
+      <div class="title">New Group Chat</div>
+      <div class="right"><a href="#" class="link">CREATE</a></div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="block">
+      <div class="list no-hairlines no-margin">
+        <ul>
+          <li class="item-content item-input ">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Chat Name</div>
+              <div class="item-input-wrap">
+                <input id="event-name" type="text">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Description</div>
+              <div class="item-input-wrap">
+                <textarea id="event-description" class="resizable"></textarea>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <h2>Add People</h2>
+      <div class="block no-margin-top">
+        <div class="chip">
+          <div class="chip-media">
+            <div class="chip-pic" style="background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png')"></div>
+          </div>
+          <div class="chip-label">Jane Doe</div><a href="#" class="chip-delete"></a>
+        </div>
+      </div>
+      <div class="hairline"></div>
+      <form id="new-chat-searchbar" class="searchbar searchbar-inline">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search">
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+        </div>
+      </form>
+      <div id="new-chat-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+        <ul>
+          <a href="#" class="item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+              <div class="item-inner">Krombopulos Mike</div>
+            </li>
+          </a>
+          <a href="#" class="item-link no-chevron">
+            <li class="item-content">
+              <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+              <div class="item-inner">Jane Smith</div>
+            </li>
+          </a>
+
+        </ul>
+      </div>
+      <!-- Nothing found message -->
+      <div class="block searchbar-not-found">
+        <div class="block-inner">Nothing found</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -87,6 +87,22 @@ var app = new Framework7({
     {
       path: '/new-chat-screen/',
       url: 'pages/new_chat.html',
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          var searchbar = app.searchbar.create({
+            el: '#new-chat-searchbar',
+            searchContainer: '#new-chat-members-list',
+            searchIn: '.item-inner',
+          });
+
+        },
+        pageBeforeRemove: function(e, page) {
+        },
+      }
     },
     // school search page
     {
@@ -104,10 +120,12 @@ var swiper;
 
 // create searchbar
 var searchbar = app.searchbar.create({
-  el: '.searchbar',
-  searchContainer: '.members-list',
+  el: '#school-searchbar',
+  searchContainer: '#members-list',
   searchIn: '.item-inner',
 });
+
+
 
 //next/prev event card
 function swipeRight() {

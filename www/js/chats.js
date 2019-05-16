@@ -242,6 +242,10 @@ function lazyLoad() {
   }
 
   // TODO: load messages from DB
+  //
+  //
+  //
+  //
   totalMessages++;
 
   // Reset loading flag

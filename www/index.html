@@ -93,7 +93,7 @@
           </a>
           <!-- FAB speed dial actions with labels -->
           <div class="fab-buttons fab-buttons-top fab-morf" data-morph-to=".card-block">
-            <a href="#" class="fab-label-button fab-close">
+            <a href="/new-chat-screen/" class="fab-label-button fab-close">
               <i class="icon material-icons" style="font-size: 15pt">message</i>
               <span class="fab-label">New Chat</span>
             </a>
@@ -104,7 +104,7 @@
           </div>
         </div>
 
-        <div class="page-content" style="overflow-x: hidden; background-color: #edeff2">
+        <div class="page-content" style="background-color: #edeff2">
           <div class="row title justify-items-left no-margin-bottom">
             <div>Upcoming Events</div>
             <div class="left">
@@ -196,13 +196,17 @@
             <div class="title">School Members</div>
             <div class="hairline"></div>
 
-            <div class="searchbar searchbar-inline">
-              <div class="searchbar-input-wrap row">
-                <input class="no-padding" type="search" placeholder="Search List">
-                <span class="input-clear-button"></span>
+            <form id="school-searchbar" class="searchbar searchbar-inline">
+              <div class="searchbar-inner">
+                <div class="searchbar-input-wrap">
+                  <input type="search" placeholder="Search">
+                  <i class="searchbar-icon"></i>
+                  <span class="input-clear-button"></span>
+                </div>
+                <span class="searchbar-disable-button if-not-aurora">Cancel</span>
               </div>
-            </div>
-            <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+            </form>
+            <div id="members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
               <ul>
                 <a href="#" class="item-link no-chevron">
                   <li class="item-content">
