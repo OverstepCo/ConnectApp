@@ -77,9 +77,21 @@ img {
   border-radius: 50%;
 }
 
+.chip {
+  margin: 8px;
+}
+
 .chip-pic {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+}
+
+.li-profile-pic {
+  width: 100%;
+  padding-top: 100%;
   border-radius: 50%;
   background-position: center;
   background-size: cover;

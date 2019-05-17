@@ -3,7 +3,7 @@ function loadSchoolChats() { //Loads all the chats in the users current school//
   db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
       //this loop runs once for every chat room in the school
-      var ls = document.getElementById("school-group-chats");
+      var ul = document.getElementById("school-group-chats");
       var li = document.createElement('li')
       li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">\
         <div class="item-inner">\
@@ -14,7 +14,7 @@ function loadSchoolChats() { //Loads all the chats in the users current school//
           <div class="item-text">' + doc.get("description") + '</div>\
         </div>\
       </a>';
-      ls.appendChild(li);
+      ul.appendChild(li);
       //if any of these dont exist in the database they return null or undefined
     });
     var skeleton = document.getElementById('school-group-chats-skeleton');
@@ -54,10 +54,10 @@ function loadSubscribedChats() { //Loads the chats that the user is subscribed t
   });
 }
 
-function subscribeToChat() { //Subscribes the user to the specified chat.//TODO get the chat school variable dynamicly.
-  console.log("subscribing to chat")
-  console.log(currentChat + currentChatSchool);
-  db.collection("users").doc(User.uid).collection("chats").doc(currentChat).set({
+//Subscribes a user to the specified chat
+function subscribeToChat(uid, chatID) {
+  console.log("subscribing to chat: " + chatID);
+  db.collection("users").doc(uid).collection("chats").doc(chatID).set({
     school: currentChatSchool
   });
 }
@@ -250,4 +250,71 @@ function lazyLoad() {
 
   // Reset loading flag
   allowInfinite = true;
+}
+
+
+
+
+//NEW CHAT PAGE-----------------------------------------------------------------
+
+function createChat() {
+  var chatName = document.getElementById("chat-name");
+  var chatDescription = document.getElementById("chat-description");
+  //chatMembers is an array
+  var chatMembers = document.querySelectorAll('[data-uid]');
+  console.log(chatMembers.length);
+  //create chat on database
+  db.collection('school').doc(User.school).collection("chats").add({
+      description: chatDescription.value,
+      name: chatName.value,
+      numberOfMembers: "" + chatMembers.length,
+    })
+    .then(function(docRef) {
+      console.log("Chat written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+      console.error("Error adding chat: ", error);
+    });
+
+  //subscribe added users to chat
+  for (var i = 0; i < chatMembers.length; i++) {
+    subscribeToChat(chatMembers[i], User.school);
+  }
+}
+
+function addChip(li) {
+
+  //if the user isn't already added
+  if (li.dataset.checked == 0) {
+    var chipsDiv = document.getElementById("chips-div");
+
+    //create a new chip
+    var chip = document.createElement('div');
+    chip.classList.add("chip");
+    chip.innerHTML = '<div class="chip-media">\
+  <div class="chip-pic" style="background-image: url(\'' + li.dataset.pic + '\')"></div>\
+  </div>\
+  <div class="chip-label">' + li.dataset.name + '</div>\
+  <a href="#" onclick="removeChip(this, \'' + li.dataset.uid + '\')" class="chip-delete"></a>';
+
+    //add chip to the screen
+    chipsDiv.appendChild(chip);
+
+    //add a check mark to the added user
+    var rightDiv = li.querySelector('.right');
+    rightDiv.innerHTML = '<i class="material-icons">check</i>';
+    li.dataset.checked = 1;
+  }
+}
+
+function removeChip(chip, uid) {
+  //find user in the list and uncheck it
+  var li = document.querySelectorAll('[data-uid="' + uid + '"]');
+  li = li[0];
+  var rightDiv = li.querySelector('.right');
+  rightDiv.innerHTML = '';
+  li.dataset.checked = 0;
+
+  //remove chip
+  chip.parentNode.parentNode.removeChild(chip.parentNode);
 }
