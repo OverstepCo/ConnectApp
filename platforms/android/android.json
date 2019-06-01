@@ -1,39 +1,117 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
-    },
-    "config_munge": {
-        "files": {
-            "res/xml/config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {
+      "res/xml/config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"Firestore\"><param name=\"android-package\" value=\"uk.co.reallysmall.cordova.plugin.firestore.FirestorePlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
             }
+          ]
         }
-    },
-    "installed_plugins": {
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
-        }
-    },
-    "dependent_plugins": {},
-    "modules": [
-        {
-            "id": "cordova-plugin-statusbar.statusbar",
-            "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-            "pluginId": "cordova-plugin-statusbar",
-            "clobbers": [
-                "window.StatusBar"
-            ]
-        }
-    ],
-    "plugin_metadata": {
-        "cordova-plugin-statusbar": "2.4.2"
+      }
     }
+  },
+  "installed_plugins": {
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.phonegap.helloworld"
+    },
+    "cordova-plugin-firestore": {
+      "ANDROID_FIREBASE_CORE_VERSION": "16.0.8",
+      "ANDROID_FIREBASE_FIRESTORE_VERSION": "18.2.0",
+      "PACKAGE_NAME": "com.phonegap.helloworld"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
+    },
+    {
+      "id": "cordova-plugin-firestore.Firestore",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/firestore.js",
+      "pluginId": "cordova-plugin-firestore",
+      "clobbers": [
+        "Firestore"
+      ]
+    },
+    {
+      "id": "cordova-plugin-firestore.collection_reference",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/collection_reference.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.query",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/query.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.document_reference",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/document_reference.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.document_snapshot",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/document_snapshot.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.query_snapshot",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/query_snapshot.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.query_document_snapshot",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/query_document_snapshot.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.firestore_timestamp",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/firestore_timestamp.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.transaction",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/transaction.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.utilities",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/utilities.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.geo_point",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/geo_point.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.path",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/path.js",
+      "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-firestore.utils",
+      "file": "plugins/cordova-plugin-firestore/www/android_ios/utils.js",
+      "pluginId": "cordova-plugin-firestore"
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-firestore": "3.0.0"
+  }
 }

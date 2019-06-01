@@ -19,15 +19,15 @@
   /**
    * Template7 1.4.1
    * Mobile-first HTML template engine
-   * 
+   *
    * http://www.idangero.us/template7/
-   * 
+   *
    * Copyright 2019, Vladimir Kharlampidi
    * The iDangero.us
    * http://www.idangero.us/
-   * 
+   *
    * Licensed under MIT
-   * 
+   *
    * Released on: February 5, 2019
    */
 

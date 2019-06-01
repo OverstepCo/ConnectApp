@@ -9,6 +9,11 @@
   "installed_plugins": {
     "cordova-plugin-statusbar": {
       "PACKAGE_NAME": "com.phonegap.helloworld"
+    },
+    "cordova-plugin-firestore": {
+      "ANDROID_FIREBASE_CORE_VERSION": "16.0.8",
+      "ANDROID_FIREBASE_FIRESTORE_VERSION": "18.2.0",
+      "PACKAGE_NAME": "com.phonegap.helloworld"
     }
   },
   "dependent_plugins": {}
