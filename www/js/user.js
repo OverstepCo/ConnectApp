@@ -60,6 +60,19 @@ function editUserData() { //Edits the users profile data.
       });
   }
 
+  function changeSchool(newSchoolID) {
+    b.collection("users").doc(User.uid).update({
+        school: newSchoolID
+      })
+      .then(function() {
+        console.log("user school successfully updated!");
+      })
+      .catch(function(error) {
+        console.error("Error updating user school: ", error);
+      });
+
+  }
+
   var newPassword = document.getElementById("password").value;
   if (newPassword != '') {
     var user = firebase.auth().currentUser;
@@ -74,7 +87,6 @@ function editUserData() { //Edits the users profile data.
 }
 
 
-
 function loadSchools() { //Loads the schools fromthe database
   console.log("load schools");
 
@@ -87,6 +99,7 @@ function loadSchools() { //Loads the schools fromthe database
 
     });
   });
+
 
 }
 ///////////
