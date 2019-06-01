@@ -23,6 +23,9 @@ function loadSchoolChats() { //Loads all the chats in the users current school//
 }
 
 function loadSubscribedChats() { //Loads the chats that the user is subscribed to.
+  //TODO listen and display realtime updates
+  console.log(User.Chats); //TODO get the chats fromthis instead of firebase
+
   db.collection("users").doc(User.uid).collection("chats").get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
       console.log("docID: " + doc.id);
@@ -32,7 +35,7 @@ function loadSubscribedChats() { //Loads the chats that the user is subscribed t
         console.log("chatName: " + chat.get("name"));
 
         db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
-          messages.forEach(function(message) { ///This lop runs once for each message in the chat room.
+          messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
             var ls = document.getElementById("subscribed-chats");
             var li = document.createElement('li');
             li.innerHTML = '<a onclick="(loadChat(\'' + doc.id + '\',\'' + doc.get("school") + '\'))" class="item-link item-content no-chevron">\
@@ -45,8 +48,23 @@ function loadSubscribedChats() { //Loads the chats that the user is subscribed t
                 </div>\
               </a>';
             ls.appendChild(li);
-            var skeleton = document.getElementById('subscribed-chats-skeleton');
-            skeleton.parentNode.removeChild(skeleton);
+
+
+            listener = db.collection("school").doc(doc.get("school") + "").collection("chats").doc(doc.id).collection("messages").orderBy("timestamp", "asc")
+              .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
+                  snapshot.docChanges().forEach(function(change) {
+                    if (change.type === "added") {
+                      console.log(change.doc.get("text"));
+                      ////
+                    }
+                  });
+                  var skeleton = document.getElementById('subscribed-chats-skeleton');
+                  skeleton.parentNode.removeChild(skeleton);
+                  //...
+                },
+                function(error) {
+                  //...
+                });
           });
         });
       });

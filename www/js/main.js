@@ -92,6 +92,21 @@ var app = new Framework7({
     {
       path: '/school-search-page/',
       url: 'pages/school_search.html',
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          loadSchools();
+
+        },
+        pageBeforeRemove: function(e, page) {
+          console.log('page before remove');
+          listener();
+          app.messages.destroy('.messages');
+        },
+      }
     },
   ],
 });
@@ -108,6 +123,7 @@ var searchbar = app.searchbar.create({
   searchContainer: '.members-list',
   searchIn: '.item-inner',
 });
+
 
 //next/prev event card
 function swipeRight() {

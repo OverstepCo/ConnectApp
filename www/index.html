@@ -267,6 +267,7 @@
     var User; //TODO change this to referance the custom userdata intead of firebases auth user
     var uid;
 
+
     /////////authentication section
 
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
@@ -286,7 +287,6 @@
             chats: db.collection("users").doc(uid).collection("chats").get()
 
           }
-
           loadSchoolEvents();
           loadSchoolChats();
           loadSubscribedChats();

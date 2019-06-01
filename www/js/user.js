@@ -73,4 +73,26 @@ function editUserData() { //Edits the users profile data.
   }
 }
 
+
+
+function loadSchools() { //Loads the schools fromthe database
+  console.log("load schools");
+
+  var schools = db.collection("school").where("zip", "==", 85541);
+  schools.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      console.log(doc.get("name"));
+
+    });
+  });
+
+  db.collection("school").where("zip", "==", "85541").get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      //this loop runs once for every school with the specified zip.
+      //addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
+      console.log("woo");
+
+    });
+  });
+}
 ///////////
