@@ -153,31 +153,3 @@ function swipeLeft() {
 function updateSwiper() {
   swiper = app.swiper.get('.swiper-container');
 }
-
-function searchSchools() {
-  var zip = document.getElementById("school-zip").value;
-  var schoolsList = document.getElementById("schools-list");
-
-  schoolsList.innerHTML = "";
-  db.collection("school").where("zip", "==", zip)
-    .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-
-        var li = document.createElement('li');
-        li.classList.add("card-block");
-        li.innerHTML = '<div class="title">' + doc.name + '</div>\
-        <div class="hairline"></div>\
-        <div class="school-attributes">\
-        <p>' + doc.address + ' ' + doc.city + ', ' + doc.state + '</p>\
-        <p>' + doc.level + ' School</p>\
-        </div>\
-        <button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
-        schoolsList.appendChild(li);
-      });
-    })
-    .catch(function(error) {
-      schoolsList.innerHTML = '<div class="text-center">No schools found.</div>\
-      <div class="justify-content-center"><a href="/new-school-screen/">Add your school</a>';
-    });
-}
