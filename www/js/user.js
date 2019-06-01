@@ -61,7 +61,7 @@ function editUserData() { //Edits the users profile data.
   }
 
   function changeSchool(newSchoolID) {
-    b.collection("users").doc(User.uid).update({
+    db.collection("users").doc(User.uid).update({
         school: newSchoolID
       })
       .then(function() {
