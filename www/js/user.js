@@ -82,17 +82,11 @@ function loadSchools() { //Loads the schools fromthe database
   schools.get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
       console.log(doc.get("name"));
+      console.log(doc.get("address"));
+      console.log(doc.get("level"));
 
     });
   });
 
-  db.collection("school").where("zip", "==", "85541").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      //this loop runs once for every school with the specified zip.
-      //addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
-      console.log("woo");
-
-    });
-  });
 }
 ///////////
