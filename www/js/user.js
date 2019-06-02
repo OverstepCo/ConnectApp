@@ -16,7 +16,10 @@ function signUp() { //signs up a new user
     console.log("Failed to sign up: " + errorMessage);
     err.innerHTML = "Error: " + errorMessage;
 
+
+
   });
+
 }
 
 function signIn() { //Signs in a user
