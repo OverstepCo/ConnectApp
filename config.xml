@@ -12,5 +12,7 @@
 
 
   <plugin name="cordova-plugin-whitelist" />
-
+	
+<access origin=" https://www.googleapis.com/" />
+<access origin=" http://www.googleapis.com/" />
 </widget>
