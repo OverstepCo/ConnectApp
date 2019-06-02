@@ -60,18 +60,7 @@ function editUserData() { //Edits the users profile data.
       });
   }
 
-  function changeSchool(newSchoolID) {
-    db.collection("users").doc(User.uid).update({
-        school: newSchoolID
-      })
-      .then(function() {
-        console.log("user school successfully updated!");
-      })
-      .catch(function(error) {
-        console.error("Error updating user school: ", error);
-      });
 
-  }
 
   var newPassword = document.getElementById("password").value;
   if (newPassword != '') {
@@ -86,7 +75,18 @@ function editUserData() { //Edits the users profile data.
   }
 }
 
+function changeSchool(newSchoolID) {
+  db.collection("users").doc(User.uid).update({
+      school: newSchoolID
+    })
+    .then(function() {
+      console.log("user school successfully updated!");
+    })
+    .catch(function(error) {
+      console.error("Error updating user school: ", error);
+    });
 
+}
 
 function searchSchools() { //Loads the schools fromthe database
   console.log("load schools");
