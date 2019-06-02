@@ -47,6 +47,24 @@ function signOut() { //Signs out the user
   });
 }
 
+function loadUserData() {
+
+  User = {
+    uid: uid,
+    firstName: user.get("firstName"),
+    lastName: user.get("lastName"),
+    school: user.get("school"),
+    fullName: function() {
+      return "" + this.firstName + " " + this.lastName;
+    },
+    chats: db.collection("users").doc(uid).collection("chats").get()
+  }
+  loadSchoolEvents();
+  loadSchoolChats();
+  loadSubscribedChats();
+}
+
+
 function editUserData() { //Edits the users profile data.
   var firstName = document.getElementById("firstName").value;
 
@@ -105,19 +123,19 @@ function searchSchools() { //Loads the schools fromthe database
       foundSchools = true;
 
 
-              var li = document.createElement('li');
-              li.classList.add("card-block");
-              li.innerHTML = '<div class="title">' + doc.get("name") +
-              '</div><div class="hairline"></div><div class="school-attributes"><p>'
-               + doc.get("address") + ' ' + doc.get("city") + ', ' + doc.get("state") +
-              '</p><p>' + doc.get("level") + 'School</p></div>' +
-              '<button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
-              schoolsList.appendChild(li);
+      var li = document.createElement('li');
+      li.classList.add("card-block");
+      li.innerHTML = '<div class="title">' + doc.get("name") +
+        '</div><div class="hairline"></div><div class="school-attributes"><p>' +
+        doc.get("address") + ' ' + doc.get("city") + ', ' + doc.get("state") +
+        '</p><p>' + doc.get("level") + 'School</p></div>' +
+        '<button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
+      schoolsList.appendChild(li);
 
     });
   }).catch(function(error) {
-        schoolsList.innerHTML = '<div class="text-center">No schools found.</div>\
+    schoolsList.innerHTML = '<div class="text-center">No schools found.</div>\
         <div class="justify-content-center"><a href="/new-school-screen/">Add your school</a>';
-      });
+  });
 }
 ///////////
