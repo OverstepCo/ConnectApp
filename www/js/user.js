@@ -63,18 +63,7 @@ function editUserData() { //Edits the users profile data.
       });
   }
 
-  function changeSchool(newSchoolID) {
-    db.collection("users").doc(User.uid).update({
-        school: newSchoolID
-      })
-      .then(function() {
-        console.log("user school successfully updated!");
-      })
-      .catch(function(error) {
-        console.error("Error updating user school: ", error);
-      });
 
-  }
 
   var newPassword = document.getElementById("password").value;
   if (newPassword != '') {
@@ -89,20 +78,46 @@ function editUserData() { //Edits the users profile data.
   }
 }
 
+function changeSchool(newSchoolID) {
+  db.collection("users").doc(User.uid).update({
+      school: newSchoolID
+    })
+    .then(function() {
+      console.log("user school successfully updated!");
+    })
+    .catch(function(error) {
+      console.error("Error updating user school: ", error);
+    });
 
-function loadSchools() { //Loads the schools fromthe database
+}
+
+function searchSchools() { //Loads the schools fromthe database
   console.log("load schools");
+  var zip = parseInt(document.getElementById("school-zip").value);
+  var schoolsList = document.getElementById("schools-list");
+  var foundSchools = false;
+  console.log(zip);
 
-  var schools = db.collection("school").where("zip", "==", 85541);
+  schoolsList.innerHTML = "";
+  var schools = db.collection("school").where("zip", "==", zip);
   schools.get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      console.log(doc.get("name"));
-      console.log(doc.get("address"));
-      console.log(doc.get("level"));
+      foundSchools = true;
+
+
+              var li = document.createElement('li');
+              li.classList.add("card-block");
+              li.innerHTML = '<div class="title">' + doc.get("name") +
+              '</div><div class="hairline"></div><div class="school-attributes"><p>'
+               + doc.get("address") + ' ' + doc.get("city") + ', ' + doc.get("state") +
+              '</p><p>' + doc.get("level") + 'School</p></div>' +
+              '<button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
+              schoolsList.appendChild(li);
 
     });
-  });
-
-
+  }).catch(function(error) {
+        schoolsList.innerHTML = '<div class="text-center">No schools found.</div>\
+        <div class="justify-content-center"><a href="/new-school-screen/">Add your school</a>';
+      });
 }
 ///////////
