@@ -1,0 +1,27 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "pls dont use this.",
+  "main": "index.js",
+  "dependencies": {
+    "cordova-android": "^8.0.0",
+    "cordova-ios": "^5.0.0",
+    "cordova-plugin-firestore": "^3.0.0",
+    "cordova-plugin-statusbar": "^2.4.2",
+    "firebase": "^6.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OverstepCo/ConnectApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OverstepCo/ConnectApp/issues"
+  },
+  "homepage": "https://github.com/OverstepCo/ConnectApp#readme"
+}
