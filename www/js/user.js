@@ -80,6 +80,13 @@ function changeSchool(newSchoolID) {
       school: newSchoolID
     })
     .then(function() {
+      self.app.views.main.router.navigate('/home/',
+      { reloadCurrent: true, ignoreCache: true,});
+
+      loadSchoolEvents();
+      loadSchoolChats();
+      loadSubscribedChats();
+
       console.log("user school successfully updated!");
     })
     .catch(function(error) {
