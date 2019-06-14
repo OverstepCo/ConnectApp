@@ -286,17 +286,7 @@
 
             loadMainPage();
 
-            db.collection("school").doc(User.school).get().then(function(doc) {
-              console.log(doc.get("users").update);
-              doc.get("users").update({
-                uid: ""
-              });
-            });
-
-            db.collection("school").doc(User.school).add().update({
-              //users: waa
-            });
-          } else { //If the user data does not exist create new user data // TODO: redirect the user to enter this info 
+          } else { //If the user data does not exist create new user data // TODO: redirect the user to enter this info
             console.log("No user data document!");
             db.collection("users").doc(uid).set({
                 firstName: "First Name",
