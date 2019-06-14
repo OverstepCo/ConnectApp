@@ -62,6 +62,21 @@ var app = new Framework7({
     {
       path: '/preview-chat-screen/',
       url: 'pages/preview_chat.html',
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          setupChat();
+
+        },
+        pageBeforeRemove: function(e, page) {
+          console.log('page before remove');
+          listener();
+          app.messages.destroy('.messages');
+        },
+      }
     },
     // settings page
     {
@@ -141,8 +156,11 @@ function updateSwiper() {
 
 
 //android back button navigation
-document.addEventListener("backbutton", onBackKeyDown, false);
+document.addEventListener("deviceready", onDeviceReady, false);
 
-function onBackKeyDown() {
-    self.app.views.main.router.back();
+function onDeviceReady(){
+    document.addEventListener("backbutton", function(e){
+      self.app.views.main.router.back();
+
+    }, false);
 }
