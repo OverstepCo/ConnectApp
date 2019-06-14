@@ -267,13 +267,11 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
-    var db = firebase.firestore();
-    var User; //TODO change this to referance the custom userdata intead of firebases auth user
-    var uid;
-
+    var db = firebase.firestore(); //The referance to the firestore database
+    var User; //An objects that contins the user data if the currently signed in user
+    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
 
     /////////authentication section
-
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
       if (user) { // User is signed in.
         uid = user.uid;
@@ -281,7 +279,7 @@
         //TODO if user has no school redirict to school selection page
         db.collection("users").doc(uid).get().then(function(user) {
           if (user.exists) { //If the user data exists load the user data
-            User = {
+            User = { //Load the users data and store it in an object
               uid: uid,
               firstName: user.get("firstName"),
               lastName: user.get("lastName"),
@@ -291,13 +289,20 @@
               },
               chats: db.collection("users").doc(uid).collection("chats").get()
             }
-            loadSchoolEvents();
-            loadSchoolChats();
-            loadSubscribedChats();
-            //addMessage("school of ross", "room1", "hi this is the message you should be reading ");
-            //  loadChatMessages("school of ross", "room1");
-          } else { //If the user data does not exist create new user data
 
+            loadMainPage();
+
+            db.collection("school").doc(User.school).get().then(function(doc) {
+              console.log(doc.get("users").update);
+              doc.get("users").update({
+                uid: ""
+              });
+            });
+
+            db.collection("school").doc(User.school).add().update({
+              //users: waa
+            });
+          } else { //If the user data does not exist create new user data // TODO: redirect the user to enter this info 
             console.log("No user data document!");
             db.collection("users").doc(uid).set({
                 firstName: "First Name",
@@ -310,7 +315,6 @@
               .catch(function(error) {
                 console.error("Error updating user data: ", error);
               });
-
           }
         });
 

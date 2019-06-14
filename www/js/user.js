@@ -59,9 +59,6 @@ function loadUserData() {
     },
     chats: db.collection("users").doc(uid).collection("chats").get()
   }
-  loadSchoolEvents();
-  loadSchoolChats();
-  loadSubscribedChats();
 }
 
 
@@ -97,11 +94,17 @@ function editUserData() { //Edits the users profile data.
 }
 
 function changeSchool(newSchoolID) {
+
+
+
+
   db.collection("users").doc(User.uid).update({
       school: newSchoolID
     })
     .then(function() {
       console.log("user school successfully updated!");
+      //TODO add user to user array
+
     })
     .catch(function(error) {
       console.error("Error updating user school: ", error);
