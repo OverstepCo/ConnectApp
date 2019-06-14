@@ -51,12 +51,6 @@
               <div class="item-inner">Sign Out</div>
             </li>
           </a>
-          <a href="/login-screen/" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">cloud</i></div>
-              <div class="item-inner">Sign In</div>
-            </li>
-          </a>
         </ul>
       </div>
     </div>
@@ -320,16 +314,13 @@
 
         //close the login screen if it is open
         var currentPage = app.views.main.router.url;
-        if (currentPage == "/login-screen/") {
+        if (currentPage == "/login-screen/" || currentPage == "/signup-screen/") {
           self.app.views.main.router.navigate('/home/', {
-            reloadCurrent: true
+            reloadCurrent: true,
+            ignoreCache: true,
           });
         }
-        //self.app.views.main.router.navigate('/home/', {
-        //  reloadCurrent: true
-        //});
         app.preloader.hide();
-        // ...
       } else { //User is signed out.
         self.app.views.main.router.navigate('/login-screen/', {
           reloadCurrent: true

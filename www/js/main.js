@@ -62,6 +62,21 @@ var app = new Framework7({
     {
       path: '/preview-chat-screen/',
       url: 'pages/preview_chat.html',
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          setupChat();
+
+        },
+        pageBeforeRemove: function(e, page) {
+          console.log('page before remove');
+          listener();
+          app.messages.destroy('.messages');
+        },
+      }
     },
     // settings page
     {
@@ -107,21 +122,6 @@ var app = new Framework7({
     {
       path: '/school-search-page/',
       url: 'pages/school_search.html',
-      on: {
-        pageAfterIn: function test(e, page) {
-          // do something after page gets into the view
-        },
-        pageInit: function(e, page) {
-          // do something when page initialized
-          loadSchools();
-
-        },
-        pageBeforeRemove: function(e, page) {
-          console.log('page before remove');
-          listener();
-          app.messages.destroy('.messages');
-        },
-      }
     },
   ],
 });
@@ -155,7 +155,7 @@ function updateSwiper() {
 }
 
 
-function loadMainPage() { //Loads all the data on the main page 
+function loadMainPage() { //Loads all the data on the main page
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
   console.log(User.Chats); //TODO get the chats fromthis instead of firebase
 
@@ -234,11 +234,12 @@ function loadMainPage() { //Loads all the data on the main page
   });
 }
 
-function loadSchoolEvents() {
+//android back button navigation
+document.addEventListener("deviceready", onDeviceReady, false);
 
+function onDeviceReady() {
+  document.addEventListener("backbutton", function(e) {
+    self.app.views.main.router.back();
 
+  }, false);
 }
-
-function loadSchoolChats() {}
-
-function loadSubscribedChats() {}

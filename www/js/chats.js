@@ -31,6 +31,13 @@ function loadChat(chatID, chatSchool) {
 
 }
 
+function previewChat(chatID, chatSchool) {
+  console.log("chatID:" + chatID + " school:" + chatSchool);
+  currentChat = chatID;
+  currentChatSchool = chatSchool;
+  self.app.views.main.router.navigate('/preview-chat-screen/');
+}
+
 var listener; //This is here so w can stop the listener when the page is destroyed
 
 function setupChat() {
@@ -124,12 +131,7 @@ function setupChat() {
   //});
 }
 
-function previewChat(chatID, chatSchool) {
-  console.log("chatID:" + chatID + " school:" + chatSchool);
-  currentChat = chatID;
-  currentChatSchool = chatSchool;
-  self.app.views.main.router.navigate('/preview-chat-screen/');
-}
+
 
 function loadChatMessages(chatID, chatSchool) {
 

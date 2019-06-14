@@ -15,9 +15,6 @@ function signUp() { //signs up a new user
     var errorMessage = error.message;
     console.log("Failed to sign up: " + errorMessage);
     err.innerHTML = "Error: " + errorMessage;
-
-
-
   });
 
 }
@@ -36,7 +33,6 @@ function signIn() { //Signs in a user
     console.log("Failed to login: " + error.message);
     err.innerHTML = "Error: " + error.message;
   });
-  console.log(app.views.main.router.url);
 }
 
 function signOut() { //Signs out the user
@@ -102,6 +98,13 @@ function changeSchool(newSchoolID) {
       school: newSchoolID
     })
     .then(function() {
+      self.app.views.main.router.navigate('/home/',
+      { reloadCurrent: true, ignoreCache: true,});
+
+      loadSchoolEvents();
+      loadSchoolChats();
+      loadSubscribedChats();
+
       console.log("user school successfully updated!");
       //TODO add user to user array
 
