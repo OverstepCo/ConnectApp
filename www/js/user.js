@@ -14,7 +14,7 @@ function signUp() { //signs up a new user
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log("Failed to sign up: " + errorMessage);
-    err.innerHTML = "Error: " + errorMessage;
+    err.innerHTML = "Oops! " + errorMessage;
   });
 
 }
@@ -31,7 +31,7 @@ function signIn() { //Signs in a user
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log("Failed to login: " + error.message);
-    err.innerHTML = "Error: " + error.message;
+    err.innerHTML = "Oops! " + error.message;
   });
 }
 
@@ -60,6 +60,8 @@ function loadUserData() {
 
 function editUserData() { //Edits the users profile data.
   var firstName = document.getElementById("firstName").value;
+  var errorMessage = document.getElementById("error-message");
+  errorMessage.innerHTML = "";
 
   if (firstName != "") {
     db.collection("users").doc(User.uid).update({
@@ -70,6 +72,7 @@ function editUserData() { //Edits the users profile data.
         console.log("user data successfully updated!");
       })
       .catch(function(error) {
+        errorMessage.innerHTML = "Oops! " + error;
         console.error("Error updating user data: ", error);
       });
   }
@@ -144,4 +147,7 @@ function searchSchools() { //Loads the schools fromthe database
         <div class="justify-content-center"><a href="/new-school-screen/">Add your school</a>';
   });
 }
-///////////
+function wsNext() {
+  console.log("hi");
+  app.swiper.get('.welcome-swiper').slideNext();
+}
