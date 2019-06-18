@@ -145,6 +145,13 @@ img {
   background-size: cover;
 }
 
+.center-vertically {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
 /********** PANEL **********/
 .panel-header {
   margin: 0;
@@ -377,4 +384,235 @@ img {
 
 .school-attributes p {
   margin: 8px 0;
+}
+
+/********** WELCOME **********/
+.welcome-swiper .slide-content {
+  display: flex;
+  align-items: center;
+  padding: 32px;
+  height: 50vh;
+}
+
+.welcome-swiper .slide-description {
+  padding: 32px;
+}
+
+.welcome-swiper {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.swiper-pagination-bullet {
+  border-radius: 4px;
+  width: 16px;
+  transition: all .2s;
+}
+
+.swiper-pagination-bullet-active {
+  width: 32px;
+}
+
+.chevron {
+  bottom: 45px;
+  right: 60px;
+  position: absolute;
+  width: 4px;
+  height: 32px;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: move-chevron 6s cubic-bezier(.5, .5, 0, 1) infinite;
+}
+
+.chevron:nth-child(2) {
+  animation: move-chevron 6s cubic-bezier(.5, .5, 0, 1) 3s infinite;
+}
+
+.chevron:before,
+.chevron:after {
+  content: '';
+  position: absolute;
+  height: 62.5%;
+  width: 100%;
+  background: var(--f7-theme-color);
+  border-radius: 2px;
+}
+
+.chevron:before {
+  bottom: 0;
+  transform: rotate(45deg);
+}
+
+.chevron:after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+@keyframes move-chevron {
+  0% {
+    transform: translateX(-32px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(32px) scale(0.5);
+  }
+}
+
+/*Sign in / Sign up*/
+.login-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 6px solid var(--f7-theme-color);
+}
+
+.square {
+  position: absolute;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  transform: translateX(160%) rotate(45deg);
+  animation: square .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.si .square {
+  transform: translateX(60%) rotate(45deg);
+  animation: square-si .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.arrow-head:before,
+.arrow-head:after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--f7-theme-color);
+}
+
+.arrow-head:before {
+  transform: translate(-10px, 2px) rotate(90deg);
+  animation: bottom .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.si .arrow-head:before {
+  transform: translate(-10px, 2px) rotate(45deg);
+  animation: bottom-si .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.arrow-head:after {
+  transform: translate(-10px, -8px) rotate(-90deg);
+  animation: top .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.si .arrow-head:after {
+  transform: translate(-10px, -8px) rotate(-45deg);
+  animation: top-si .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.arrow-tail {
+  position: absolute;
+  width: 30px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--f7-theme-color);
+  transform: translateX(0);
+  animation: tail .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.si .arrow-tail {
+  transform: translateX(15px);
+  width: 40px;
+  animation: tail-si .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+@keyframes square {
+  from {
+    transform: translateX(60%) rotate(45deg);
+  }
+
+  to {
+    transform: translateX(160%) rotate(45deg);
+  }
+}
+
+@keyframes square-si {
+  from {
+    transform: translateX(160%) rotate(45deg);
+  }
+
+  to {
+    transform: translateX(60%) rotate(45deg);
+  }
+}
+
+@keyframes top {
+  from {
+    transform: translate(-10px, -8px) rotate(-45deg);
+  }
+
+  to {
+    transform: translate(-10px, -8px) rotate(-90deg);
+  }
+}
+
+@keyframes top-si {
+  from {
+    transform: translate(-10px, -8px) rotate(-90deg);
+  }
+
+  to {
+    transform: translate(-10px, -8px) rotate(-45deg);
+  }
+}
+
+@keyframes bottom {
+  from {
+    transform: translate(-10px, 2px) rotate(45deg);
+  }
+
+  to {
+    transform: translate(-10px, 2px) rotate(90deg);
+  }
+}
+
+@keyframes bottom-si {
+  from {
+    transform: translate(-10px, 2px) rotate(90deg);
+  }
+
+  to {
+    transform: translate(-10px, 2px) rotate(45deg);
+  }
+}
+
+@keyframes tail {
+  from {
+    transform: translateX(15px);
+  }
+
+  to {
+    transform: translateX(0);
+    width: 30px;
+  }
+}
+
+@keyframes tail-si {
+  from {
+    transform: translateX(0);
+    width: 30px;
+  }
+
+  to {
+    transform: translateX(15px);
+  }
 }

@@ -31,11 +31,17 @@ var app = new Framework7({
     {
       path: '/signup-screen/',
       url: 'pages/signup.html',
+      options: {
+        animate: false,
+      },
     },
     // login page
     {
       path: '/login-screen/',
       url: 'pages/login.html',
+      options: {
+        animate: false,
+      },
     },
     // chat page
 
@@ -123,6 +129,11 @@ var app = new Framework7({
       path: '/school-search-page/',
       url: 'pages/school_search.html',
     },
+    // welcome page
+    {
+      path: '/welcome-page/',
+      url: 'pages/welcome.html',
+    },
   ],
 });
 
@@ -153,6 +164,7 @@ function swipeLeft() {
 function updateSwiper() {
   swiper = app.swiper.get('.swiper-container');
 }
+
 
 
 function loadMainPage() { //Loads all the data on the main page
@@ -240,11 +252,9 @@ function loadMainPage() { //Loads all the data on the main page
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
-  document.addEventListener("backbutton", function(e) {
-    self.app.views.main.router.back();
-
-  }, false);
+  document.addEventListener("backbutton", onBackKeyDown, false);
 }
+
 
 function loadSubscribedChat(chatroomName, chatroomSchool) {
   console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
@@ -291,4 +301,9 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
   }).catch(function(error) {
     console.error("Error loading chat: ", error);
   });
+}
+
+function onBackKeyDown() {
+  // Handle the back button
+  self.app.views.main.router.back();
 }
