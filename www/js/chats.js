@@ -1,11 +1,16 @@
 //////Chats/////
 
-
 //Subscribes a user to the specified chat
 function subscribeToChat(uid, chatID) {
   console.log("subscribing to chat: " + chatID);
-  db.collection("users").doc(uid).collection("chats").doc(chatID).set({
-    school: currentChatSchool
+  //Adds the user to the chat members
+  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
+    memberIDs: firebase.firestore.FieldValue.arrayUnion("" + User.uid),
+    memberNames: firebase.firestore.FieldValue.arrayUnion("" + User.firstName + " " + User.lastName)
+  });
+  //Adds the chatroom to the users chat list
+  db.collection("users").doc(User.uid).update({
+    chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
   });
 }
 
@@ -17,8 +22,19 @@ function unsubscribeFromChat() { //Unsubscribes the user from the specified chat
     console.log("successfully unsubscribed from chat");
   }).catch(function(error) {
     console.error("Error removing document: ", error);
-  });;
+  });
+  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
+    memberIDs: firebase.firestore.FieldValue.arrayRemove("" + User.uid),
+    memberNames: firebase.firestore.FieldValue.arrayRemove("" + User.firstName + " " + User.lastName)
+  });
+  //Removes the chatroom from the users chat list
+  db.collection("users").doc(User.uid).update({
+    chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
+  });
+  console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
 }
+
+
 var currentChat;
 var currentChatSchool;
 
@@ -212,14 +228,16 @@ function createChat() {
   //chatMembers is an array
   var chatMembers = document.querySelectorAll('[data-uid]');
   console.log(chatMembers.length);
+  console.log("new chat");
   //create chat on database
-  db.collection('school').doc(User.school).collection("chats").add({
+  db.collection('school').doc(User.school).collection("chats").doc(chatName.value).set({
       description: chatDescription.value,
       name: chatName.value,
       numberOfMembers: "" + chatMembers.length,
     })
-    .then(function(docRef) {
-      console.log("Chat written with ID: ", docRef.id);
+    .then(function() {
+      console.log("Chat written with ID: ", chatName.value);
+      addMessage(User.school, chatName.value, "Created this room");
     })
     .catch(function(error) {
       console.error("Error adding chat: ", error);

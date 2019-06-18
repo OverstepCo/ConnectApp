@@ -281,9 +281,8 @@
               fullName: function() {
                 return "" + this.firstName + " " + this.lastName;
               },
-              chats: db.collection("users").doc(uid).collection("chats").get()
+              chats: user.get("chatrooms")
             }
-
             loadMainPage();
 
           } else { //If the user data does not exist create new user data // TODO: redirect the user to enter this info

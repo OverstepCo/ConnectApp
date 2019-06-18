@@ -90,21 +90,34 @@ function editUserData() { //Edits the users profile data.
 }
 
 function changeSchool(newSchoolID) {
-
-
-
-
+  var oldSchool = User.school;
   db.collection("users").doc(User.uid).update({
       school: newSchoolID
     })
     .then(function() {
-      self.app.views.main.router.navigate('/home/',
-      { reloadCurrent: true, ignoreCache: true,});
+      //Removes the user from the old school
+      db.collection("school").doc(oldSchool).collection("users").doc(User.uid).delete().then(function() {
+        console.log("Document successfully deleted! Document id: " + oldSchool);
+        self.app.views.main.router.navigate('/home/', {
+          reloadCurrent: true,
+          ignoreCache: true,
+        });
+      }).catch(function(error) {
+        console.error("Error removing document: ", error);
+      });
+      //Adds the user to the new school
+      db.collection("school").doc(newSchoolID).collection("users").doc(User.uid).set({
+          name: "" + User.firstName + " " + User.lastName
+        })
+        .then(function() {
+          console.log(" successfully added user to school");
+        })
+        .catch(function(error) {
+          console.error("Error adding user to school: ", error);
+        });
 
-      loadSchoolEvents();
-      loadSchoolChats();
-      loadSubscribedChats();
 
+      loadMainPage();
       console.log("user school successfully updated!");
       //TODO add user to user array
 
@@ -115,7 +128,7 @@ function changeSchool(newSchoolID) {
 
 }
 
-function searchSchools() { //Loads the schools fromthe database
+function searchSchools() { //Loads the schools from the database
   console.log("load schools");
   var zip = parseInt(document.getElementById("school-zip").value);
   var schoolsList = document.getElementById("schools-list");
