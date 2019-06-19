@@ -54,103 +54,176 @@ function previewChat(chatID, chatSchool) {
   self.app.views.main.router.navigate('/preview-chat-screen/');
 }
 
-var listener; //This is here so w can stop the listener when the page is destroyed
+//This is here so we can stop the listener when the page is destroyed
+var listener;
 
 function setupChat() {
+
   console.log("setting up chat " + currentChatSchool + currentChat);
-  var messages = app.messages.create({ //Some rules and stuff
-    el: '.messages',
-    // First message rule
-    firstMessageRule: function(message, previousMessage, nextMessage) {
-      // Skip if title
-      if (message.isTitle) return false;
-      /* if:
-        - there is no previous message
-        - or previous message type (send/received) is different
-        - or previous message sender name is different
-      */
-      if (!previousMessage || previousMessage.type !== message.type || previousMessage.name !== message.name) return true;
-      return false;
+  var finishedLoadingMessages = false;
+  var messages = null;
+  //Gets all the messages from the chat room and adds them to the local messaging system
+  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc").get().then(function(snapshot) {
+      var messagesArray = [];
+      snapshot.docChanges().forEach(function(change) {
+        console.log(change.doc.get("text"));
+        messagesArray.push({
+          text: change.doc.get("text"),
+          isTitle: false,
+          type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
+          name: change.doc.get("name"),
+          avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+        });
+      });
+
+      messages = app.messages.create({ //Some rules and stuff
+        el: '.messages',
+        messages: messagesArray,
+        // First message rule
+        firstMessageRule: function(message, previousMessage, nextMessage) {
+          // Skip if title
+          if (message.isTitle) return false;
+          /* if:
+            - there is no previous message
+            - or previous message type (send/received) is different
+            - or previous message sender name is different
+          */
+          if (!previousMessage || previousMessage.type !== message.type || previousMessage.name !== message.name) return true;
+          return false;
+        },
+        // Last message rule
+        lastMessageRule: function(message, previousMessage, nextMessage) {
+          // Skip if title
+          if (message.isTitle) return false;
+          /* if:
+            - there is no next message
+            - or next message type (send/received) is different
+            - or next message sender name is different
+          */
+          if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
+          return false;
+        },
+        // Last message rule
+        tailMessageRule: function(message, previousMessage, nextMessage) {
+          // Skip if title
+          if (message.isTitle) return false;
+          /* if (bascially same as lastMessageRule):
+            - there is no next message
+            - or next message type (send/received) is different
+            - or next message sender name is different
+          */
+          if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
+          return false;
+        }
+      });
+      //Adds a listener for any new chat messages
+      listener = db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc")
+        .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
+            if (finishedLoadingMessages) {
+              snapshot.docChanges().forEach(function(change) {
+                if (change.type === "added") {
+                  console.log(change.doc.get("text"));
+                  messages.addMessage({
+                    text: change.doc.get("text"),
+                    isTitle: false,
+                    type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
+                    name: change.doc.get("name"),
+                    avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+                  });
+                }
+              });
+            }
+            //...
+            finishedLoadingMessages = true;
+          },
+          function(error) {
+            //...
+          });
+
+      // Init Messagebar
+      var messagebar = app.messagebar.create({
+        el: '.messagebar'
+      });
+
+      // Response flag ///////Not used currently
+      var responseInProgress = false;
+
+      // Send Message
+      $$('.send-link').on('click', function() {
+        var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
+        // return if empty message
+        if (!text.length) return;
+        // Clear area
+        messagebar.clear();
+        // Return focus to area
+        messagebar.focus();
+        //Add message to the server.
+        addMessage(currentChatSchool, currentChat, text);
+        if (responseInProgress) return;
+        // Receive dummy message
+      });
+
+
+
+      //...
     },
-    // Last message rule
-    lastMessageRule: function(message, previousMessage, nextMessage) {
-      // Skip if title
-      if (message.isTitle) return false;
-      /* if:
-        - there is no next message
-        - or next message type (send/received) is different
-        - or next message sender name is different
-      */
-      if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
-      return false;
-    },
-    // Last message rule
-    tailMessageRule: function(message, previousMessage, nextMessage) {
-      // Skip if title
-      if (message.isTitle) return false;
-      /* if (bascially same as lastMessageRule):
-        - there is no next message
-        - or next message type (send/received) is different
-        - or next message sender name is different
-      */
-      if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
-      return false;
+    function(error) {
+      //...
+    });
+
+
+
+  //----------Lazy Load----------//
+  // Loading flag
+  var allowInfinite = true;
+
+  var totalMessages = 0;
+
+  // Max items to load
+  var maxItems = 2000;
+
+  // Append items per load
+  var messagesPerLoad = 20;
+
+  // Attach 'infinite' event handler
+  $$('.infinite-scroll-content').on('infinite', function() {
+    // Exit, if loading in progress
+    if (!allowInfinite) return;
+
+    // Set loading flag
+    allowInfinite = false;
+
+    lazyLoad();
+  });
+
+  function lazyLoad() {
+    console.log("loading messages");
+
+
+    if (totalMessages >= maxItems) {
+      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+      app.infiniteScroll.destroy('.infinite-scroll-content');
+      // Remove preloader
+      $$('.infinite-scroll-preloader').remove();
+      return;
     }
 
-  });
+    // TODO: load messages from DB
+    //
+    //
+    //
+    //
 
-  // Init Messagebar
-  var messagebar = app.messagebar.create({
-    el: '.messagebar'
-  });
+    totalMessages++;
 
-  // Response flag
-  var responseInProgress = false;
-
-  // Send Message
-  $$('.send-link').on('click', function() {
-    var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
-    // return if empty message
-    if (!text.length) return;
-    // Clear area
-    messagebar.clear();
-    // Return focus to area
-    messagebar.focus();
-    //Add message to the server.
-    addMessage(currentChatSchool, currentChat, text);
-    if (responseInProgress) return;
-    // Receive dummy message
-  });
-
-  //loads the chat messages and add a listener for any new chat messages
-  listener = db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc")
-    .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
-        snapshot.docChanges().forEach(function(change) {
-          if (change.type === "added") {
-            console.log(change.doc.get("text"));
-            messages.addMessage({
-              text: change.doc.get("text"),
-              type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
-              name: change.doc.get("name"),
-              avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
-            });
-          }
-        });
-        //...
-      },
-      function(error) {
-        //...
-      });
-  //document.getElementById("group-name").innerHTML = "whaaa";
-  //  messages.addMessage({
-  //  text: "helooo",
-  //});
+    // Reset loading flag
+    allowInfinite = true;
+  }
 }
 
 
 
 function loadChatMessages(chatID, chatSchool) {
-
 
 
 }
@@ -171,57 +244,7 @@ function addMessage(school, chatID, message) { //Adds a message to the specified
     });
 }
 
-
-//----------Lazy Load----------//
-// Loading flag
-var allowInfinite = true;
-
-var totalMessages = 0;
-
-// Max items to load
-var maxItems = 2000;
-
-// Append items per load
-var messagesPerLoad = 20;
-
-// Attach 'infinite' event handler
-$$('.infinite-scroll-content').on('infinite', function() {
-  // Exit, if loading in progress
-  if (!allowInfinite) return;
-
-  // Set loading flag
-  allowInfinite = false;
-
-  lazyLoad();
-});
-
-function lazyLoad() {
-
-
-  if (totalMessages >= maxItems) {
-    // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-    app.infiniteScroll.destroy('.infinite-scroll-content');
-    // Remove preloader
-    $$('.infinite-scroll-preloader').remove();
-    return;
-  }
-
-  // TODO: load messages from DB
-  //
-  //
-  //
-  //
-  totalMessages++;
-
-  // Reset loading flag
-  allowInfinite = true;
-}
-
-
-
-
-//NEW CHAT PAGE-----------------------------------------------------------------
-
+//NEW CHAT Room-----------------------------------------------------------------
 function createChat() {
   var chatName = document.getElementById("chat-name");
   var chatDescription = document.getElementById("chat-description");
@@ -250,11 +273,9 @@ function createChat() {
 }
 
 function addChip(li) {
-
   //if the user isn't already added
   if (li.dataset.checked == 0) {
     var chipsDiv = document.getElementById("chips-div");
-
     //create a new chip
     var chip = document.createElement('div');
     chip.classList.add("chip");
