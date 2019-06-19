@@ -200,8 +200,8 @@ function loadMainPage() { //Loads all the data on the main page
          <div class="item-inner">\
            <div class="item-title-row">\
              <div class="item-title">' + doc.get("name") + '</div>\
+             <div class="item-after">' + doc.get("numberOfMembers") + ' Members</div>\
            </div>\
-           <div class="item-subtitle">' + doc.get("numberOfMembers") + ' Members</div>\
            <div class="item-text">' + doc.get("description") + '</div>\
          </div>\
        </a>';

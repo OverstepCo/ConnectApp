@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="color-theme-red">
+<html class="color-theme-red theme-dark">
 
 <head>
   <meta charset="utf-8">
@@ -76,10 +76,6 @@
                 <i class="material-icons icon">menu</i>
               </a>
             </div>
-            <div>
-              <h1>School Of Ross</h1>
-              <p>32 Members | 12 Chats | 7 Events</p>
-            </div>
             <div class="right">
               <a href="/profile-screen/" class="link icon-only">
                 <i class="material-icons icon">person</i>
@@ -115,157 +111,161 @@
               <i onclick="swipeRight()" class="material-icons">keyboard_arrow_right</i>
             </div>
           </div>
-          <div id="event-swiper-wrapper" data-space-between="0" data-slides-per-view="1" class="swiper-container event-swiper">
+          <div id="event-swiper-wrapper" data-space-between="0" data-slides-per-view="2" class="swiper-container event-swiper">
             <div id="event-swiper" class="swiper-wrapper">
-
-
-
-
             </div>
           </div>
-          <div class="card-block no-margin-top">
-            <div class="title">Subscribed Chats</div>
-            <div class="hairline"></div>
-
-            <div id="subscribed-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
-              <ul>
-                <li class="item-content skeleton-effect-pulse">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text line 2
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse delay-1ds">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title because why not</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse delay-2ds">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is a longer Title</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text becuz im cool
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
-              <ul id="subscribed-chats">
-
-              </ul>
-            </div>
+          <div class="toolbar toolbar-home">
+            <a href="#tab-1" class="tab-link tab-link-active">Subscribed</a>
+            <a href="#tab-2" class="tab-link">Unsubscribed</a>
+            <a href="#tab-3" class="tab-link">Members</a>
           </div>
-          <div class="card-block">
-            <div class="title">Unsubscribed Chats</div>
-            <div class="hairline"></div>
-
-            <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
-              <ul>
-                <li class="item-content skeleton-effect-pulse delay-3ds">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text line 2
-                    </div>
+          <div class="tabs-swipeable-wrap" style="height: 50%">
+            <div class="tabs">
+              <div id="tab-1" class="page-content tab tab-active no-padding-top">
+                <div class="block no-margin-top">
+                  <div id="subscribed-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
+                    <ul>
+                      <li class="item-content skeleton-effect-pulse">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text line 2
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-1ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title because why not</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-2ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is a longer Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text becuz im cool
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse delay-4ds">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title because why not</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text
-                    </div>
+                  <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
+                    <ul id="subscribed-chats">
+                    </ul>
                   </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse delay-5ds">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is a longer Title</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text becuz im
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="list media-list chevron-center no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
-              <ul class="school-group-chats" id="school-group-chats">
-
-              </ul>
-            </div>
-            <div class="row justify-content-center"><a class="link"><i class="material-icons">expand_more</i></a></div>
-          </div>
-          <div class="card-block">
-            <div class="title">School Members</div>
-            <div class="hairline"></div>
-
-            <form id="school-searchbar" class="searchbar searchbar-inline">
-              <div class="searchbar-inner">
-                <div class="searchbar-input-wrap">
-                  <input type="search" placeholder="Search">
-                  <i class="searchbar-icon"></i>
-                  <span class="input-clear-button"></span>
                 </div>
-                <span class="searchbar-disable-button if-not-aurora">Cancel</span>
               </div>
-            </form>
-
-            <div id="members-list-skeleton" class="list media-list no-hairlines no-hairlines-between no-margin-top skeleton-text">
-              <ul>
-                <li class="item-content skeleton-effect-pulse">
-                  <div class="item-media">
-                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+              <div id="tab-2" class="page-content tab no-padding-top">
+                <div class="block no-margin-top">
+                  <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
+                    <ul>
+                      <li class="item-content skeleton-effect-pulse">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text line 2
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-1ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title because why not</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-2ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is a longer Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text becuz im
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                  <div class="item-inner">
-                    <div>Title Long</div>
+                  <div class="list media-list no-chevron no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
+                    <ul class="school-group-chats" id="school-group-chats">
+                    </ul>
                   </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse delay-1ds">
-                  <div class="item-media">
-                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                </div>
+              </div>
+              <div id="tab-3" class="page-content tab no-padding-top">
+                <div class="block no-margin-top">
+                  <form id="school-searchbar" class="searchbar searchbar-inline">
+                    <div class="searchbar-inner">
+                      <div class="searchbar-input-wrap">
+                        <input type="search" placeholder="Search">
+                        <i class="searchbar-icon"></i>
+                        <span class="input-clear-button"></span>
+                      </div>
+                      <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+                    </div>
+                  </form>
+                  <div id="members-list-skeleton" class="list media-list no-hairlines no-hairlines-between no-margin-top skeleton-text">
+                    <ul>
+                      <li class="item-content skeleton-effect-pulse">
+                        <div class="item-media">
+                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                        </div>
+                        <div class="item-inner">
+                          <div>Title Long</div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-1ds">
+                        <div class="item-media">
+                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                        </div>
+                        <div class="item-inner">
+                          <div>Title Even Longer</div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-2ds">
+                        <div class="item-media">
+                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                        </div>
+                        <div class="item-inner">
+                          <div>Title Longerr</div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                  <div class="item-inner">
-                    <div>Title Even Longer</div>
+                  <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+                    <ul id="members-list">
+                    </ul>
                   </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse delay-2ds">
-                  <div class="item-media">
-                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                  <!-- Nothing found message -->
+                  <div class="block searchbar-not-found">
+                    <div class="block-inner">Nothing found</div>
                   </div>
-                  <div class="item-inner">
-                    <div>Title Longerr</div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-              <ul id="members-list">
-              </ul>
-            </div>
-            <!-- Nothing found message -->
-            <div class="block searchbar-not-found">
-              <div class="block-inner">Nothing found</div>
+                </div>
+              </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
 
 
         </div>

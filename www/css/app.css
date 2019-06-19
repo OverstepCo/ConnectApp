@@ -103,6 +103,21 @@
   text-transform: capitalize;
 }
 
+.item-link .item-title {
+  font-weight: bold !important;
+  color: black;
+}
+
+.theme-dark .item-link .item-title {
+  color: white;
+}
+
+.item-link .item-text {
+  white-space: var(--f7-list-item-title-white-space);
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
 .card-block {
   margin: 16px;
   padding: 8px;
@@ -156,24 +171,17 @@ img {
   animation-delay: .2s;
 }
 
-.delay-3ds {
-  animation-delay: .3s;
-}
-
-.delay-4ds {
-  animation-delay: .4s;
-}
-
-.delay-5ds {
-  animation-delay: .5s;
-}
-
 .message-bubble {
   padding: 10px;
 }
 
 .message-bubble::before {
   display: none;
+}
+
+.button {
+  margin: 0 auto;
+  width: 50%;
 }
 
 /********** PANEL **********/
@@ -227,17 +235,13 @@ img {
   opacity: .7;
 }
 
-.event-swiper .swiper-slide {
-  width: auto;
-}
-
 .event-swiper .slide-content {
   font-size: 25px;
   color: white;
   background-color: var(--f7-theme-color);
-  box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  margin: 32px 16px 16px 16px;
+  margin: 32px 16px 32px 16px;
 }
 
 .slide-text {
@@ -335,6 +339,28 @@ img {
   transform: translate(-50%, -50%);
   z-index: 100;
   box-shadow: 0 0 0 100vh rgba(0, 0, 0, 0.2);
+}
+
+.toolbar-home {
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.toolbar-home .tab-link {
+  color: lightgray;
+  transition: all .2s;
+}
+
+.theme-dark .toolbar-home .tab-link {
+  color: gray;
+}
+
+.toolbar-home .tab-link-active {
+  color: var(--f7-theme-color);
+  font-weight: bold;
+  font-size: 15pt;
 }
 
 /********** PROFILE **********/
@@ -634,4 +660,160 @@ img {
   to {
     transform: translateX(15px);
   }
+}
+
+/**********ANIMATIONS**********/
+.animate {
+  -webkit-animation-duration: .5s;
+  animation-duration: .5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+/*=== FADE IN  ===*/
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+/*=== FADE IN DOWN ===*/
+@-webkit-keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+}
+
+/*==== FADE IN UP ===*/
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+/*=== FADE IN LEFT ===*/
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-20px, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInLeft {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+
+/*==== FADE IN RIGHT ===*/
+@-webkit-keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(20px, 0, 0);
+    transform: translate3d(20px, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(20px, 0, 0);
+    transform: translate3d(20px, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInRight {
+  -webkit-animation-name: fadeInRight;
+  animation-name: fadeInRight;
 }

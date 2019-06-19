@@ -1,43 +1,45 @@
 <div class="page no-navbar no-toolbar no-swipeback">
   <div class="page-content login-screen-content">
-    <div class="login-screen-title">Sign In</div>
-    <div class="row justify-content-center">
-      <div class="login-icon si">
-        <div class="square"></div>
-        <div class="arrow-head"></div>
-        <div class="arrow-tail"></div>
+    <div>
+      <div class="login-screen-title">Sign In</div>
+      <div class="row justify-content-center">
+        <div class="login-icon si">
+          <div class="square"></div>
+          <div class="arrow-head"></div>
+          <div class="arrow-tail"></div>
+        </div>
       </div>
-    </div>
-    <div class="center-vertically">
+      <div class="center-vertically animate fadeIn">
 
-      <div class="block">
-        <form>
-          <div class="list">
-            <ul>
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-input-wrap">
-                    <input id="uname" type="text" name="email" placeholder="Email address">
+        <div class="block">
+          <form>
+            <div class="list">
+              <ul>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input id="uname" type="text" name="email" placeholder="Email address">
+                    </div>
                   </div>
-                </div>
-              </li>
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-input-wrap">
-                    <input id="pword" type="password" placeholder="Password">
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input id="pword" type="password" placeholder="Password">
+                    </div>
                   </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="block">
-            <div class="block-footer">
-              <a class="button button-fill button-round" onclick="signIn()">Sign In</a>
-              <p id="errmsg" style="color: red;"></p>
-              <p>New user? <a href="/signup-screen/" class="link">Sign Up</a></p>
+                </li>
+              </ul>
             </div>
-          </div>
-        </form>
+            <div class="block">
+              <div class="block-footer">
+                <a class="button button-fill button-round" onclick="signIn()">Sign In</a>
+                <p id="errmsg" style="color: red;"></p>
+                <p>New user? <a href="/signup-screen/" class="link">Sign Up</a></p>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
