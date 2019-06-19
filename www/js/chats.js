@@ -184,7 +184,7 @@ function setupChat() {
       //...
     });
 
-
+}
 
   //----------Lazy Load----------//
   // Loading flag
@@ -273,6 +273,7 @@ function setupChat() {
   }
 
   function addChip(li) {
+
     //if the user isn't already added
     if (li.dataset.checked == 0) {
       var chipsDiv = document.getElementById("chips-div");
