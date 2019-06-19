@@ -231,19 +231,20 @@ function loadMainPage() { //Loads all the data on the main page
   });
   //////////////Loads the users attending this school
   db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
-    var membersList;
+    var membersList = document.getElementById("members-list");
     querySnapshot.forEach(function(doc) {
       //This loop runs once for every user in the current school
       console.log("username: " + doc.get("name"));
-      /*  var a = document.createElement('a');
-        a.innerHTML="<li class="item-content">
-          <div class="item-media">
-            <i class="material-icons gradient-icon">person</i>
-          </div>
-          <div class="item-inner">Krombopulos Mike</div>
-        </li>";
-        membersList.appendChild(a);*/
+        var a = document.createElement('a');
+        a.classList.add("item-link");
+        a.classList.add("no-chevron");
+        a.innerHTML='<li class="item-content"><div class="item-media">' +
+          ' <i class="material-icons gradient-icon">person</i></div>' +
+          '<div class="item-inner">' + doc.get("name") + '</div></li>';
+        membersList.appendChild(a);
     });
+    var skeleton = document.getElementById('members-list-skeleton');
+    skeleton.parentNode.removeChild(skeleton);
   });
 
 }

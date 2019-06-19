@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="color-theme-red">
 
 <head>
   <meta charset="utf-8">
@@ -14,7 +14,7 @@
 <body>
   <div id="app">
     <div class="panel panel-left panel-cover panel-resizable">
-      <div class="block panel-header gradient-background">
+      <div class="block panel-header bg-color-primary">
         <img src="media/logo.png">
         <h2>Connect</h2>
         <p>Connect App Description</p>
@@ -23,31 +23,31 @@
         <ul>
           <a href="/profile-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+              <div class="item-media"><i class="material-icons">person</i></div>
               <div class="item-inner">My Profile</div>
             </li>
           </a>
           <a href="/school-search-page/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">school</i></div>
+              <div class="item-media"><i class="material-icons">school</i></div>
               <div class="item-inner">Change School</div>
             </li>
           </a>
           <a href="/settings-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">settings</i></div>
+              <div class="item-media"><i class="material-icons">settings</i></div>
               <div class="item-inner">Settings</div>
             </li>
           </a>
           <a href="/about-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">info</i></div>
+              <div class="item-media"><i class="material-icons">info</i></div>
               <div class="item-inner">About</div>
             </li>
           </a>
           <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">cloud_off</i></div>
+              <div class="item-media"><i class="material-icons">cloud_off</i></div>
               <div class="item-inner">Sign Out</div>
             </li>
           </a>
@@ -56,7 +56,7 @@
 
           <a href="/welcome-page/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">add</i></div>
+              <div class="item-media"><i class="material-icons">add</i></div>
               <div class="item-inner">Welcome</div>
             </li>
           </a>
@@ -91,23 +91,23 @@
         <!-- Floating Action Button -->
         <div class="fab fab-right-bottom">
           <a href="#">
-            <i class="icon material-icons">add</i>
-            <i class="icon material-icons">close</i>
+            <i class="icon material-icons text-color-white">add</i>
+            <i class="icon material-icons text-color-white">close</i>
           </a>
           <!-- FAB speed dial actions with labels -->
           <div class="fab-buttons fab-buttons-top fab-morf" data-morph-to=".card-block">
             <a href="/new-chat-screen/" class="fab-label-button fab-close">
-              <i class="icon material-icons" style="font-size: 15pt">message</i>
+              <i class="icon material-icons text-color-white" style="font-size: 15pt">message</i>
               <span class="fab-label">New Chat</span>
             </a>
             <a href="/new-event-screen/" class="fab-label-button fab-close">
-              <i class="icon material-icons">event_note</i>
+              <i class="icon material-icons text-color-white">event_note</i>
               <span class="fab-label">New Event</span>
             </a>
           </div>
         </div>
 
-        <div class="page-content" style="background-color: #edeff2">
+        <div class="page-content">
           <div class="row title justify-items-left no-margin-bottom">
             <div>Upcoming Events</div>
             <div class="left">
@@ -139,13 +139,23 @@
                     </div>
                   </div>
                 </li>
-                <li class="item-content skeleton-effect-pulse">
+                <li class="item-content skeleton-effect-pulse delay-1ds">
                   <div class="item-inner">
                     <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
+                      <div class="item-title">This is Title because why not</div>
                     </div>
                     <div class="item-text">
-                      Placeholder text line 1 Text
+                      Placeholder text
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content skeleton-effect-pulse delay-2ds">
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">This is a longer Title</div>
+                    </div>
+                    <div class="item-text">
+                      Placeholder text line 1 Text becuz im cool
                     </div>
                   </div>
                 </li>
@@ -164,25 +174,33 @@
 
             <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
               <ul>
-                <li class="item-content skeleton-effect-pulse">
+                <li class="item-content skeleton-effect-pulse delay-3ds">
                   <div class="item-inner">
                     <div class="item-title-row">
                       <div class="item-title">This is Title</div>
                     </div>
-                    <div class="item-subtitle">Subtitle</div>
                     <div class="item-text">
                       Placeholder text line 1 Text line 2
                     </div>
                   </div>
                 </li>
-                <li class="item-content skeleton-effect-pulse">
+                <li class="item-content skeleton-effect-pulse delay-4ds">
                   <div class="item-inner">
                     <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
+                      <div class="item-title">This is Title because why not</div>
                     </div>
-                    <div class="item-subtitle">Subtitle</div>
                     <div class="item-text">
-                      Placeholder text line 1 Text
+                      Placeholder text
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content skeleton-effect-pulse delay-5ds">
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">This is a longer Title</div>
+                    </div>
+                    <div class="item-text">
+                      Placeholder text line 1 Text becuz im
                     </div>
                   </div>
                 </li>
@@ -209,21 +227,38 @@
                 <span class="searchbar-disable-button if-not-aurora">Cancel</span>
               </div>
             </form>
-            <div id="members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-              <ul>
-                <a href="#" class="item-link no-chevron">
-                  <li class="item-content">
-                    <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
-                    <div class="item-inner">Krombopulos Mike</div>
-                  </li>
-                </a>
-                <a href="#" class="item-link no-chevron">
-                  <li class="item-content">
-                    <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
-                    <div class="item-inner">Jane Smith</div>
-                  </li>
-                </a>
 
+            <div id="members-list-skeleton" class="list media-list no-hairlines no-hairlines-between no-margin-top skeleton-text">
+              <ul>
+                <li class="item-content skeleton-effect-pulse">
+                  <div class="item-media">
+                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                  </div>
+                  <div class="item-inner">
+                    <div>Title Long</div>
+                  </div>
+                </li>
+                <li class="item-content skeleton-effect-pulse delay-1ds">
+                  <div class="item-media">
+                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                  </div>
+                  <div class="item-inner">
+                    <div>Title Even Longer</div>
+                  </div>
+                </li>
+                <li class="item-content skeleton-effect-pulse delay-2ds">
+                  <div class="item-media">
+                    <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                  </div>
+                  <div class="item-inner">
+                    <div>Title Longerr</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+              <ul id="members-list">
               </ul>
             </div>
             <!-- Nothing found message -->

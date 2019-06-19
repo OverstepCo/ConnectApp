@@ -1,3 +1,7 @@
+:root {
+  --f7-message-bubble-border-radius: 15px;
+}
+
 @font-face {
   font-family: 'Framework7 Icons';
   font-style: normal;
@@ -52,6 +56,7 @@
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
+  color: var(--f7-theme-color);
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -79,10 +84,6 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.page {
-  background-color: white;
-}
-
 .bold {
   font-weight: bold;
 }
@@ -91,18 +92,8 @@
   color: white;
 }
 
-.gradient-icon {
-  background: -webkit-linear-gradient(90deg, #007bff, #2245f5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.navbar {
-  background-color: white;
-}
-
 .navbar-home {
-  background-color: rgba(237, 239, 242, .9);
+  background-color: rgba(255, 255, 255, .9);
 }
 
 .title {
@@ -115,10 +106,15 @@
 .card-block {
   margin: 16px;
   padding: 8px;
+  border: .5px solid lightgray;
+  background-color: #f9f9f9;
   border-radius: 15px;
-  background-color: white;
-  box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
-  transition: all .2s;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, .05);
+  transition: all .2s cubic-bezier(.5, .5, 0, 1);
+}
+
+.card-block * {
+  background-color: #f9f9f9;
 }
 
 img {
@@ -152,12 +148,39 @@ img {
   width: 100%;
 }
 
+.delay-1ds {
+  animation-delay: .1s;
+}
+
+.delay-2ds {
+  animation-delay: .2s;
+}
+
+.delay-3ds {
+  animation-delay: .3s;
+}
+
+.delay-4ds {
+  animation-delay: .4s;
+}
+
+.delay-5ds {
+  animation-delay: .5s;
+}
+
+.message-bubble {
+  padding: 10px;
+}
+
+.message-bubble::before {
+  display: none;
+}
+
 /********** PANEL **********/
 .panel-header {
   margin: 0;
   padding: 16px;
-  box-shadow: 0 0px 10px 0px rgba(0, 122, 255, 0.3);
-  color: white;
+  box-shadow: 0 0px 10px 0px rgba(var(--f7-theme-color-rgb), 0.3);
 }
 
 .panel-header p {
@@ -190,10 +213,6 @@ img {
   margin: 32px 16px 16px 16px
 }
 
-.gradient-background {
-  background: linear-gradient(90deg, #007bff, #2245f5);
-}
-
 /********** HOME **********/
 .school-header h1 {
   text-transform: uppercase;
@@ -215,7 +234,7 @@ img {
 .event-swiper .slide-content {
   font-size: 25px;
   color: white;
-  background-color: #2245F5;
+  background-color: var(--f7-theme-color);
   box-shadow: 0 2px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin: 32px 16px 16px 16px;
@@ -276,7 +295,7 @@ img {
 
 .collapsible-toggle {
   transform: rotate(0);
-  transition: all .2s;
+  transition: all .2s cubic-bezier(.5, .5, 0, 1);
   transition-delay: .3s;
 }
 
@@ -288,7 +307,7 @@ img {
 .collapsible {
   height: 0px;
   overflow: hidden;
-  transition: height .3s;
+  transition: height .3s cubic-bezier(.5, .5, 0, 1);
 }
 
 .expanded {
@@ -321,7 +340,7 @@ img {
 /********** PROFILE **********/
 .profile-bg {
   height: 200px;
-  background: linear-gradient(90deg, #007bff, #2245f5);
+  background: linear-gradient(90deg, var(--f7-theme-color), #2245f5);
 }
 
 .profile-pic {
@@ -358,7 +377,7 @@ img {
   margin: 0;
   font-size: 20pt;
   letter-spacing: 1px;
-  color: #2245f5;
+  color: var(--f7-theme-color);
 }
 
 /********** NEW EVENT **********/
@@ -406,7 +425,7 @@ img {
 .swiper-pagination-bullet {
   border-radius: 4px;
   width: 16px;
-  transition: all .2s;
+  transition: all .4s cubic-bezier(.5, .5, 0, 1);
 }
 
 .swiper-pagination-bullet-active {

@@ -150,7 +150,7 @@ function searchSchools() { //Loads the schools from the database
       li.innerHTML = '<div class="title">' + doc.get("name") +
         '</div><div class="hairline"></div><div class="school-attributes"><p>' +
         doc.get("address") + ' ' + doc.get("city") + ', ' + doc.get("state") +
-        '</p><p>' + doc.get("level") + 'School</p></div>' +
+        '</p><p>' + doc.get("level") + ' School</p></div>' +
         '<button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
       schoolsList.appendChild(li);
 
