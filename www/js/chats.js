@@ -6,12 +6,12 @@ var currentChatSchool;
 var finishedLoadingMessages = false;
 var loadingMessages = false;
 var totalMessages = 0;
-
+var oldestTimestamp;
 // Max items to load
 var maxItems = 2000;
 
 //How many messages to load at at time. Probably should be no less than 50
-var messagesPerLoad = 20;
+var messagesPerLoad = 50;
 
 
 //This is here so we can stop the listener when the page is destroyed
@@ -76,13 +76,14 @@ function setupChat() {
   console.log("setting up chat " + currentChatSchool + currentChat);
 
   //Gets all the messages from the chat room and adds them to the local messaging system
-  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc").get().then(function(snapshot) {
+  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
       var messagesArray = [];
       snapshot.docChanges().forEach(function(change) {
         console.log(change.doc.get("text"));
-        messagesArray.push({
+        oldestTimestamp = change.doc.get("timestamp");
+        messagesArray.unshift({
           text: change.doc.get("text"),
-          isTitle: false,
+          isTitle: change.doc.get("isTitle"),
           type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
           name: change.doc.get("name"),
           avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
@@ -138,21 +139,40 @@ function setupChat() {
                   console.log(change.doc.get("text"));
                   messages.addMessage({
                     text: change.doc.get("text"),
-                    isTitle: false,
+                    isTitle: change.doc.get("isTitle"),
                     type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
                     name: change.doc.get("name"),
                     avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
                   });
                 }
               });
+
             }
-            //...
             finishedLoadingMessages = true;
+
+            //...
+
           },
           function(error) {
             //...
           });
 
+      // Attach 'infinite' event handler
+      $$('.infinite-scroll-content').on('infinite', function() {
+        console.log("loading messsages: " + loadingMessages);
+
+        if (!loadingMessages) {
+          if (totalMessages >= maxItems) {
+            // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+            app.infiniteScroll.destroy('.infinite-scroll-content');
+            // Remove preloader
+            $$('.infinite-scroll-preloader').remove();
+            return;
+          }
+          loadingMessages = true;
+          loadChatMessages();
+        }
+      });
       // Init Messagebar
       var messagebar = app.messagebar.create({
         el: '.messagebar'
@@ -184,126 +204,134 @@ function setupChat() {
       //...
     });
 
-}
+
 
   //----------Lazy Load----------//
   // Loading flag
   var allowInfinite = true;
 
 
-  // Attach 'infinite' event handler
-  $$('.infinite-scroll-content').on('infinite', function() {
-    console.log("loading messsages: " + loadingMessages);
-    if (!loadingMessages) {
-      if (totalMessages >= maxItems) {
-        // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-        app.infiniteScroll.destroy('.infinite-scroll-content');
-        // Remove preloader
-        $$('.infinite-scroll-preloader').remove();
-        return;
-      }
-      loadingMessages = true;
-      loadChatMessages();
-      totalMessages += messagesPerLoad;
-    }
-  });
 
-  function loadChatMessages() {
-    console.log("loading more chat messages");
-    if (finishedLoadingMessages) {
-      db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc")
-        .get().then(function(snapshot) {
-          snapshot.forEach(function(doc) {
-            messages.addMessage({
-              text: doc.get("text"),
-              isTitle: false,
-              type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
-              name: doc.get("name"),
-              avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
-            }, "prepend");
-            loadingMessages = false;
-          });
-          //...
+}
+
+function loadChatMessages() {
+  console.log("loading more chat messages");
+
+  if (finishedLoadingMessages) {
+    totalMessages += messagesPerLoad;
+    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").where('timestamp', '<', oldestTimestamp).orderBy("timestamp", "desc").limit(totalMessages)
+      .get().then(function(snapshot) {
+        if (snapshot.size < 1) {
+          console.log("There are no more messages in this chatroom.");
+          // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+          app.infiniteScroll.destroy('.infinite-scroll-content');
+          // Remove preloader
+          $$('.infinite-scroll-preloader').remove();
+        }
+        snapshot.forEach(function(doc) {
+          oldestTimestamp = doc.get("timestamp");
+          messages.addMessage({
+            text: doc.get("text"),
+            isTitle: change.doc.get("isTitle"),
+            type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
+            name: doc.get("name"),
+            avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+          }, "prepend");
+          loadingMessages = false;
         });
-    }
-  }
+        //...
+      });
+  } else {
+    loadingMessages = false;
 
-  function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
-    db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
+  }
+}
+
+function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
+  db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
+      userID: User.uid,
+      name: User.fullName(),
+      profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
+      text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
+}
+
+//NEW CHAT Room-----------------------------------------------------------------
+function createChat() {
+  var chatName = document.getElementById("chat-name");
+  var chatDescription = document.getElementById("chat-description");
+  //chatMembers is an array
+  var chatMembers = document.querySelectorAll('[data-uid]');
+  console.log(chatMembers.length);
+  console.log("new chat");
+  //create chat on database
+  db.collection('school').doc(User.school).collection("chats").doc(chatName.value).set({
+      description: chatDescription.value,
+      name: chatName.value,
+      numberOfMembers: "" + chatMembers.length,
+    })
+    .then(function() {
+      console.log("Chat written with ID: ", chatName.value);
+      //  addMessage(User.school, chatName.value, User.firstName + " " + User.lastName + " created this room");
+
+      db.collection("school").doc(User.school).collection("chats").doc(chatName.value).collection("messages").add({
         userID: User.uid,
         name: User.fullName(),
+        isTitle: true,
         profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
-        text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
+        text: "<b>" + User.firstName + " " + User.lastName + "</b> created this room", //document.getElementById("messagebar").value, //not sure if this is the best way to do this
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       })
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
+    })
+    .catch(function(error) {
+      console.error("Error adding chat: ", error);
+    });
+
+  //subscribe added users to chat
+  for (var i = 0; i < chatMembers.length; i++) {
+    subscribeToChat(chatMembers[i], User.school);
   }
+}
 
-  //NEW CHAT Room-----------------------------------------------------------------
-  function createChat() {
-    var chatName = document.getElementById("chat-name");
-    var chatDescription = document.getElementById("chat-description");
-    //chatMembers is an array
-    var chatMembers = document.querySelectorAll('[data-uid]');
-    console.log(chatMembers.length);
-    console.log("new chat");
-    //create chat on database
-    db.collection('school').doc(User.school).collection("chats").doc(chatName.value).set({
-        description: chatDescription.value,
-        name: chatName.value,
-        numberOfMembers: "" + chatMembers.length,
-      })
-      .then(function() {
-        console.log("Chat written with ID: ", chatName.value);
-        addMessage(User.school, chatName.value, "Created this room");
-      })
-      .catch(function(error) {
-        console.error("Error adding chat: ", error);
-      });
+function addChip(li) {
 
-    //subscribe added users to chat
-    for (var i = 0; i < chatMembers.length; i++) {
-      subscribeToChat(chatMembers[i], User.school);
-    }
-  }
-
-  function addChip(li) {
-
-    //if the user isn't already added
-    if (li.dataset.checked == 0) {
-      var chipsDiv = document.getElementById("chips-div");
-      //create a new chip
-      var chip = document.createElement('div');
-      chip.classList.add("chip");
-      chip.innerHTML = '<div class="chip-media">\
+  //if the user isn't already added
+  if (li.dataset.checked == 0) {
+    var chipsDiv = document.getElementById("chips-div");
+    //create a new chip
+    var chip = document.createElement('div');
+    chip.classList.add("chip");
+    chip.innerHTML = '<div class="chip-media">\
   <div class="chip-pic" style="background-image: url(\'' + li.dataset.pic + '\')"></div>\
   </div>\
   <div class="chip-label">' + li.dataset.name + '</div>\
   <a href="#" onclick="removeChip(this, \'' + li.dataset.uid + '\')" class="chip-delete"></a>';
 
-      //add chip to the screen
-      chipsDiv.appendChild(chip);
+    //add chip to the screen
+    chipsDiv.appendChild(chip);
 
-      //add a check mark to the added user
-      var rightDiv = li.querySelector('.right');
-      rightDiv.innerHTML = '<i class="material-icons">check</i>';
-      li.dataset.checked = 1;
-    }
-  }
-
-  function removeChip(chip, uid) {
-    //find user in the list and uncheck it
-    var li = document.querySelectorAll('[data-uid="' + uid + '"]');
-    li = li[0];
+    //add a check mark to the added user
     var rightDiv = li.querySelector('.right');
-    rightDiv.innerHTML = '';
-    li.dataset.checked = 0;
-
-    //remove chip
-    chip.parentNode.parentNode.removeChild(chip.parentNode);
+    rightDiv.innerHTML = '<i class="material-icons">check</i>';
+    li.dataset.checked = 1;
   }
+}
+
+function removeChip(chip, uid) {
+  //find user in the list and uncheck it
+  var li = document.querySelectorAll('[data-uid="' + uid + '"]');
+  li = li[0];
+  var rightDiv = li.querySelector('.right');
+  rightDiv.innerHTML = '';
+  li.dataset.checked = 0;
+
+  //remove chip
+  chip.parentNode.parentNode.removeChild(chip.parentNode);
+}
