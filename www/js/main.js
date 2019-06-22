@@ -139,9 +139,6 @@ var app = new Framework7({
 
 
 var mainView = app.views.create('.view-main');
-var swiper;
-
-//get event swiper
 
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -149,23 +146,6 @@ var searchbar = app.searchbar.create({
   searchContainer: '#members-list',
   searchIn: '.item-inner',
 });
-
-
-
-//next/prev event card
-function swipeRight() {
-  swiper.slideNext();
-}
-
-function swipeLeft() {
-  swiper.slidePrev();
-}
-
-function updateSwiper() {
-  swiper = app.swiper.get('.swiper-container');
-}
-
-
 
 function loadMainPage() { //Loads all the data on the main page
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
@@ -200,7 +180,7 @@ function loadMainPage() { //Loads all the data on the main page
          <div class="item-inner">\
            <div class="item-title-row">\
              <div class="item-title">' + doc.get("name") + '</div>\
-             <div class="item-after">' + doc.get("numberOfMembers") + ' Members</div>\
+             <div class="item-after">' + doc.get("memberIDs").length + ' Members</div>\
            </div>\
            <div class="item-text">' + doc.get("description") + '</div>\
          </div>\
@@ -228,6 +208,7 @@ function loadMainPage() { //Loads all the data on the main page
       //this loop runs once for every event in the current school
       addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
     });
+    app.swiper.create('.swiper-container');
   });
   //////////////Loads the users attending this school
   db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
@@ -307,4 +288,8 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
 function onBackKeyDown() {
   // Handle the back button
   self.app.views.main.router.back();
+}
+
+function closeCard() {
+  document.getElementById("card-close").parentNode.parentNode.style.display = "none";
 }

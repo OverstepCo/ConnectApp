@@ -69,6 +69,70 @@
       <div data-page="index" class="page">
 
 
+        <div id="expandable-card" class="expanded-card">
+          <div class="card-media">
+            <a id="card-close" onclick="closeCard()" href="#" class="link"><i class="material-icons white">close</i></a>
+          </div>
+          <div class="scrollable">
+            <div style="height: 33.33%"></div>
+            <div class="card-content">
+              <div class="row align-items-center">
+                <div class="col-75">
+                  <h1 class="no-margin">Event Name that is really long.</h1>
+                </div>
+                <div class="col-25">
+                  <button class="button button-round button-fill" style="width: 100%">RSVP</button>
+                </div>
+              </div>
+              <p> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
+              <div class="block-title">Who's Going</div>
+              <div class="row justify-content-space-around">
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+              </div>
+
+              <div class="block-title">Comments</div>
+            </div>
+          </div>
+        </div>
+
         <div class="navbar no-shadow no-harline navbar-home">
           <div id="navbar" class="navbar-inner school-header">
             <div class="left">
@@ -103,16 +167,13 @@
           </div>
         </div>
 
+
+
         <div class="page-content">
-          <div class="row title justify-items-left no-margin-bottom">
-            <div>Upcoming Events</div>
-            <div class="left">
-              <i onclick="swipeLeft()" class="material-icons">keyboard_arrow_left</i>
-              <i onclick="swipeRight()" class="material-icons">keyboard_arrow_right</i>
-            </div>
-          </div>
-          <div id="event-swiper-wrapper" data-space-between="0" data-slides-per-view="2" class="swiper-container event-swiper">
-            <div id="event-swiper" class="swiper-wrapper">
+          <div style="min-height: 30%">
+            <div id="event-swiper-wrapper" class="swiper-container event-swiper" data-space-between="0" data-slides-per-view="2">
+              <div id="event-swiper" class="swiper-wrapper">
+              </div>
             </div>
           </div>
           <div class="toolbar toolbar-home">

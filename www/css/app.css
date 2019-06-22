@@ -221,6 +221,111 @@ img {
   margin: 32px 16px 16px 16px
 }
 
+.expanded-card {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, .2);
+  display: none;
+  animation: expanded-card .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.scrollable {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.expanded-card .card-media {
+  width: 100%;
+  position: absolute;
+  height: calc(33.33% + 32px);
+  background-color: var(--f7-theme-color);
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80');
+  background-position: center;
+  background-size: cover;
+  animation-direction: reverse;
+  animation: card-media .5s cubic-bezier(.5, .5, 0, 1);
+}
+
+.expanded-card .card-media a {
+  margin: 16px;
+}
+
+.expanded-card .card-content {
+  min-height: 66.66%;
+  padding: 32px;
+  background-color: var(--f7-page-bg-color);
+  border-radius: 32px 32px 0 0;
+  box-shadow: 0 5px 30px 0px rgba(0, 0, 0, .5);
+  animation: card-content .4s cubic-bezier(.5, .5, 0, 1);
+}
+
+.card-content .attendee {
+  display: block;
+  width: 15vw;
+  padding: 8px;
+}
+
+.card-content .attendee .pic {
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png');
+}
+
+.card-content .attendee p {
+  padding-top: 4px;
+  font-size: 10pt;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@keyframes expanded-card {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  to {
+    background: rgba(0, 0, 0, .2);
+  }
+}
+
+@keyframes card-media {
+  from {
+    left: 30px;
+    width: calc(100% - 60px);
+    top: 86px;
+    height: 232px;
+    border-radius: 15px;
+  }
+
+  to {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: calc(33.33% + 32px);
+    border-radius: 0;
+  }
+}
+
+@keyframes card-content {
+  from {
+    opacity: 0;
+    transform: scale(.8) translateY(50%);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /********** HOME **********/
 .school-header h1 {
   text-transform: uppercase;
@@ -236,94 +341,29 @@ img {
 }
 
 .event-swiper .slide-content {
-  font-size: 25px;
-  color: white;
   background-color: var(--f7-theme-color);
-  box-shadow: 0 15px 30px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin: 32px 16px 32px 16px;
-}
-
-.slide-text {
-  margin: 16px 16px 0 0;
-}
-
-.slide-image {
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.2);
-  margin: 16px;
-  padding-top: 100%;
-  border-radius: 10px;
-  transform: translateY(-32px);
-  margin-bottom: 0;
-}
-
-.slide-content .slide-title {
-  font-size: 18pt;
-  margin: 0
-}
-
-.slide-content p {
-  font-size: 12pt;
-  opacity: 0.7;
-  margin: 0;
-}
-
-.slide-guests {
-  background-color: white;
-  color: black;
-  border-radius: 0 0 10px 10px;
-  padding: 8px 16px 8px 16px;
-  display: flex;
-  align-items: center;
-}
-
-.slide-guests .img {
-  height: 32px;
-  width: 32px;
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80');
   background-position: center;
   background-size: cover;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-
-.slide-guests .as {
-  font-size: 15pt;
-  background-color: white;
-  border-radius: 10px;
-  transform: translateY(-30px);
-  padding: 8px 16px 8px 16px;
-  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.2);
-}
-
-.collapsible-toggle {
-  transform: rotate(0);
-  transition: all .2s cubic-bezier(.5, .5, 0, 1);
-  transition-delay: .3s;
-}
-
-.active {
-  transform: rotate(180deg);
-  transition-delay: .3s;
-}
-
-.collapsible {
-  height: 0px;
-  overflow: hidden;
-  transition: height .3s cubic-bezier(.5, .5, 0, 1);
-}
-
-.expanded {
-  height: 200px
-}
-
-.collapsible-content {
-  height: 100%;
-  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 1);
+  margin: 30px;
   padding: 16px;
-  color: black;
-  font-size: 15px;
+  height: 200px;
+  align-items: flex-end;
+  display: flex;
+}
+
+.event-swiper h1 {
+  color: rgba(255, 255, 255, .8);
+  margin: 0;
+  font-weight: 600;
+}
+
+.event-swiper p {
+  color: rgba(255, 255, 255, .6);
+  margin: 0;
+  font-size: 20px;
 }
 
 .searchbar-input-wrap {
