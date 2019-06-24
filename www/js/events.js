@@ -33,7 +33,7 @@ function addEventToPage(name, image, day, time, location, description, guests) {
   var swiper = document.getElementById('event-swiper');
   var event = document.createElement('div');
   event.classList.add("swiper-slide");
-  event.innerHTML = '<div class="slide-content" onclick="openCard()"><div>' +
+  event.innerHTML = '<div class="slide-content" style="background-image: url(' + image + ')" onclick="openCard()"><div>' +
         '<h1>' + name + '</h1>' +
         '<p>Friday, March 20</p>' +
       '</div></div>';
@@ -55,7 +55,34 @@ function createNewEvent() {
 
 }
 
-function openCard() {
-  document.getElementById("expandable-card").style.display = "inherit";
+var card = document.getElementById("expandable-card");
+var cardName = document.getElementById("expandable-card-name");
+var cardDescription = document.getElementById("expandable-card-description");
+var cardMedia = document.getElementById("expandable-card-media");
+var cardContent = document.getElementById("expandable-card-content");
+
+function openCard(eventIndex) {
+  cardName.innerHTML = events[eventIndex].name;
+  cardMedia.style.backgroundImage = "url(" + events[eventIndex].image + ")";
+  cardDescription.innerHTML = events[eventIndex].description;
+  card.style.display = "inherit";
+  setTimeout(showCard, 5);
+}
+
+function showCard() {
+  cardMedia.classList.remove("card-media-closed")
+  cardContent.classList.remove("card-content-closed")
+}
+
+function closeCard() {
+  cardContent.classList.add("card-content-closed")
+  cardMedia.classList.add("card-media-closed")
+  setTimeout(hideCard, 500)
+}
+
+function hideCard() {
+  card.style.display = "none";
+
+
 }
 ////////////////

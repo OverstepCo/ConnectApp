@@ -13,7 +13,7 @@
 
 <body>
   <div id="app">
-    <div class="panel panel-left panel-cover panel-resizable">
+    <div class="panel panel-left panel-reveal panel-resizable">
       <div class="block panel-header bg-color-primary">
         <img src="media/logo.png">
         <h2>Connect</h2>
@@ -70,21 +70,23 @@
 
 
         <div id="expandable-card" class="expanded-card">
-          <div class="card-media">
+          <div id="expandable-card-media" class="card-media card-media-closed">
             <a id="card-close" onclick="closeCard()" href="#" class="link"><i class="material-icons white">close</i></a>
           </div>
           <div class="scrollable">
             <div style="height: 33.33%"></div>
-            <div class="card-content">
-              <div class="row align-items-center">
-                <div class="col-75">
-                  <h1 class="no-margin">Event Name that is really long.</h1>
+            <div id="expandable-card-content" class="card-content card-content-closed">
+              <div style="padding: 32px 32px 0 32px ">
+                <div class="row align-items-center">
+                  <div class="col-75">
+                    <h1 id="expandable-card-name" class="no-margin">Event Name that is really long.</h1>
+                  </div>
+                  <div class="col-25">
+                    <button class="button button-round button-fill" style="width: 100%">RSVP</button>
+                  </div>
                 </div>
-                <div class="col-25">
-                  <button class="button button-round button-fill" style="width: 100%">RSVP</button>
-                </div>
+                <p id="expandable-card-description"> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
               </div>
-              <p> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
               <div class="block-title">Who's Going</div>
               <div class="row justify-content-space-around">
                 <div class="attendee">
@@ -101,34 +103,53 @@
                   <p>Bob Rosspool</p>
 
                 </div>
-                <div class="attendee">
-                  <div class="pic"></div>
-                  <p>Bob Rosspool</p>
-
-                </div>
-                <div class="attendee">
-                  <div class="pic"></div>
-                  <p>Bob Rosspool</p>
-
-                </div>
-                <div class="attendee">
-                  <div class="pic"></div>
-                  <p>Bob Rosspool</p>
-
-                </div>
-                <div class="attendee">
-                  <div class="pic"></div>
-                  <p>Bob Rosspool</p>
-
-                </div>
-                <div class="attendee">
-                  <div class="pic"></div>
-                  <p>Bob Rosspool</p>
-
-                </div>
               </div>
 
               <div class="block-title">Comments</div>
+
+
+              <div class="event-messages-content">
+                <div class="event-messages">
+                  <!-- Messages title -->
+                  <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
+                  <!-- Full layout sent message -->
+                  <div class="message message-sent">
+                    <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
+                    <div class="message-content">
+                      <div class="message-name">John Doe</div>
+                      <div class="message-header">Message header</div>
+                      <div class="message-bubble">
+                        <div class="message-text-header">Text header</div>
+                        <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                        <div class="message-text-footer">Text footer</div>
+                      </div>
+                      <div class="message-footer">Message footer</div>
+                    </div>
+                  </div>
+                  <!-- Full layout received message -->
+                  <div class="message message-received">
+                    <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
+                    <div class="message-content">
+                      <div class="message-name">John Doe</div>
+                      <div class="message-header">Message header</div>
+                      <div class="message-bubble">
+                        <div class="message-text-header">Text header</div>
+                        <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+                        <div class="message-text-footer">Text footer</div>
+                      </div>
+                      <div class="message-footer">Message footer</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="toolbar messagebar">
+                <div class="toolbar-inner">
+                  <div class="messagebar-area">
+                    <textarea class="resizable" placeholder="Message"></textarea>
+                  </div><a class="link send-link" href="#">Send</a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

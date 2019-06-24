@@ -140,6 +140,7 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
+var events = [];
 // create searchbar
 var searchbar = app.searchbar.create({
   el: '#school-searchbar',
@@ -205,8 +206,20 @@ function loadMainPage() { //Loads all the data on the main page
         usersIDs: firebase.firestore.FieldValue.arrayUnion("" + User.uid),
         usersNames: firebase.firestore.FieldValue.arrayUnion("" + User.firstName + " " + User.lastName)
       });*/
+
+      var event = {name:doc.get("name"), image:doc.get("image"), day:doc.get("day"), time:doc.get("time"), location:doc.get("location"), description:doc.get("description"), guests:doc.get("guests")};
+      events.push(event);
+      var swiper = document.getElementById('event-swiper');
+      var newEvent = document.createElement('div');
+      newEvent.classList.add("swiper-slide");
+      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div>' +
+            '<h1>' + doc.get("name") + '</h1>' +
+            '<p>' + doc.get("day") + ', March 20</p>' +
+          '</div></div>';
+
+      swiper.appendChild(newEvent);
       //this loop runs once for every event in the current school
-      addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
+      //addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
     });
     app.swiper.create('.swiper-container');
   });
@@ -288,8 +301,4 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
 function onBackKeyDown() {
   // Handle the back button
   self.app.views.main.router.back();
-}
-
-function closeCard() {
-  document.getElementById("card-close").parentNode.parentNode.style.display = "none";
 }
