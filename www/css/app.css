@@ -339,6 +339,10 @@ img {
   transform: scale(.8) translateY(50%);
 }
 
+.event-description {
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
 @keyframes card-media {
   from {
     left: 30px;

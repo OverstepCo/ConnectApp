@@ -206,20 +206,18 @@ function loadMainPage() { //Loads all the data on the main page
         usersIDs: firebase.firestore.FieldValue.arrayUnion("" + User.uid),
         usersNames: firebase.firestore.FieldValue.arrayUnion("" + User.firstName + " " + User.lastName)
       });*/
-
-      var event = {name:doc.get("name"), image:doc.get("image"), day:doc.get("day"), time:doc.get("time"), location:doc.get("location"), description:doc.get("description"), guests:doc.get("guests")};
+      var event = {eventID:doc.id, name:doc.get("name"), image:doc.get("image"), day:doc.get("day"), time:doc.get("time"), location:doc.get("location"), description:doc.get("description"), guests:doc.get("guests")};
       events.push(event);
       var swiper = document.getElementById('event-swiper');
       var newEvent = document.createElement('div');
       newEvent.classList.add("swiper-slide");
-      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div>' +
+      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
             '<h1>' + doc.get("name") + '</h1>' +
             '<p>' + doc.get("day") + ', March 20</p>' +
           '</div></div>';
 
       swiper.appendChild(newEvent);
       //this loop runs once for every event in the current school
-      //addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
     });
     app.swiper.create('.swiper-container');
   });
@@ -252,8 +250,8 @@ function onDeviceReady() {
 
 
 function loadSubscribedChat(chatroomName, chatroomSchool) {
-  console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
-    " whattts wrong with this javvva its alll aysncronusss not even a goat would want to drink ayschnonus coffee");
+  //console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
+    //" whattts wrong with this javvva its alll aysncronusss not even a goat would want to drink ayschnonus coffee");
 
   db.collection("school").doc(chatroomSchool).collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
     messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
@@ -275,7 +273,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
         .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
             snapshot.docChanges().forEach(function(change) {
               if (change.type === "added") {
-                console.log(change.doc.get("text"));
+                //console.log(change.doc.get("text"));
                 // TODO: change the text on the preveiw
                 var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
                 htmlToUpdate.innerHTML = '<div class="item-title-row">\

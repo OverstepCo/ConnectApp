@@ -79,7 +79,7 @@ function setupChat() {
   db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
       var messagesArray = [];
       snapshot.docChanges().forEach(function(change) {
-        console.log(change.doc.get("text"));
+        //console.log(change.doc.get("text"));
         oldestTimestamp = change.doc.get("timestamp");
         messagesArray.unshift({
           text: change.doc.get("text"),
@@ -91,7 +91,7 @@ function setupChat() {
       });
 
       messages = app.messages.create({ //Some rules and stuff
-        el: '.messages',
+        el: '.chatroom-messages',
         messages: messagesArray,
         // First message rule
         firstMessageRule: function(message, previousMessage, nextMessage) {
@@ -175,14 +175,14 @@ function setupChat() {
       });
       // Init Messagebar
       var messagebar = app.messagebar.create({
-        el: '.messagebar'
+        el: '.chat-messagebar'
       });
 
       // Response flag ///////Not used currently
       var responseInProgress = false;
 
       // Send Message
-      $$('.send-link').on('click', function() {
+      $$('.chat-send-link').on('click', function() {
         var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
         // return if empty message
         if (!text.length) return;
