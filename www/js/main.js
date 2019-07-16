@@ -129,6 +129,10 @@ var app = new Framework7({
       path: '/school-search-page/',
       url: 'pages/school_search.html',
     },
+    {
+      path: '/new-school-page/',
+      url: 'pages/new_school.html',
+    },
     // welcome page
     {
       path: '/welcome-page/',

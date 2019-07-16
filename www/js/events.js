@@ -94,7 +94,7 @@ eventMessageBtn.setAttribute("onClick", "sendEventMessage('" + eventID + "')");
         messagesArray.unshift({
           text: change.doc.get("text"),
           isTitle: change.doc.get("isTitle"),
-          type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
+          type: 'received',
           name: change.doc.get("name"),
           avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
         });
@@ -116,7 +116,7 @@ eventMessageBtn.setAttribute("onClick", "sendEventMessage('" + eventID + "')");
                   messages.addMessage({
                     text: change.doc.get("text"),
                     isTitle: change.doc.get("isTitle"),
-                    type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
+                    type: 'received',
                     name: change.doc.get("name"),
                     avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
                   });
