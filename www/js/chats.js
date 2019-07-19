@@ -78,7 +78,44 @@ function setupChat() {
   //Gets all the messages from the chat room and adds them to the local messaging system
   db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
       var messagesArray = [];
+      var lastTimestamp;
+
       snapshot.docChanges().forEach(function(change) {
+
+        if(lastTimestamp && (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime()) > 86400000) {
+          var difference = (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime());
+          var timestampString;
+
+          //if this week
+          if((lastTimestamp.getDay() - change.doc.get("timestamp").toDate().getDay()) >= 0) {
+            var now = new Date();
+            var today = now.getDay();
+
+            //if today
+            if(today == lastTimestamp.getDay()) {
+              timestampString = "Today, ";
+
+              //if another day this week
+            } else {
+              var daysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+              timestamp = daysArray[lastTimestamp.getDay()] + ", ";
+          }
+
+          //if not this week
+        } else {
+            var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            timestampString = monthsArray[lastTimestamp.getMonth()] + " " + (lastTimestamp.getDate() + 1) + ", ";
+          }
+          var hour = lastTimestamp.getHours();
+          timestampString += (hour < 12 || hour === 24) ? (hour + ":" + lastTimestamp.getMinutes() + " AM") : ((hour - 12) + ":" + lastTimestamp.getMinutes() + " PM");
+          messagesArray.unshift({
+            text: timestampString,
+            isTitle: true,
+          });
+        }
+
+
+
         //console.log(change.doc.get("text"));
         oldestTimestamp = change.doc.get("timestamp");
         messagesArray.unshift({
@@ -88,6 +125,8 @@ function setupChat() {
           name: change.doc.get("name"),
           avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
         });
+        lastTimestamp = change.doc.get("timestamp").toDate();
+        
       });
 
       messages = app.messages.create({ //Some rules and stuff
@@ -232,7 +271,7 @@ function loadChatMessages() {
           oldestTimestamp = doc.get("timestamp");
           messages.addMessage({
             text: doc.get("text"),
-            isTitle: change.doc.get("isTitle"),
+            isTitle: doc.get("isTitle"),
             type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
             name: doc.get("name"),
             avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
