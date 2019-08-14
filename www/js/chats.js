@@ -24,8 +24,7 @@ function subscribeToChat(uid, chatID) {
   console.log("subscribing to chat: " + chatID);
   //Adds the user to the chat members
   db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
-    memberIDs: firebase.firestore.FieldValue.arrayUnion("" + User.uid),
-    memberNames: firebase.firestore.FieldValue.arrayUnion("" + User.firstName + " " + User.lastName)
+    members: firebase.firestore.FieldValue.arrayUnion(User.uid + "," + User.firstName + " " + User.lastName)
   });
   //Adds the chatroom to the users chat list
   db.collection("users").doc(User.uid).update({
@@ -42,14 +41,15 @@ function unsubscribeFromChat() { //Unsubscribes the user from the specified chat
   }).catch(function(error) {
     console.error("Error removing document: ", error);
   });
+  // TODO: Change this so that it works when users change names
   db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
-    memberIDs: firebase.firestore.FieldValue.arrayRemove("" + User.uid),
-    memberNames: firebase.firestore.FieldValue.arrayRemove("" + User.firstName + " " + User.lastName)
+    memberIDs: firebase.firestore.FieldValue.arrayRemove(User.uid + "," + User.firstName + " " + User.lastName)
   });
   //Removes the chatroom from the users chat list
   db.collection("users").doc(User.uid).update({
     chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
   });
+
   console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
 }
 
@@ -60,7 +60,6 @@ function loadChat(chatID, chatSchool) {
   currentChatSchool = chatSchool
   self.app.views.main.router.navigate('/chat-screen/');
   console.log(app.views.main.router.url);
-
 }
 
 function previewChat(chatID, chatSchool) {
@@ -72,7 +71,6 @@ function previewChat(chatID, chatSchool) {
 
 
 function setupChat() {
-
   console.log("setting up chat " + currentChatSchool + currentChat);
 
   //Gets all the messages from the chat room and adds them to the local messaging system
@@ -203,15 +201,6 @@ function setupChat() {
     function(error) {
       //...
     });
-
-
-
-  //----------Lazy Load----------//
-  // Loading flag
-  var allowInfinite = true;
-
-
-
 }
 
 function loadChatMessages() {
@@ -232,7 +221,7 @@ function loadChatMessages() {
           oldestTimestamp = doc.get("timestamp");
           messages.addMessage({
             text: doc.get("text"),
-            isTitle: change.doc.get("isTitle"),
+            isTitle: doc.get("isTitle"),
             type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
             name: doc.get("name"),
             avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
@@ -301,7 +290,6 @@ function createChat() {
 }
 
 function addChip(li) {
-
   //if the user isn't already added
   if (li.dataset.checked == 0) {
     var chipsDiv = document.getElementById("chips-div");
