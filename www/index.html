@@ -14,11 +14,7 @@
 <body>
   <div id="app">
     <div class="panel panel-left panel-reveal panel-resizable">
-      <div class="block panel-header bg-color-primary">
-        <img src="media/logo.png">
-        <h2>Connect</h2>
-        <p>Connect App Description</p>
-      </div>
+      <h2>Connect App Logo</h2>
       <div class="list no-hairlines" style="margin-top: 10px;">
         <ul>
           <a href="/profile-screen/" class="panel-close item-link no-chevron">
@@ -54,10 +50,10 @@
 
 
 
-          <a href="/welcome-page/" class="panel-close item-link no-chevron">
+          <a href="/new-school-page/" class="panel-close item-link no-chevron">
             <li class="item-content">
               <div class="item-media"><i class="material-icons">add</i></div>
-              <div class="item-inner">Welcome</div>
+              <div class="item-inner">New School</div>
             </li>
           </a>
 
@@ -107,46 +103,16 @@
 
               <div class="block-title">Comments</div>
 
+              <div class="page-content messages-content">
+                <div class="messages event-messages">
 
-              <div class="event-messages-content">
-                <div class="event-messages">
-                  <!-- Messages title -->
-                  <div class="messages-title"><b>Sunday, Feb 9,</b> 12:58</div>
-                  <!-- Full layout sent message -->
-                  <div class="message message-sent">
-                    <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                    <div class="message-content">
-                      <div class="message-name">John Doe</div>
-                      <div class="message-header">Message header</div>
-                      <div class="message-bubble">
-                        <div class="message-text-header">Text header</div>
-                        <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                        <div class="message-text-footer">Text footer</div>
-                      </div>
-                      <div class="message-footer">Message footer</div>
-                    </div>
-                  </div>
-                  <!-- Full layout received message -->
-                  <div class="message message-received">
-                    <div class="message-avatar" style="background-image:url(https://cdn.framework7.io/placeholder/people-100x100-7.jpg);"></div>
-                    <div class="message-content">
-                      <div class="message-name">John Doe</div>
-                      <div class="message-header">Message header</div>
-                      <div class="message-bubble">
-                        <div class="message-text-header">Text header</div>
-                        <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                        <div class="message-text-footer">Text footer</div>
-                      </div>
-                      <div class="message-footer">Message footer</div>
-                    </div>
-                  </div>
                 </div>
               </div>
-              <div class="toolbar messagebar">
+              <div class="toolbar messagebar event-messagebar">
                 <div class="toolbar-inner">
                   <div class="messagebar-area">
                     <textarea class="resizable" placeholder="Message"></textarea>
-                  </div><a class="link send-link" href="#">Send</a>
+                  </div><a id="event-send-link" class="link send-link" href="#">Send</a>
                 </div>
               </div>
 

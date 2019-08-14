@@ -1,0 +1,179 @@
+<div class="page" data-page="new-school">
+  <div class="navbar no-shadow no-harline">
+    <div class="navbar-inner">
+      <div class="left">
+        <a class="link icon-only back">
+          <i class="material-icons">close</i>
+        </a>
+      </div>
+      <div class="title">Add a School</div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="block-title">Required</div>
+    <div class="block no-margin-top">
+      <div class="list no-hairlines-md no-margin">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">School Name</div>
+              <div class="item-input-wrap">
+                <input id="school-name" type="text" required validate>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Address</div>
+              <div class="item-input-wrap">
+                <input id="school-address" type="text" required validate>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+
+
+          <li class="row no-gap">
+            <div class="item-content item-input col-75">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">City</div>
+                <div class="item-input-wrap">
+                  <input id="school-city" type="text" required validate style="text-transform: capitalize">
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </div>
+            <div class="item-content item-input col-25">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">State</div>
+                <div class="item-input-wrap">
+                  <select id="school-state" placeholder="Please choose..." required>
+                    <option value="AL">AL</option>
+                    <option value="AK">AK</option>
+                    <option value="AZ">AZ</option>
+                    <option value="AR">AR</option>
+                    <option value="CA">CA</option>
+                    <option value="CO">CO</option>
+                    <option value="CT">CT</option>
+                    <option value="DE">DE</option>
+                    <option value="FL">FL</option>
+                    <option value="GA">GA</option>
+                    <option value="HI">HI</option>
+                    <option value="ID">ID</option>
+                    <option value="IL">IL</option>
+                    <option value="IN">IN</option>
+                    <option value="IA">IA</option>
+                    <option value="KS">KS</option>
+                    <option value="KY">KY</option>
+                    <option value="LA">LA</option>
+                    <option value="ME">ME</option>
+                    <option value="MD">MD</option>
+                    <option value="MA">MA</option>
+                    <option value="MI">MI</option>
+                    <option value="MN">MN</option>
+                    <option value="MS">MS</option>
+                    <option value="MO">MO</option>
+                    <option value="MT">MT</option>
+                    <option value="NE">NE</option>
+                    <option value="NV">NV</option>
+                    <option value="NH">NH</option>
+                    <option value="NJ">NJ</option>
+                    <option value="NM">NM</option>
+                    <option value="NY">NY</option>
+                    <option value="NC">NC</option>
+                    <option value="ND">ND</option>
+                    <option value="OH">OH</option>
+                    <option value="OK">OK</option>
+                    <option value="OR">OR</option>
+                    <option value="PA">PA</option>
+                    <option value="RI">RI</option>
+                    <option value="SC">SC</option>
+                    <option value="SD">SD</option>
+                    <option value="TN">TN</option>
+                    <option value="TX">TX</option>
+                    <option value="UT">UT</option>
+                    <option value="VT">VT</option>
+                    <option value="VA">VA</option>
+                    <option value="WA">WA</option>
+                    <option value="WV">WV</option>
+                    <option value="WI">WI</option>
+                    <option value="WY">WY</option>
+                    <option value="AS">AS</option>
+                    <option value="DC">DC</option>
+                    <option value="FM">FM</option>
+                    <option value="GU">GU</option>
+                    <option value="MH">MH</option>
+                    <option value="MP">MP</option>
+                    <option value="PW">PW</option>
+                    <option value="PR">PR</option>
+                    <option value="VI">VI</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+
+
+
+          <li class="row no-gap">
+            <div class="item-content item-input col-66">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Zip Code</div>
+                <div class="item-input-wrap">
+                  <input id="school-zip" type="number" required validate pattern="[0-9]" minlength="5">
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </div>
+            <div class="item-content item-input col-33">
+              <div class="item-inner">
+                <div class="item-title item-label">Level</div>
+                <div class="item-input-wrap input-dropdown-wrap">
+                  <select id="school-level" placeholder="Please choose..." required>
+                    <option value="Elementary">Elementary</option>
+                    <option value="Middle">Middle</option>
+                    <option value="High">High</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+
+
+
+
+
+        </ul>
+      </div>
+    </div>
+    <div class="block-title">Optional</div>
+    <div class="block no-margin-top">
+      <div class="list no-hairlines-md no-margin">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Phone</div>
+              <div class="item-input-wrap">
+                <input id="school-phone" type="tel" validate pattern="[0-9\s\(\)\-]{10,}">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Website</div>
+              <div class="item-input-wrap">
+                <input id="school-website" type="text" validate pattern="[a-z0-9]{1,}.+[a-z]{2,}">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <a class="button button-fill button-round" onclick="createNewSchool()">Add This School</a>
+    <p id="newerrmsg" style="color: red;"></p>
+  </div>
+</div>

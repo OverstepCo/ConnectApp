@@ -129,6 +129,10 @@ var app = new Framework7({
       path: '/school-search-page/',
       url: 'pages/school_search.html',
     },
+    {
+      path: '/new-school-page/',
+      url: 'pages/new_school.html',
+    },
     // welcome page
     {
       path: '/welcome-page/',
@@ -206,6 +210,7 @@ function loadMainPage() { //Loads all the data on the main page
         usersIDs: firebase.firestore.FieldValue.arrayUnion("" + User.uid),
         usersNames: firebase.firestore.FieldValue.arrayUnion("" + User.firstName + " " + User.lastName)
       });*/
+<<<<<<< HEAD
 
       var event = {
         name: doc.get("name"),
@@ -216,18 +221,27 @@ function loadMainPage() { //Loads all the data on the main page
         description: doc.get("description"),
         guests: doc.get("guests")
       };
+=======
+      var event = {eventID:doc.id, name:doc.get("name"), image:doc.get("image"), day:doc.get("day"), time:doc.get("time"), location:doc.get("location"), description:doc.get("description"), guests:doc.get("guests")};
+>>>>>>> 6e1ff5f38154397451dd59ac9d6f3e10a5f26db8
       events.push(event);
       var swiper = document.getElementById('event-swiper');
       var newEvent = document.createElement('div');
       newEvent.classList.add("swiper-slide");
+<<<<<<< HEAD
       newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div>' +
         '<h1>' + doc.get("name") + '</h1>' +
         '<p>' + doc.get("day") + ', March 20</p>' +
         '</div></div>';
+=======
+      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+            '<h1>' + doc.get("name") + '</h1>' +
+            '<p>' + doc.get("day") + ', March 20</p>' +
+          '</div></div>';
+>>>>>>> 6e1ff5f38154397451dd59ac9d6f3e10a5f26db8
 
       swiper.appendChild(newEvent);
       //this loop runs once for every event in the current school
-      //addEventToPage(doc.get("name"), doc.get("image"), doc.get("day"), doc.get("time"), doc.get("location"), doc.get("description"), doc.get("guests"));
     });
     app.swiper.create('.swiper-container');
   });
@@ -261,6 +275,12 @@ function onDeviceReady() {
 
 
 function loadSubscribedChat(chatroomName, chatroomSchool) {
+<<<<<<< HEAD
+=======
+  //console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
+    //" whattts wrong with this javvva its alll aysncronusss not even a goat would want to drink ayschnonus coffee");
+
+>>>>>>> 6e1ff5f38154397451dd59ac9d6f3e10a5f26db8
   db.collection("school").doc(chatroomSchool).collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
     messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
       var ls = document.getElementById("subscribed-chats");
@@ -281,6 +301,10 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
         .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
             snapshot.docChanges().forEach(function(change) {
               if (change.type === "added") {
+<<<<<<< HEAD
+=======
+                //console.log(change.doc.get("text"));
+>>>>>>> 6e1ff5f38154397451dd59ac9d6f3e10a5f26db8
                 // TODO: change the text on the preveiw
                 var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
                 htmlToUpdate.innerHTML = '<div class="item-title-row">\
@@ -305,4 +329,61 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
 function onBackKeyDown() {
   // Handle the back button
   self.app.views.main.router.back();
+<<<<<<< HEAD
 }
+=======
+}
+
+function timeSince(time) {
+
+  switch (typeof time) {
+    case 'number':
+      break;
+    case 'string':
+      time = +new Date(time);
+      break;
+    case 'object':
+      if (time.constructor === Date) time = time.getTime();
+      break;
+    default:
+      time = +new Date();
+  }
+  var time_formats = [
+    [60, 'seconds', 1],
+    [120, '1 minute ago', '1 minute from now'],
+    [3600, 'minutes', 60],
+    [7200, '1 hour ago', '1 hour from now'],
+    [86400, 'hours', 3600],
+    [172800, 'Yesterday', 'Tomorrow'],
+    [604800, 'days', 86400],
+    [1209600, 'Last week', 'Next week'],
+    [2419200, 'weeks', 604800],
+    [4838400, 'Last month', 'Next month'],
+    [29030400, 'months', 2419200],
+    [58060800, 'Last year', 'Next year'],
+    [2903040000, 'years', 29030400],
+  ];
+  var seconds = (+new Date() - time) / 1000,
+    token = 'ago',
+    list_choice = 1;
+
+  if (seconds == 0) {
+    return 'Just now'
+  }
+  if (seconds < 0) {
+    seconds = Math.abs(seconds);
+    token = 'from now';
+    list_choice = 2;
+  }
+  var i = 0,
+    format;
+  while (format = time_formats[i++])
+    if (seconds < format[0]) {
+      if (typeof format[2] == 'string')
+        return format[list_choice];
+      else
+        return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+    }
+  return time;
+}
+>>>>>>> 6e1ff5f38154397451dd59ac9d6f3e10a5f26db8

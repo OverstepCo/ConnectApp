@@ -155,10 +155,30 @@ function searchSchools() { //Loads the schools from the database
       schoolsList.appendChild(li);
 
     });
-  }).catch(function(error) {
-    schoolsList.innerHTML = '<div class="text-center">No schools found.</div>\
-        <div class="justify-content-center"><a href="/new-school-screen/">Add your school</a>';
+  }).then(function () {
+    schoolsList.innerHTML += '<div class="text-align-center">Don\'t see your school?</div><div class="display-flex justify-content-center"><a class="text-align-center" href="/new-school-page/">Add a new school</a></div>';
+  } ).catch(function(error) {
+
   });
+}
+
+function createNewSchool() {
+  db.collection("school").add({
+    address: document.getElementById("school-address").value,
+    city: document.getElementById("school-city").value,
+    level: document.getElementById("school-level").value,
+    name: document.getElementById("school-name").value,
+    phone: document.getElementById("school-phone").value,
+    state: document.getElementById("school-state").value,
+    website: document.getElementById("school-website").value,
+    zip: Number(document.getElementById("school-zip").value),
+  }).then(function(docRef) {
+    console.log("Added a new school to the server with ID: ", docRef.id);
+    changeSchool(docRef.id);
+  }).catch(function(error) {
+    console.error("Error adding school: ", error);
+    document.getElementById("newerrmsg").innerHTML = "Oops! " + error;
+});
 }
 
 function wsNext() {
