@@ -3,6 +3,7 @@
   --f7-messagebar-height: 82px;
   --f7-messagebar-border-color: rgba(0, 0, 0, 0);
   --f7-panel-shadow: rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 30%, rgba(0, 0, 0, 0) 100%;
+  --f7-fab-box-shadow: 0 7px 15px -5px rgba(var(--f7-theme-color-rgb), .7);
 }
 
 @font-face {
@@ -192,6 +193,23 @@ img {
   display: none;
 }
 
+.event-messages .message-bubble {
+  box-shadow: none;
+  background-color: none;
+  border: none;
+  width: 100%;
+  padding-top: 0;
+  padding-left: 0
+}
+
+.event-messages .message {
+  max-width: 100%;
+}
+
+.event-messages b {
+  color: black;
+}
+
 .messagebar {
   border-top-style: none;
   background-color: rgba(0, 0, 0, 0);
@@ -308,7 +326,7 @@ img {
   background-color: var(--f7-page-bg-color);
   border-radius: 32px 32px 0 0;
   box-shadow: 0 5px 30px 0px rgba(0, 0, 0, .5);
-  transition: all .4s cubic-bezier(.5, .5, 0, 1);
+  transition: all .5s cubic-bezier(.5, .5, 0, 1);
 }
 
 .card-content .attendee {
@@ -336,37 +354,11 @@ img {
 
 .expanded-card .card-content-closed {
   opacity: 0;
-  transform: scale(.8) translateY(50%);
+  transform: translateY(50%);
 }
 
-@keyframes card-media {
-  from {
-    left: 30px;
-    width: calc(100% - 60px);
-    top: 86px;
-    height: 232px;
-    border-radius: 15px;
-  }
-
-  to {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: calc(33.33% + 32px);
-    border-radius: 0;
-  }
-}
-
-@keyframes card-content {
-  from {
-    opacity: 0;
-    transform: scale(.8) translateY(50%);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+.event-description {
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 /********** HOME **********/

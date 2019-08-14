@@ -224,7 +224,7 @@ function loadMainPage() { //Loads all the data on the main page
       var swiper = document.getElementById('event-swiper');
       var newEvent = document.createElement('div');
       newEvent.classList.add("swiper-slide");
-      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick=" rd(' + (events.length - 1) + ')"><div class="event-description">' +
+      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
         '<h1>' + doc.get("name") + '</h1>' +
         '<p>' + doc.get("day") + ', March 20</p>' +
         '</div></div>';
