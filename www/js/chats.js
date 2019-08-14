@@ -13,45 +13,13 @@ var maxItems = 2000;
 //How many messages to load at at time. Probably should be no less than 50
 var messagesPerLoad = 50;
 
-
 //This is here so we can stop the listener when the page is destroyed
 var listener;
 
+
 var messages = null;
 
-//Subscribes a user to the specified chat
-function subscribeToChat(uid, chatID) {
-  console.log("subscribing to chat: " + chatID);
-  //Adds the user to the chat members
-  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
-    members: firebase.firestore.FieldValue.arrayUnion(User.uid + "," + User.firstName + " " + User.lastName)
-  });
-  //Adds the chatroom to the users chat list
-  db.collection("users").doc(User.uid).update({
-    chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
-  });
-}
 
-function unsubscribeFromChat() { //Unsubscribes the user from the specified chat.
-  db.collection("users").doc(User.uid).collection("chats").doc(currentChat).update({
-    school: firebase.firestore.FieldValue.delete()
-  });
-  db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
-    console.log("successfully unsubscribed from chat");
-  }).catch(function(error) {
-    console.error("Error removing document: ", error);
-  });
-  // TODO: Change this so that it works when users change names
-  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
-    memberIDs: firebase.firestore.FieldValue.arrayRemove(User.uid + "," + User.firstName + " " + User.lastName)
-  });
-  //Removes the chatroom from the users chat list
-  db.collection("users").doc(User.uid).update({
-    chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
-  });
-
-  console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
-}
 
 
 function loadChat(chatID, chatSchool) {
@@ -73,34 +41,34 @@ function previewChat(chatID, chatSchool) {
 function setupChat() {
   console.log("setting up chat " + currentChatSchool + currentChat);
 
-  //Gets all the messages from the chat room and adds them to the local messaging system
+  //Gets the last 20 messages from the chat room and adds them to the local messaging system
   db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
       var messagesArray = [];
       var lastTimestamp;
+      finishedLoadingMessages = false;
+      loadingMessages = true;
 
-      snapshot.docChanges().forEach(function(change) {
-
-        if(lastTimestamp && (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime()) > 86400000) {
+      snapshot.docChanges().forEach(function(change) { //Dont know if this should be here. may cause problems
+        if (lastTimestamp && (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime()) > 86400000) {
           var difference = (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime());
           var timestampString;
 
           //if this week
-          if((lastTimestamp.getDay() - change.doc.get("timestamp").toDate().getDay()) >= 0) {
+          if ((lastTimestamp.getDay() - change.doc.get("timestamp").toDate().getDay()) >= 0) {
             var now = new Date();
             var today = now.getDay();
 
             //if today
-            if(today == lastTimestamp.getDay()) {
+            if (today == lastTimestamp.getDay()) {
               timestampString = "Today, ";
 
               //if another day this week
             } else {
               var daysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
               timestamp = daysArray[lastTimestamp.getDay()] + ", ";
-          }
-
-          //if not this week
-        } else {
+            }
+            //if not this week
+          } else {
             var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             timestampString = monthsArray[lastTimestamp.getMonth()] + " " + (lastTimestamp.getDate() + 1) + ", ";
           }
@@ -111,10 +79,6 @@ function setupChat() {
             isTitle: true,
           });
         }
-
-
-
-        //console.log(change.doc.get("text"));
         oldestTimestamp = change.doc.get("timestamp");
         messagesArray.unshift({
           text: change.doc.get("text"),
@@ -123,10 +87,11 @@ function setupChat() {
           name: change.doc.get("name"),
           avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
         });
+        console.log("Updated timestamps");
         lastTimestamp = change.doc.get("timestamp").toDate();
-        
       });
 
+      //initialize the message system with rules. Note to self: probably dont mess with it
       messages = app.messages.create({ //Some rules and stuff
         el: '.chatroom-messages',
         messages: messagesArray,
@@ -167,13 +132,14 @@ function setupChat() {
           return false;
         }
       });
+
       //Adds a listener for any new chat messages
       listener = db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc")
         .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
             if (finishedLoadingMessages) {
-              snapshot.docChanges().forEach(function(change) {
+              snapshot.docChanges().forEach(function(change) { //Change + the new message anf the foreach loop runs for each new message
                 if (change.type === "added") {
-                  console.log(change.doc.get("text"));
+                  console.log("added new message");
                   messages.addMessage({
                     text: change.doc.get("text"),
                     isTitle: change.doc.get("isTitle"),
@@ -183,12 +149,11 @@ function setupChat() {
                   });
                 }
               });
-
             }
             finishedLoadingMessages = true;
-
+            loadingMessages = false;
+            console.log("loading: " + loading);
             //...
-
           },
           function(error) {
             //...
@@ -196,9 +161,8 @@ function setupChat() {
 
       // Attach 'infinite' event handler
       $$('.infinite-scroll-content').on('infinite', function() {
-        console.log("loading messsages: " + loadingMessages);
-
         if (!loadingMessages) {
+          console.log("loading messsages: " + loadingMessages);
           if (totalMessages >= maxItems) {
             // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
             app.infiniteScroll.destroy('.infinite-scroll-content');
@@ -208,6 +172,10 @@ function setupChat() {
           }
           loadingMessages = true;
           loadChatMessages();
+        } else {
+          {
+            console.log("already loading Messages");
+          }
         }
       });
       // Init Messagebar
@@ -232,9 +200,6 @@ function setupChat() {
         if (responseInProgress) return;
         // Receive dummy message
       });
-
-
-
       //...
     },
     function(error) {
@@ -244,7 +209,6 @@ function setupChat() {
 
 function loadChatMessages() {
   console.log("loading more chat messages");
-
   if (finishedLoadingMessages) {
     totalMessages += messagesPerLoad;
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").where('timestamp', '<', oldestTimestamp).orderBy("timestamp", "desc").limit(totalMessages)
@@ -269,9 +233,6 @@ function loadChatMessages() {
         });
         //...
       });
-  } else {
-    loadingMessages = false;
-
   }
 }
 
@@ -284,11 +245,45 @@ function addMessage(school, chatID, message) { //Adds a message to the specified
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })
     .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
+      console.log("Sent message: ", docRef.id);
     })
     .catch(function(error) {
-      console.error("Error adding document: ", error);
+      console.error("Error sending message : ", error);
     });
+}
+
+//Subscribes a user to the specified chat
+function subscribeToChat(uid, chatID) {
+  console.log("subscribing to chat: " + chatID);
+  //Adds the user to the chat members
+  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
+    members: firebase.firestore.FieldValue.arrayUnion(User.uid + "," + User.firstName + " " + User.lastName)
+  });
+  //Adds the chatroom to the users chat list
+  db.collection("users").doc(User.uid).update({
+    chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
+  });
+}
+//Unsubscribes the user from the specified chat.
+function unsubscribeFromChat() {
+  db.collection("users").doc(User.uid).collection("chats").doc(currentChat).update({
+    school: firebase.firestore.FieldValue.delete()
+  });
+  db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
+    console.log("successfully unsubscribed from chat");
+  }).catch(function(error) {
+    console.error("Error removing document: ", error);
+  });
+  // TODO: Change this so that it works when users change names
+  db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).update({
+    memberIDs: firebase.firestore.FieldValue.arrayRemove(User.uid + "," + User.firstName + " " + User.lastName)
+  });
+  //Removes the chatroom from the users chat list
+  db.collection("users").doc(User.uid).update({
+    chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
+  });
+
+  console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
 }
 
 //NEW CHAT Room-----------------------------------------------------------------
