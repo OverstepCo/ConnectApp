@@ -1,6 +1,7 @@
 ///////Events//////
 var finishedLoadingMessages = false;
-
+var eventListener;
+var rsvpd;
 
 function addNewEvent() { //Gets the data we need from the ui and posts it to the server may eventually merrge this with addSchoolEvent()
 
@@ -66,9 +67,21 @@ function openCard(eventIndex) {
     while (membersList.firstChild) {
       membersList.removeChild(membersList.firstChild);
     }
-
+    /////////////////////ADDS users attending the event
     querySnapshot.forEach(function(doc) {
       //This loop runs once for every user in the event
+      //if the current user is rsvpd
+      if (!rsvpd) {
+        if (doc.id == User.uid) {
+          console.log("user is rsvpd");
+          rsvpd = true;
+          document.getElementById("rsvp").innerHTML = "un-rsvp";
+        } else {
+          document.getElementById("rsvp").innerHTML = "rsvp";
+          console.log("user is not rsvpd");
+          rsvpd = false;
+        }
+      }
       console.log("username: " + doc.get("name"));
       var a = document.createElement('div');
       a.classList.add("attendee");
@@ -85,7 +98,7 @@ function closeCard() {
   app.messages.clear()
   app.messages.destroy('.event-messages')
   finishedLoadingMessages = false;
-
+  eventListener();
 
   cardContent.classList.add("card-content-closed")
   cardMedia.classList.add("card-media-closed")
@@ -102,13 +115,23 @@ function hideCard() {
 }
 
 function rsvp(eventID) {
-  db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).set({
-    name: User.firstName + ' ' + User.lastName
+  //if the user is not alrady rsvped then rsvp else un-rsvp
+  console.log(rsvpd);
+  if (!rsvpd) {
+    db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).set({
+      name: User.firstName + ' ' + User.lastName
+    }).then(function() {
+      console.log("rsvpd");
+      document.getElementById("rsvp").innerHTML = "un-rsvp";
 
-  }).then(function() {
-    console.log("rsvpd");
-  });
+    });
+  } else {
+    db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).delete().then(function() {
+      console.log("un-rsvpd");
+      document.getElementById("rsvp").innerHTML = "rsvp";
 
+    });
+  }
 }
 
 var eventMessageBtn = document.getElementById("event-send-link");
@@ -213,7 +236,7 @@ function addListener(messagesArray, eventID) {
   });
 
   //Adds a listener for any new chat messages
-  listener = db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").orderBy("timestamp", "asc")
+  eventListener = db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").orderBy("timestamp", "asc")
     .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
       //if (finishedLoadingMessages) {
       console.log("listining");
@@ -224,7 +247,7 @@ function addListener(messagesArray, eventID) {
             text: change.doc.get("text"),
             isTitle: change.doc.get("isTitle"),
             type: 'received',
-            avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1", //TODO get user picture
+            avatar: "https: //proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1", //TODO get user picture
             header: ("<b>" + change.doc.get("name") + "</b>  " + timeSince("" + change.doc.get("timestamp").toDate())),
           });
         }
