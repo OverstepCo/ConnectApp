@@ -43,16 +43,30 @@ function setupChat() {
 
   //Gets the last 20 messages from the chat room and adds them to the local messaging system
   db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
-      var messagesArray = [];
+      var messagesArray = []; //stores the messages to be added to the page
       var lastTimestamp;
       finishedLoadingMessages = false;
       loadingMessages = true;
 
+      //Add each message in the snapshot to the message array
+      snapshot.forEach(function(change) {
+        messagesArray.unshift({
+          text: change.get("text"),
+          isTitle: change.get("isTitle"),
+          type: (change.get("userID") != User.uid) ? 'received' : 'sent',
+          name: change.get("name"),
+          avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+        });
+      });
+
+      // TODO: move timestamps to its own function and run when adding messages
+      /*//Timestamps
+      var i = 0;
       snapshot.docChanges().forEach(function(change) { //Dont know if this should be here. may cause problems
         if (lastTimestamp && (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime()) > 86400000) {
           var difference = (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime());
           var timestampString;
-
+          i++;
           //if this week
           if ((lastTimestamp.getDay() - change.doc.get("timestamp").toDate().getDay()) >= 0) {
             var now = new Date();
@@ -74,22 +88,16 @@ function setupChat() {
           }
           var hour = lastTimestamp.getHours();
           timestampString += (hour < 12 || hour === 24) ? (hour + ":" + lastTimestamp.getMinutes() + " AM") : ((hour - 12) + ":" + lastTimestamp.getMinutes() + " PM");
-          messagesArray.unshift({
+          messagesArray.splice(i, 0, {
             text: timestampString,
             isTitle: true,
           });
         }
         oldestTimestamp = change.doc.get("timestamp");
-        messagesArray.unshift({
-          text: change.doc.get("text"),
-          isTitle: change.doc.get("isTitle"),
-          type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
-          name: change.doc.get("name"),
-          avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
-        });
+
         console.log("Updated timestamps");
         lastTimestamp = change.doc.get("timestamp").toDate();
-      });
+      });*/
 
       //initialize the message system with rules. Note to self: probably dont mess with it
       messages = app.messages.create({ //Some rules and stuff
@@ -135,8 +143,8 @@ function setupChat() {
 
       //Adds a listener for any new chat messages
       listener = db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "asc")
-        .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
-            if (finishedLoadingMessages) {
+        .onSnapshot(function(snapshot) {
+            if (finishedLoadingMessages) { //only add mesages if we are not currently seting up the chat
               snapshot.docChanges().forEach(function(change) { //Change + the new message anf the foreach loop runs for each new message
                 if (change.type === "added") {
                   console.log("added new message");
@@ -152,7 +160,7 @@ function setupChat() {
             }
             finishedLoadingMessages = true;
             loadingMessages = false;
-            console.log("loading: " + loading);
+            console.log("done loading messages");
             //...
           },
           function(error) {
@@ -178,6 +186,7 @@ function setupChat() {
           }
         }
       });
+
       // Init Messagebar
       var messagebar = app.messagebar.create({
         el: '.chat-messagebar'
