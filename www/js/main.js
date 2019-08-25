@@ -26,6 +26,19 @@ var app = new Framework7({
     {
       path: '/profile-screen/',
       url: 'pages/profile.html',
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          loadFriends();
+
+        },
+        pageBeforeRemove: function(e, page) {
+
+        },
+      }
     },
     // signup page
     {
@@ -164,7 +177,7 @@ var searchbar = app.searchbar.create({
 
 function loadMainPage() { //Loads all the data on the main page
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
-
+  //addFreind("waaa");
   //This loop runs once for every chat room the current user is subscribed to
   if (User.chats != null) {
     for (var i = 0; i < User.chats.length; i++) {
@@ -211,15 +224,7 @@ function loadMainPage() { //Loads all the data on the main page
   //////////Loads the events in the current school
   db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-      /*
-      db.collection("school").doc(newSchoolID).update({
-        usersIDs: firebase.firestore.FieldValue.arrayRemove("" + User.uid),
-        usersNames: firebase.firestore.FieldValue.arrayRemove("" + User.firstName + " " + User.lastName)
-      });
-      db.collection("school").doc(newSchoolID).update({
-        usersIDs: firebase.firestore.FieldValue.arrayUnion("" + User.uid),
-        usersNames: firebase.firestore.FieldValue.arrayUnion("" + User.firstName + " " + User.lastName)
-      });*/
+
       var event = {
         eventID: doc.id,
         name: doc.get("name"),
@@ -250,7 +255,7 @@ function loadMainPage() { //Loads all the data on the main page
     var membersList = document.getElementById("members-list");
     querySnapshot.forEach(function(doc) {
       //This loop runs once for every user in the current school
-      console.log("username: " + doc.get("name"));
+      //console.log("username: " + doc.get("name"));
       var a = document.createElement('a');
       a.classList.add("item-link");
       a.classList.add("no-chevron");
@@ -275,7 +280,6 @@ function onDeviceReady() {
 
 function loadSubscribedChat(chatroomName, chatroomSchool) {
   //console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
-  //" whattts wrong with this javvva its alll aysncronusss not even a goat would want to drink ayschnonus coffee");
 
   db.collection("school").doc(chatroomSchool).collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
     messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
@@ -375,4 +379,38 @@ function timeSince(time) {
         return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
     }
   return time;
+}
+
+function loadFriends() {
+  //////////////Loads the current users feinds
+  db.collection("Users").doc(User.uid).collection("friends").get().then(function(querySnapshot) {
+    var freindsList = document.getElementById('friends');
+    //Remove all children
+    while (freindsList.firstChild) {
+      freindsList.removeChild(freindsList.firstChild);
+    }
+    querySnapshot.forEach(function(doc) {
+      //This loop runs once for every user in the event
+      console.log("username: " + doc.get("name"));
+      var a = document.createElement('div');
+      a.classList.add("attendee");
+      a.innerHTML = '< a href = "#" class = "item-link no-chevron" > ' +
+        '<li class="item-content">' +
+        '<div class="item-media"><i class="material-icons">person</i></div>' +
+        '<div class="item-inner">' + doc.get("name") + '</div>' +
+        '</li>' +
+        '</a>';
+
+      freindsList.appendChild(a);
+    });
+  });
+}
+
+function addFreind(uid) {
+  db.collection("users").doc(User.uid).collection("friends").doc(uid).set({
+    name: "TODO" + ' ' + "Add User name here"
+  }).then(function() {
+    console.log("Added friend");
+  });
+
 }

@@ -1,6 +1,7 @@
 ///////Events//////
 var finishedLoadingMessages = false;
-
+var eventListener;
+var rsvpd;
 
 function addNewEvent() { //Gets the data we need from the ui and posts it to the server may eventually merrge this with addSchoolEvent()
 
@@ -47,13 +48,49 @@ var cardName = document.getElementById("expandable-card-name");
 var cardDescription = document.getElementById("expandable-card-description");
 var cardMedia = document.getElementById("expandable-card-media");
 var cardContent = document.getElementById("expandable-card-content");
+var button = document.getElementById("rsvp");
 
 function openCard(eventIndex) {
+  //rsvp(eventIndex);
   setupEventChat(events[eventIndex].eventID);
   cardName.innerHTML = events[eventIndex].name;
   cardMedia.style.backgroundImage = "url(" + events[eventIndex].image + ")";
   cardDescription.innerHTML = events[eventIndex].description;
   card.style.display = "inherit";
+  console.log("waa");
+  button.setAttribute("onclick", "rsvp(" + eventIndex + ")");
+
+  //////////////Loads the users attending this event
+  db.collection("school").doc(User.school).collection("event").doc(events[eventIndex].eventID).collection("users").get().then(function(querySnapshot) {
+    var membersList = document.getElementById('attendees');
+    //Remove all children
+    while (membersList.firstChild) {
+      membersList.removeChild(membersList.firstChild);
+    }
+    /////////////////////ADDS users attending the event
+    querySnapshot.forEach(function(doc) {
+      //This loop runs once for every user in the event
+      //if the current user is rsvpd
+      if (!rsvpd) {
+        if (doc.id == User.uid) {
+          console.log("user is rsvpd");
+          rsvpd = true;
+          document.getElementById("rsvp").innerHTML = "un-rsvp";
+        } else {
+          document.getElementById("rsvp").innerHTML = "rsvp";
+          console.log("user is not rsvpd");
+          rsvpd = false;
+        }
+      }
+      console.log("username: " + doc.get("name"));
+      var a = document.createElement('div');
+      a.classList.add("attendee");
+      a.innerHTML =
+        '<div class="pic"></div>' +
+        '<p>' + doc.get("name") + '</p>';
+      membersList.appendChild(a);
+    });
+  });
   setTimeout(showCard, 5);
 }
 
@@ -61,7 +98,7 @@ function closeCard() {
   app.messages.clear()
   app.messages.destroy('.event-messages')
   finishedLoadingMessages = false;
-
+  eventListener();
 
   cardContent.classList.add("card-content-closed")
   cardMedia.classList.add("card-media-closed")
@@ -75,6 +112,26 @@ function showCard() {
 
 function hideCard() {
   card.style.display = "none";
+}
+
+function rsvp(eventID) {
+  //if the user is not alrady rsvped then rsvp else un-rsvp
+  console.log(rsvpd);
+  if (!rsvpd) {
+    db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).set({
+      name: User.firstName + ' ' + User.lastName
+    }).then(function() {
+      console.log("rsvpd");
+      document.getElementById("rsvp").innerHTML = "un-rsvp";
+
+    });
+  } else {
+    db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).delete().then(function() {
+      console.log("un-rsvpd");
+      document.getElementById("rsvp").innerHTML = "rsvp";
+
+    });
+  }
 }
 
 var eventMessageBtn = document.getElementById("event-send-link");
@@ -118,19 +175,20 @@ function setupEventChat(eventID) {
         });
       }
 
-      messagesArray.unshift({
-        text: change.doc.get("text"),
-        isTitle: change.doc.get("isTitle"),
-        type: 'received',
-        avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1", //TODO get user picture
-        header: ("<b>" + change.doc.get("name") + "</b>  " + timeSince(change.doc.get("timestamp").toDate())),
-      });
+      /*  messagesArray.unshift({
+          text: change.doc.get("text"),
+          isTitle: change.doc.get("isTitle"),
+          type: 'received',
+          avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1", //TODO get user picture
+          header: ("<b>" + change.doc.get("name") + "</b>  " + timeSince(change.doc.get("timestamp").toDate())),
+        });*/
 
       lastTimestamp = change.doc.get("timestamp").toDate();
 
     });
 
   }).then(function() {
+    console.log("add listener");
     addListener(messagesArray, eventID);
   });
 
@@ -178,22 +236,23 @@ function addListener(messagesArray, eventID) {
   });
 
   //Adds a listener for any new chat messages
-  listener = db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").orderBy("timestamp", "asc")
+  eventListener = db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").orderBy("timestamp", "asc")
     .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
       //if (finishedLoadingMessages) {
+      console.log("listining");
       snapshot.docChanges().forEach(function(change) {
-        if (change.type != "added") {
-          console.log(change.doc.get("text"));
+        if (change.type == "added") {
+          console.log("added new message");
           messages.addMessage({
             text: change.doc.get("text"),
             isTitle: change.doc.get("isTitle"),
-            type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
-            name: change.doc.get("name"),
-            avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+            type: 'received',
+            avatar: "https: //proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1", //TODO get user picture
+            header: ("<b>" + change.doc.get("name") + "</b>  " + timeSince("" + change.doc.get("timestamp").toDate())),
           });
         }
       });
       //}
-      finishedLoadingMessages = true;
+      //finishedLoadingMessages = true;
     });
 }
