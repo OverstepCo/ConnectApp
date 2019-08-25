@@ -57,32 +57,40 @@ function loadUserData() {
   }
 }
 
-
-function editUserData() { //Edits the users profile data.
-  var firstName = document.getElementById("firstName").value;
+//Edits the users profile data.
+function editUserData() {
   var errorMessage = document.getElementById("error-message");
   errorMessage.innerHTML = "";
 
-  if (firstName != "") {
-    db.collection("users").doc(User.uid).update({
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value
-      })
-      .then(function() {
-        console.log("user data successfully updated!");
-      })
-      .catch(function(error) {
-        errorMessage.innerHTML = "Oops! " + error;
-        console.error("Error updating user data: ", error);
-      });
+  db.collection("users").doc(User.uid).update({
+      //firstName: document.getElementById("firstName").value,
+      //lastName: document.getElementById("lastName").value,
+      tagline: document.getElementById("tagline").value,
+      bio: document.getElementById("bio").value,
+    })
+    .then(function() {
+      console.log("user data successfully updated!");
+    })
+    .catch(function(error) {
+      errorMessage.innerHTML = "Oops! " + error;
+      console.error("Error updating user data: ", error);
+    });
+
+  var file = document.getElementById('profile-pic').files[0];
+  if (file) {
+    var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+    profilePictureRef.put(file).then(function(snapshot) {
+      console.log('Updated profile pic!');
+    });
   }
 
 
 
-  var newPassword = document.getElementById("password").value;
-  if (newPassword != '') {
+
+  var newPassword = document.getElementById("password");
+  if (newPassword) {
     var user = firebase.auth().currentUser;
-    user.updatePassword(newPassword).then(function() {
+    user.updatePassword(newPassword.value).then(function() {
       // Update successful.
       console.log("updated password");
     }).catch(function(error) {
@@ -155,9 +163,9 @@ function searchSchools() { //Loads the schools from the database
       schoolsList.appendChild(li);
 
     });
-  }).then(function () {
+  }).then(function() {
     schoolsList.innerHTML += '<div class="text-align-center">Don\'t see your school?</div><div class="display-flex justify-content-center"><a class="text-align-center" href="/new-school-page/">Add a new school</a></div>';
-  } ).catch(function(error) {
+  }).catch(function(error) {
 
   });
 }
@@ -178,7 +186,7 @@ function createNewSchool() {
   }).catch(function(error) {
     console.error("Error adding school: ", error);
     document.getElementById("newerrmsg").innerHTML = "Oops! " + error;
-});
+  });
 }
 
 function wsNext() {

@@ -338,6 +338,7 @@
   <script src="js/firebase/firebase-auth.js"></script>
   <script src="js/firebase/firebase-database.js"></script>
   <script src="js/firebase/firebase-firestore.js"></script>
+  <script src="js/firebase/firebase-storage.js"></script>
 
 
   <script>
@@ -353,8 +354,21 @@
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+
     //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
-    var db = firebase.firestore(); //The referance to the firestore database
+
+    //The referance to the firestore database
+    var db = firebase.firestore();
+
+    // firestore media storage reference
+    var storage = firebase.storage();
+
+    // Create a storage reference from our storage service
+    var storageRef = storage.ref();
+
+    // Create a child reference
+    var PPRef = storageRef.child('profile-pictures');
+
     var User; //An objects that contins the user data if the currently signed in user
     var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
 

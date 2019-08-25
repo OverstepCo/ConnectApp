@@ -80,12 +80,23 @@ function setupChat() {
           });
         }
         oldestTimestamp = change.doc.get("timestamp");
+
+        // Create a reference to the file we want to download
+        var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+        var avatar = "";
+        // Get the download URL
+        profilePictureRef.getDownloadURL().then(function(url) {
+          avatar = url;
+
+
+        }).catch(function(error) {});
+
         messagesArray.unshift({
           text: change.doc.get("text"),
           isTitle: change.doc.get("isTitle"),
           type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
           name: change.doc.get("name"),
-          avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+          avatar: avatar,
         });
         console.log("Updated timestamps");
         lastTimestamp = change.doc.get("timestamp").toDate();
@@ -140,19 +151,29 @@ function setupChat() {
               snapshot.docChanges().forEach(function(change) { //Change + the new message anf the foreach loop runs for each new message
                 if (change.type === "added") {
                   console.log("added new message");
+
+                  // Create a reference to the file we want to download
+                  var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+                  var avatar = "";
+                  // Get the download URL
+                  profilePictureRef.getDownloadURL().then(function(url) {
+                    avatar = url;
+
+                  }).catch(function(error) {});
+
                   messages.addMessage({
                     text: change.doc.get("text"),
                     isTitle: change.doc.get("isTitle"),
                     type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
                     name: change.doc.get("name"),
-                    avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+                    avatar: avatar,
                   });
                 }
               });
             }
             finishedLoadingMessages = true;
             loadingMessages = false;
-            console.log("loading: " + loading);
+            //console.log("loading: " + loading);
             //...
           },
           function(error) {
@@ -222,12 +243,22 @@ function loadChatMessages() {
         }
         snapshot.forEach(function(doc) {
           oldestTimestamp = doc.get("timestamp");
+
+          // Create a reference to the file we want to download
+          var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+          var avatar = "";
+          // Get the download URL
+          profilePictureRef.getDownloadURL().then(function(url) {
+            avatar = url;
+
+          }).catch(function(error) {});
+
           messages.addMessage({
             text: doc.get("text"),
             isTitle: doc.get("isTitle"),
             type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
             name: doc.get("name"),
-            avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+            avatar: avatar,
           }, "prepend");
           loadingMessages = false;
         });
@@ -240,7 +271,6 @@ function addMessage(school, chatID, message) { //Adds a message to the specified
   db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
       userID: User.uid,
       name: User.fullName(),
-      profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
       text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })

@@ -137,7 +137,17 @@ var app = new Framework7({
     {
       path: '/welcome-page/',
       url: 'pages/welcome.html',
-    },
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          setupColorPalette();
+
+        },
+      },
+    }
   ],
 });
 

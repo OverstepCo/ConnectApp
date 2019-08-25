@@ -2,11 +2,6 @@
   <div class="page-content">
     <div data-pagination='{"el": ".swiper-pagination"}' class="welcome-swiper swiper-init">
       <div class="swiper-pagination" style="bottom: 50px; left: 50px; width: auto"></div>
-
-      <div class="chevron"></div>
-      <div class="chevron"></div>
-
-
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <div class="slide-content">
@@ -31,49 +26,53 @@
         <div class="swiper-slide">
           <div class="slide-content">
             <div style="width: 100%">
-              <div class="row justify-content-center">
-                <div class="edit-profile-pic">
-                  <div class="circle gradient-background" style="width: 40px; height: 40px; margin-left: 110px; margin-top:110px;">
-                    <a href="#" class="link"><i class="material-icons white" style="margin: 8px">edit</i></a>
-                  </div>
-
-                </div>
-
-              </div>
               <div class="list no-hairlines">
                 <ul>
                   <li class="item-content item-input item-input-outline">
                     <div class="item-inner">
-                      <div class="item-title item-floating-label">First Name</div>
+                      <div class="item-title item-floating-label">Tagline</div>
                       <div class="item-input-wrap">
-                        <input id="firstName" type="text">
-                        <span class="input-clear-button"></span>
+                        <input id="tagline" type="text" maxlength="40">
                       </div>
                     </div>
                   </li>
                   <li class="item-content item-input item-input-outline">
                     <div class="item-inner">
-                      <div class="item-title item-floating-label">Last Name</div>
+                      <div class="item-title item-floating-label">Bio</div>
                       <div class="item-input-wrap">
-                        <input id="lastName" type="text">
+                        <textarea id="bio" rows="5" maxlength="200"></textarea>
                         <span class="input-clear-button"></span>
                       </div>
                     </div>
                   </li>
+                  <div style="width: 50%">
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-media">
+                          <i class="icon demo-list-icon" id="demo-color-picker-palette-value"></i>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-input-wrap">
+                            <input type="text" placeholder="Color" readonly="readonly" id="demo-color-picker-palette" />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </div>
+                  <input id="profile-pic" type="file">
+                  <div class="edit-profile-pic" style="width: 20vw; height: 20vw"></div>
                 </ul>
               </div>
-              <div class="display-flex justify-content-center">
-                <button class="button button-fill button-round" style="width: 50vw" onclick="">NEXT</button>
-              </div>
+              <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
+
+              <button class="button button-fill button-round" onclick="editUserData()">NEXT</button>
             </div>
           </div>
           <div class="slide-description">
-            <h2>Info About You</h2>
-            <p>Before you get started, we need some information about you.</p>
-
+            <h2>More Info & Customization</h2>
+            <p>Before you get started, we need a few more things from you. You can always change this later in settings.</p>
           </div>
         </div>
-
       </div>
     </div>
   </div>
