@@ -43,7 +43,6 @@
     var obj;
     db.collection("users").doc(user.id).get().then(function(userData) {
       obj = {
-        bla: "test",
         userid: user.id,
         username: userData.get("firstName")
       }
@@ -63,7 +62,7 @@
           });
           foo++;
           if (foo >= users.size) {
-            console.log(usersInChat.find(o => o.userid === 'd2H6n7b80ee9vmRjemY0ZyFmuIv2').username);
+            //console.log(usersInChat.find(o => o.userid === 'd2H6n7b80ee9vmRjemY0ZyFmuIv2').username);
             //Gets the last 20 messages from the chat room and adds them to the local messaging system
             db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
                 var messagesArray = []; //stores the messages to be added to the page
@@ -71,13 +70,19 @@
                 finishedLoadingMessages = false;
                 loadingMessages = true;
 
+
                 //Add each message in the snapshot to the message array
                 snapshot.forEach(function(change) {
+                  var un = "null";
+                  if (usersInChat.find(o => o.userid === change.get("userID")) != null) {
+                    un = usersInChat.find(o => o.userid === change.get("userID")).username;
+                  }
+
                   messagesArray.unshift({
                     text: change.get("text"),
                     isTitle: change.get("isTitle"),
                     type: (change.get("userID") != User.uid) ? 'received' : 'sent',
-                    name: usersInChat.find(o => o.userid === change.get("userID")).username,
+                    name: un,
                     avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
                   });
                 });
