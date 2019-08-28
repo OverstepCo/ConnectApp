@@ -101,6 +101,17 @@ var app = new Framework7({
     {
       path: '/settings-screen/',
       url: 'pages/settings.html',
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function(e, page) {
+          // do something when page initialized
+          if (localStorage.getItem("darkMode") == "true")
+            document.getElementById("toggle-darkmode").checked = true;
+
+        },
+      },
     },
     // about page
     {
@@ -150,17 +161,8 @@ var app = new Framework7({
     {
       path: '/welcome-page/',
       url: 'pages/welcome.html',
-      on: {
-        pageAfterIn: function test(e, page) {
-          // do something after page gets into the view
-        },
-        pageInit: function(e, page) {
-          // do something when page initialized
-          setupColorPalette();
+    },
 
-        },
-      },
-    }
   ],
 });
 
@@ -174,6 +176,15 @@ var searchbar = app.searchbar.create({
   searchContainer: '#members-list',
   searchIn: '.item-inner',
 });
+
+
+//set theme color
+var storedThemeColor = localStorage.getItem("themeColor");
+var color = storedThemeColor != null ? storedThemeColor : 'red';
+document.documentElement.classList.add('color-theme-' + color);
+
+var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
+toggleDarkMode(toggle);
 
 function loadMainPage() { //Loads all the data on the main page
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
@@ -413,4 +424,35 @@ function addFreind(uid) {
     console.log("Added friend");
   });
 
+}
+
+function setThemeColor(color) {
+  var oldThemeColor = localStorage.getItem("themeColor");
+  document.documentElement.classList.remove('color-theme-' + oldThemeColor);
+  document.documentElement.classList.add('color-theme-' + color);
+  localStorage.setItem("themeColor", color);
+}
+
+function toggleDarkMode(toggle) {
+
+  if (toggle) {
+    document.documentElement.classList.add('theme-dark');
+    localStorage.setItem("darkMode", "true");
+  } else {
+    document.documentElement.classList.remove('theme-dark');
+    localStorage.setItem("darkMode", "false");
+  }
+}
+
+function setDarkMode() {
+
+  var toggle = document.getElementById("toggle-darkmode").checked;
+
+  if (toggle) {
+    document.documentElement.classList.add('theme-dark');
+    localStorage.setItem("darkMode", "true");
+  } else {
+    document.documentElement.classList.remove('theme-dark');
+    localStorage.setItem("darkMode", "false");
+  }
 }

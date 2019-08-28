@@ -582,6 +582,23 @@ img {
   }
 }
 
+.palette-container {
+  display: flex;
+}
+
+.palette-item {
+  display: inline;
+  width: 20vw;
+  height: 20vw;
+}
+
+.palette-preview {
+  border-radius: 4px;
+  background-color: var(--f7-theme-color);
+  width: 100%;
+  padding-top: 100%;
+}
+
 /*Sign in / Sign up*/
 .login-icon {
   display: flex;
