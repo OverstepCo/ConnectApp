@@ -78,12 +78,21 @@
                     un = usersInChat.find(o => o.userid === change.get("userID")).username;
                   }
 
+                  // Create a reference to the file we want to download
+                  var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+                  var avatar = "";
+
+                  // Get the download URL
+                  profilePictureRef.getDownloadURL().then(function(url) {
+                    avatar = "url(" + url + ")";
+                  }).catch(function(error) {});
+
                   messagesArray.unshift({
                     text: change.get("text"),
                     isTitle: change.get("isTitle"),
                     type: (change.get("userID") != User.uid) ? 'received' : 'sent',
                     name: un,
-                    avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+                    avatar: avatar
                   });
                 });
 

@@ -26,7 +26,13 @@
         <div class="swiper-slide">
           <div class="slide-content">
             <div style="width: 100%">
-              <div class="list no-hairlines">
+              <label>
+                <div id="profile-pic-preview" class="profile-pic-upload">
+                  <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+                  <i id="profile-pic-icon" class="material-icons">add_photo_alternate</i>
+                </div>
+              </label>
+              <div class="list no-hairlines no-margin">
                 <ul>
                   <li class="item-content item-input item-input-outline">
                     <div class="item-inner">
@@ -45,27 +51,10 @@
                       </div>
                     </div>
                   </li>
-                  <div style="width: 50%">
-                    <li>
-                      <div class="item-content item-input">
-                        <div class="item-media">
-                          <p><a class="button button-fill sheet-open" href="#" data-sheet=".color-palette">Color Theme</a></p>
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-input-wrap">
-                            <input type="text" placeholder="Color" readonly="readonly" id="demo-color-picker-palette" />
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </div>
-                  <input id="profile-pic" type="file">
-                  <div class="edit-profile-pic" style="width: 20vw; height: 20vw"></div>
                 </ul>
               </div>
-              <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
-
               <button class="button button-fill button-round" onclick="editUserData()">NEXT</button>
+              <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
             </div>
           </div>
           <div class="slide-description">

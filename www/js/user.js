@@ -1,6 +1,6 @@
 /////User Data/////
 function signUp() { //signs up a new user
-  app.preloader.show();
+  app.progressbar.show(localStorage.getItem("themeColor"));
 
   var email = document.getElementById("email").value;
   var password = document.getElementById("newpword").value;
@@ -8,30 +8,34 @@ function signUp() { //signs up a new user
   err.innerHTML = "";
 
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-    app.preloader.hide();
+    app.progressbar.hide();
 
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log("Failed to sign up: " + errorMessage);
     err.innerHTML = "Oops! " + errorMessage;
+  }).then(function() {
+    app.progressbar.hide();
   });
 
 }
 
 function signIn() { //Signs in a user
-  app.preloader.show();
+  app.progressbar.show(localStorage.getItem("themeColor"));
   var username = document.getElementById("uname").value;
   var password = document.getElementById("pword").value;
   var err = document.getElementById("errmsg");
   err.innerHTML = "";
   firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
-    app.preloader.hide();
+    app.progressbar.hide();
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log("Failed to login: " + error.message);
     err.innerHTML = "Oops! " + error.message;
+  }).then(function() {
+    app.progressbar.hide();
   });
 }
 
@@ -59,30 +63,51 @@ function loadUserData() {
 
 //Edits the users profile data.
 function editUserData() {
+  app.progressbar.show(localStorage.getItem("themeColor"));
+
+  var updatedUserInfo;
+  var updatedUserPic = false;
+  var updatedUserPassword = false;
+  var pageName = app.views.main.router.url;
+
+  console.log(pageName);
+
   var errorMessage = document.getElementById("error-message");
   errorMessage.innerHTML = "";
 
   db.collection("users").doc(User.uid).update({
-      //firstName: document.getElementById("firstName").value,
-      //lastName: document.getElementById("lastName").value,
-      tagline: document.getElementById("tagline").value,
-      bio: document.getElementById("bio").value,
-    })
-    .then(function() {
-      console.log("user data successfully updated!");
-    })
-    .catch(function(error) {
-      errorMessage.innerHTML = "Oops! " + error;
-      console.error("Error updating user data: ", error);
-    });
+    //firstName: document.getElementById("firstName").value,
+    //lastName: document.getElementById("lastName").value,
+    tagline: document.getElementById("tagline").value,
+    bio: document.getElementById("bio").value,
+
+  }).then(function() {
+    updatedUserInfo = true;
+    if (pageName == "/welcome-page/" && updatedUserPic) {
+      self.app.views.main.router.navigate('/school-search-page/');
+    }
+    app.progressbar.hide();
+  }).catch(function(error) {
+    errorMessage.innerHTML += "Oops! " + error;
+    console.error("Error updating user data: ", error);
+    app.progressbar.hide();
+
+  });
+
 
   var file = document.getElementById('profile-pic').files[0];
-  if (file) {
-    var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
-    profilePictureRef.put(file).then(function(snapshot) {
-      console.log('Updated profile pic!');
-    });
-  }
+  var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+  profilePictureRef.put(file).then(function(snapshot) {
+    updatedUserPic = true;
+    if (pageName == "/welcome-page/" && updatedUserInfo) {
+      self.app.views.main.router.navigate('/school-search-page/');
+    }
+    app.progressbar.hide();
+  }).catch(function(error) {
+    app.progressbar.hide();
+
+    errorMessage += "Oops! " + error;
+  });
 
 
 
@@ -95,9 +120,41 @@ function editUserData() {
       console.log("updated password");
     }).catch(function(error) {
       // An error happened.
+      app.progressbar.hide();
+
       console.log("Failed to update password", error);
     });
   }
+
+}
+
+function previewPic(event) {
+  document.getElementById('profile-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
+  document.getElementById('profile-pic-icon').innerHTML = "edit";
+
+  console.log("url(" + URL.createObjectURL(event.target.files[0]) + ")");
+};
+
+
+var progressbarPercent = 0;
+
+function setProgressbar(percent) {
+
+  if (progressbarPercent == 0) app.progressbar.show(0, localStorage.getItem("themeColor"));
+
+  progressbarPercent += percent;
+
+  console.log("progress: " + progressbarPercent + "%");
+
+  if (progressbarPercent >= 100) {
+    app.progressbar.hide();
+    progressbarPercent = 0;
+    console.log("Progressbar Complete!");
+    return;
+  }
+
+  app.progressbar.show(progressbarPercent, localStorage.getItem("themeColor"));
+
 }
 
 function changeSchool(newSchoolID) {

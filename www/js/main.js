@@ -161,6 +161,11 @@ var app = new Framework7({
     {
       path: '/welcome-page/',
       url: 'pages/welcome.html',
+      on: {
+        pageBeforeRemove: function(e, page) {
+          app.progressbar.hide();
+        },
+      }
     },
 
   ],

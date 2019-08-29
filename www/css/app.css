@@ -599,6 +599,27 @@ img {
   padding-top: 100%;
 }
 
+.profile-pic-upload {
+  margin: 0 auto;
+  width: 20vw;
+  height: 20vw;
+  background-color: var(--f7-theme-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-size: cover;
+}
+
+.profile-pic-upload i {
+  color: white;
+}
+
+.profile-pic-upload input[type=file] {
+  display: none;
+}
+
 /*Sign in / Sign up*/
 .login-icon {
   display: flex;
