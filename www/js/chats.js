@@ -52,6 +52,8 @@
 
   function setupChat() {
     console.log("setting up chat " + currentChatSchool + currentChat);
+    var userList = document.getElementById("chat-members");
+    oldestTimestamp = firebase.firestore.FieldValue.serverTimestamp();
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").get().then(function(users) {
       var foo = 0;
       users.forEach(function(user) {
@@ -60,6 +62,17 @@
             userid: user.id,
             username: userData.get("firstName")
           });
+          var a = document.createElement('div');
+          a.classList.add("item-link");
+          a.classList.add("no-chevron");
+
+          a.innerHTML =
+            '<li class="item-content">' +
+            '<div class="item-media"><i class="material-icons">person</i></div>' +
+            '<div class="item-inner">' + userData.get("firstName") + '</div>' +
+            '</li>';
+          userList.appendChild(a);
+
           foo++;
           if (foo >= users.size) {
             //console.log(usersInChat.find(o => o.userid === 'd2H6n7b80ee9vmRjemY0ZyFmuIv2').username);
@@ -94,6 +107,7 @@
                     name: un,
                     avatar: avatar
                   });
+                  oldestTimestamp = change.get("timestamp");
                 });
 
                 // TODO: move timestamps to its own function and run when adding messages
@@ -130,7 +144,6 @@
                       isTitle: true,
                     });
                   }
-                  oldestTimestamp = change.doc.get("timestamp");
 
                   console.log("Updated timestamps");
                   lastTimestamp = change.doc.get("timestamp").toDate();
@@ -264,6 +277,7 @@
     console.log("loading more chat messages");
     if (finishedLoadingMessages) {
       totalMessages += messagesPerLoad;
+
       db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").where('timestamp', '<', oldestTimestamp).orderBy("timestamp", "desc").limit(totalMessages)
         .get().then(function(snapshot) {
           if (snapshot.size < 1) {
@@ -279,13 +293,15 @@
               text: doc.get("text"),
               isTitle: doc.get("isTitle"),
               type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
-              name: usersInChat.find(o => o.userid === change.doc.get("userID")).username,
+              name: usersInChat.find(o => o.userid === doc.get("userID")).username,
               avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
             }, "prepend");
             loadingMessages = false;
           });
           //...
         });
+    } else {
+      console.log("Not finished setting up chat room aborting");
     }
   }
 
