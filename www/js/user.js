@@ -4,19 +4,31 @@ function signUp() { //signs up a new user
 
   var email = document.getElementById("email").value;
   var password = document.getElementById("newpword").value;
+  var firstName = document.getElementById("firstName").value;
+  var lastName = document.getElementById("lastName").value;
   var err = document.getElementById("newerrmsg");
   err.innerHTML = "";
 
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     app.progressbar.hide();
+    err.innerHTML = "Oops! " + error.message;
+    return;
 
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log("Failed to sign up: " + errorMessage);
-    err.innerHTML = "Oops! " + errorMessage;
   }).then(function() {
-    app.progressbar.hide();
+
+    if (firstName == null || lastName == null) {
+      err.innerHTML = "Oops! The first or last name field was left empty."
+    }
+
+    db.collection("users").doc(uid).set({
+      firstName: "First Name",
+      lastName: "Last Name",
+      school: "null"
+    }).catch(function(error) {
+      err.innerHTML = "Oops! " + error.message;
+    }).then(function() {
+      app.progressbar.hide();
+    });
   });
 
 }
@@ -63,14 +75,13 @@ function loadUserData() {
 
 //Edits the users profile data.
 function editUserData() {
+
   app.progressbar.show(localStorage.getItem("themeColor"));
 
   var updatedUserInfo;
   var updatedUserPic = false;
   var updatedUserPassword = false;
   var pageName = app.views.main.router.url;
-
-  console.log(pageName);
 
   var errorMessage = document.getElementById("error-message");
   errorMessage.innerHTML = "";
