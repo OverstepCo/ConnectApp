@@ -339,6 +339,14 @@
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    firebase.firestore().enablePersistence()
+      .catch(function(err) {
+        if (err.code == 'unimplemented') {
+          console.log("Offline cache is not compatable with this device");
+        } else {
+          console.log("error enableing offline cache");
+        }
+      });
 
     //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
 
