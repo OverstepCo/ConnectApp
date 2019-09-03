@@ -311,6 +311,7 @@
   <script type="text/javascript" src="js/chats.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/events.js"></script>
+  <script type="text/javascript" src="js/messaging.js"></script>
 
 
 
@@ -322,6 +323,7 @@
   <script src="js/firebase/firebase-database.js"></script>
   <script src="js/firebase/firebase-firestore.js"></script>
   <script src="js/firebase/firebase-storage.js"></script>
+  <script src="js/firebase/firebase-messaging.js"></script>
 
 
   <script>
@@ -351,6 +353,58 @@
 
     // Create a child reference
     var PPRef = storageRef.child('profile-pictures');
+    /*
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+
+        // Add the public key generated from the console here.
+        messaging.usePublicVapidKey("AAAAxSqVg40:APA91bG1_iR8nf0ArJnd2u1S3tqyGbUjIVQNlvy6sfv8uy07qlz7EPQWNnkhEgwWjfrFp17xY6G3NfvseWuuc-7K2k3E5dC4Sc9bUZ5XHD60HEmSUyplZbSrMzR0Ch5mRl_j7enM2F6C");
+
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            // TODO(developer): Retrieve an Instance ID token for use with FCM.
+            // ...
+          } else {
+            console.log('Unable to get permission to notify.');
+          }
+        });
+
+        // Get Instance ID token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+        messaging.getToken().then((currentToken) => {
+          if (currentToken) {
+            sendTokenToServer(currentToken);
+            updateUIForPushEnabled(currentToken);
+          } else {
+            // Show permission request.
+            console.log('No Instance ID token available. Request permission to generate one.');
+            // Show permission UI.
+            updateUIForPushPermissionRequired();
+            setTokenSentToServer(false);
+          }
+        }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+          showToken('Error retrieving Instance ID token. ', err);
+          setTokenSentToServer(false);
+        });
+
+        // Callback fired if Instance ID token is updated.
+        messaging.onTokenRefresh(() => {
+          messaging.getToken().then((refreshedToken) => {
+            console.log('Token refreshed.');
+            // Indicate that the new Instance ID token has not yet been sent to the
+            // app server.
+            setTokenSentToServer(false);
+            // Send Instance ID token to app server.
+            sendTokenToServer(refreshedToken);
+            // ...
+          }).catch((err) => {
+            console.log('Unable to retrieve refreshed token ', err);
+            showToken('Unable to retrieve refreshed token ', err);
+          });
+        });
+    */
 
     var User; //An objects that contins the user data if the currently signed in user
     var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
@@ -374,26 +428,29 @@
               chats: user.get("chatrooms")
             }
             loadMainPage();
-
-          } else { //If the user data does not exist create new user data // TODO: redirect the user to enter this info
-            console.log("No user data document!");
-            db.collection("users").doc(uid).set({
-                firstName: "First Name",
-                lastName: "Last Name",
-                school: "null"
-              })
-              .then(function() {
-                console.log("user data successfully created!");
-              })
-              .catch(function(error) {
-                console.error("Error updating user data: ", error);
-              });
           }
-        });
+          /*
+                     else {
+                      //If the user data does not exist create new user data // TODO: redirect the user to enter this info
+                      console.log("No user data document!");
+                      db.collection("users").doc(uid).set({
+                          firstName: "First Name",
+                          lastName: "Last Name",
+                          school: "null"
+                        })
+                        .then(function() {
+                          console.log("user data successfully created!");
+                        })
+                        .catch(function(error) {
+                          console.error("Error updating user data: ", error);
+                        });
+                    }
 
+                    */
+        });
         //close the login screen if it is open
         var currentPage = app.views.main.router.url;
-        if (currentPage == "/login-screen/" || currentPage == "/signup-screen/") {
+        if (currentPage == "/login-screen/") {
           self.app.views.main.router.navigate('/home/', {
             reloadCurrent: true,
             ignoreCache: true,
@@ -402,7 +459,8 @@
         app.preloader.hide();
       } else { //User is signed out.
         self.app.views.main.router.navigate('/login-screen/', {
-          reloadCurrent: true
+          reloadCurrent: true,
+          ignoreCache: true,
         });
       }
     });
