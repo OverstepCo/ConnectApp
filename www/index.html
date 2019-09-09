@@ -322,6 +322,7 @@
   <script src="js/firebase/firebase-database.js"></script>
   <script src="js/firebase/firebase-firestore.js"></script>
   <script src="js/firebase/firebase-storage.js"></script>
+  <script src="js/firebase/firebase-messaging.js"></script>
 
 
   <script>
@@ -351,6 +352,22 @@
 
     // Create a child reference
     var PPRef = storageRef.child('profile-pictures');
+
+    // Retrieve Firebase Messaging object.
+    const messaging = firebase.messaging();
+
+    // Add the public key generated from the console here.
+    messaging.usePublicVapidKey("AAAAxSqVg40:APA91bG1_iR8nf0ArJnd2u1S3tqyGbUjIVQNlvy6sfv8uy07qlz7EPQWNnkhEgwWjfrFp17xY6G3NfvseWuuc-7K2k3E5dC4Sc9bUZ5XHD60HEmSUyplZbSrMzR0Ch5mRl_j7enM2F6C");
+
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        // TODO(developer): Retrieve an Instance ID token for use with FCM.
+        // ...
+      } else {
+        console.log('Unable to get permission to notify.');
+      }
+    });
 
     var User; //An objects that contins the user data if the currently signed in user
     var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
