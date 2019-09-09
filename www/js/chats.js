@@ -390,6 +390,7 @@
 
     //subscribe added users to chat
     for (var i = 0; i < chatMembers.length; i++) {
+      //// TODO: send a notification instead of just subscribing them to chat 
       subscribeToChat(chatMembers[i], User.school);
     }
   }
