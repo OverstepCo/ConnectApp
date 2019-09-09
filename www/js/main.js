@@ -403,12 +403,23 @@ function timeSince(time) {
 function loadUserpage(uid) {
   //if the uid is the same as the Users id then load the users page else load the preveiw page of the user with uid
   if (uid == User.uid) {
-    //TODO link to userpage
-    console.log("clicked on the current user");
+    self.app.views.main.router.navigate('/profile-screen/');
 
   } else {
-    // TODO: link to user prevew page
-    addFreind(uid); //this is just for testing purposes
+    var profilePreview = document.createElement('div');
+    profilePreview.classList.add("profile-preview");
+
+    profilePreview.addEventListener("click", function() {
+      setTimeout(function() {
+        this.parentNode.removeChild(this);
+      }, 5000);
+    });
+    getUserData(uid, function(user) {
+      profilePreview.innerHTML = '<div class="profile-preview-container visible"><div class="profile-pic"></div>' +
+        '<h2>' + user.username + '</h2><h4>A really cool tagline</h4> <div class="block">' +
+        '<p> lorum ipsum dolor sit amet.lorum ipsum dolor sit amet.lorum ipsum dolor sit amet.lorum ipsum dolor sit amet. ' +
+        '</p> <a class="button button-round" onclick="addFreind()">Add Friend</a></div></div>';
+    });
   }
 }
 var freindsList;
