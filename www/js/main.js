@@ -449,9 +449,10 @@ function loadUserpage(uid) {
     profilePreview.classList.add("profile-preview");
 
     profilePreview.addEventListener("click", function() {
+      var el = this;
       setTimeout(function() {
-        this.parentNode.removeChild(this);
-      }, 5000);
+        el.parentNode.removeChild(el);
+      }, 500);
     });
     getUserData(uid, function(user) {
       profilePreview.innerHTML = '<div class="profile-preview-container visible"><div class="profile-pic"></div>' +
@@ -459,6 +460,8 @@ function loadUserpage(uid) {
         '<p> lorum ipsum dolor sit amet.lorum ipsum dolor sit amet.lorum ipsum dolor sit amet.lorum ipsum dolor sit amet. ' +
         '</p> <a class="button button-round" onclick="addFreind()">Add Friend</a></div></div>';
     });
+
+    document.body.appendChild(profilePreview);
   }
 }
 var freindsList;
