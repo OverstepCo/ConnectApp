@@ -275,6 +275,9 @@ function loadMainPage() { //Loads all the data on the main page
       var a = document.createElement('a');
       a.classList.add("item-link");
       a.classList.add("no-chevron");
+      a.onclick = function() {
+        loadUserpage(doc.id);
+      };
       a.innerHTML = '<li class="item-content"><div class="item-media">' +
         ' <i class="material-icons gradient-icon">person</i></div>' +
         '<div class="item-inner">' + doc.get("name") + '</div></li>';
@@ -397,38 +400,89 @@ function timeSince(time) {
   return time;
 }
 
+function loadUserpage(uid) {
+  //if the uid is the same as the Users id then load the users page else load the preveiw page of the user with uid
+  if (uid == User.uid) {
+    //TODO link to userpage
+    console.log("clicked on the current user");
+
+  } else {
+    // TODO: link to user prevew page
+    addFreind(uid); //this is just for testing purposes
+  }
+}
+var freindsList;
+
 function loadFriends() {
   //////////////Loads the current users feinds
-  db.collection("Users").doc(User.uid).collection("friends").get().then(function(querySnapshot) {
-    var freindsList = document.getElementById('friends');
+  db.collection("users").doc(User.uid).collection("friends").get().then(function(querySnapshot) {
+    freindsList = document.getElementById('friends');
     //Remove all children
     while (freindsList.firstChild) {
       freindsList.removeChild(freindsList.firstChild);
     }
     querySnapshot.forEach(function(doc) {
-      //This loop runs once for every user in the event
+      //This loop runs once for every  freind of the user
       console.log("username: " + doc.get("name"));
-      var a = document.createElement('div');
-      a.classList.add("attendee");
-      a.innerHTML = '< a href = "#" class = "item-link no-chevron" > ' +
-        '<li class="item-content">' +
-        '<div class="item-media"><i class="material-icons">person</i></div>' +
-        '<div class="item-inner">' + doc.get("name") + '</div>' +
-        '</li>' +
-        '</a>';
 
-      freindsList.appendChild(a);
+      getUserData(doc.id, function(user) {
+        var a = document.createElement('a');
+        a.classList.add("item-link");
+        a.classList.add("no-chevron");
+        a.onclick = function() {
+          loadUserpage(doc.id);
+        }
+        console.log(user);
+        a.innerHTML =
+          '<li class="item-content">' +
+          '<div class="item-media"><i class="material-icons">person</i></div>' +
+          '<div class="item-inner">' + user.username + '</div>' +
+          '</li>';
+
+        freindsList.appendChild(a);
+      });
+      /*
+         var a = document.createElement('a');
+         a.classList.add("item-link");
+         a.classList.add("no-chevron");
+         a.onclick = function() {
+           loadUserpage(doc.id);
+         }
+         a.innerHTML =
+           '<li class="item-content">' +
+           '<div class="item-media"><i class="material-icons">person</i></div>' +
+           '<div class="item-inner">' + doc.get("name") + '</div>' +
+           '</li>';
+
+         freindsList.appendChild(a);*/
     });
   });
 }
 
 function addFreind(uid) {
   db.collection("users").doc(User.uid).collection("friends").doc(uid).set({
-    name: "TODO" + ' ' + "Add User name here"
+    name: "this will not be needed later on"
   }).then(function() {
     console.log("Added friend");
   });
 
+}
+var loadedUsers = {};
+
+function getUserData(userID, callback) {
+  //If we have already loaded this users data then return it else load it from the database
+  if (userID in loadedUsers) {
+    console.log("found user in array");
+    callback(loadedUsers[userID]);
+  } else {
+    db.collection("users").doc(userID).get().then(function(userData) {
+      loadedUsers[userID] = {
+        username: userData.get("firstName")
+      };
+      console.log("loaded user: " + userID);
+      callback(loadedUsers[userID]);
+    });
+  }
 }
 
 function setThemeColor(color) {
@@ -439,7 +493,6 @@ function setThemeColor(color) {
 }
 
 function toggleDarkMode(toggle) {
-
   if (toggle) {
     document.documentElement.classList.add('theme-dark');
     localStorage.setItem("darkMode", "true");
