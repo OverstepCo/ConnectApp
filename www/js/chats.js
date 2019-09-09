@@ -62,10 +62,12 @@
             userid: user.id,
             username: userData.get("firstName")
           });
-          var a = document.createElement('div');
+          var a = document.createElement('a');
           a.classList.add("item-link");
           a.classList.add("no-chevron");
-
+          a.onclick = function() {
+            loadUserpage(user.id);
+          };
           a.innerHTML =
             '<li class="item-content">' +
             '<div class="item-media"><i class="material-icons">person</i></div>' +
@@ -206,6 +208,8 @@
                               avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
                             });
                           }
+                          var source = snapshot.metadata.fromCache ? "local cache" : "server";
+                          console.log("This message came from " + source + "this can be used to notify the user that this massage has not been added to the server");
                         });
                       }
                       finishedLoadingMessages = true;
@@ -386,6 +390,7 @@
 
     //subscribe added users to chat
     for (var i = 0; i < chatMembers.length; i++) {
+      //// TODO: send a notification instead of just subscribing them to chat 
       subscribeToChat(chatMembers[i], User.school);
     }
   }

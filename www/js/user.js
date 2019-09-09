@@ -9,6 +9,12 @@ function signUp() { //signs up a new user
   var err = document.getElementById("newerrmsg");
   err.innerHTML = "";
 
+  console.log(firstName);
+  if (firstName == "" || lastName == "") {
+    err.innerHTML = "Oops! The first or last name field is empty.";
+    return;
+  }
+
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     app.progressbar.hide();
     err.innerHTML = "Oops! " + error.message;
@@ -16,18 +22,20 @@ function signUp() { //signs up a new user
 
   }).then(function() {
 
-    if (firstName == null || lastName == null) {
-      err.innerHTML = "Oops! The first or last name field was left empty."
-    }
+    if (err.innerHTML != "") return;
 
     db.collection("users").doc(uid).set({
-      firstName: "First Name",
-      lastName: "Last Name",
+      firstName: firstName,
+      lastName: lastName,
       school: "null"
     }).catch(function(error) {
+      app.progressbar.hide();
       err.innerHTML = "Oops! " + error.message;
+      return;
     }).then(function() {
       app.progressbar.hide();
+
+      self.app.views.main.router.navigate('/welcome-page/');
     });
   });
 
