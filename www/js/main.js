@@ -446,21 +446,32 @@ function loadUserpage(uid) {
 
   } else {
     var profilePreview = document.createElement('div');
+
     profilePreview.classList.add("profile-preview");
+    profilePreview.id = "profile-preview";
 
     profilePreview.addEventListener("click", function() {
-      setTimeout(function() {
-        this.parentNode.removeChild(this);
-      }, 5000);
+      //closePreview();
     });
+
     getUserData(uid, function(user) {
-      profilePreview.innerHTML = '<div class="profile-preview-container visible"><div class="profile-pic"></div>' +
-        '<h2>' + user.username + '</h2><h4>A really cool tagline</h4> <div class="block">' +
-        '<p> lorum ipsum dolor sit amet.lorum ipsum dolor sit amet.lorum ipsum dolor sit amet.lorum ipsum dolor sit amet. ' +
-        '</p> <a class="button button-round" onclick="addFreind()">Add Friend</a></div></div>';
+      profilePreview.innerHTML = '<div id="profile-preview-card" class="profile-preview-card"><div class="profile-pic" style="background-image: url(' + user.picURL +
+        ')"></div><h2>' + user.username + '</h2><h4>' + user.tagline + '</h4>' +
+        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="addFreind(\'' + uid + '\')">Add Friend</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
     });
+
+    document.body.appendChild(profilePreview);
   }
 }
+
+function closePreview() {
+  var el = document.getElementById("profile-preview");
+  document.getElementById("profile-preview-card").classList.add("hidden");
+  setTimeout(function() {
+    el.parentNode.removeChild(el);
+  }, 400);
+}
+
 var freindsList;
 
 function loadFriends() {
@@ -530,6 +541,8 @@ function getUserData(userID, callback) {
       loadedUsers[userID] = {
         uid: userID,
         username: userData.get("firstName"),
+        tagline: userData.get("tagline"),
+        bio: userData.get("bio"),
         picURL: profilePic,
       };
       console.log("loaded user: " + userID);

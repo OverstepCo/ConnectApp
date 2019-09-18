@@ -445,27 +445,30 @@ img {
   height: 100vh;
   top: 0;
   left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 10000;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, .1);
+  animation: fadeIn .5s cubic-bezier(.5, .5, 0, 1);
 }
 
-.profile-preview-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 50%);
-  opacity: 0;
+.profile-preview-card {
   width: 80%;
+  max-width: 300px;
   background-color: var(--f7-card-bg-color);
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 1);
+  box-shadow: 0 10px 30px -20px rgba(0, 0, 0, .5);
   transition: .5s cubic-bezier(.5, .5, 0, 1);
+  -webkit-transform: none;
+  transform: none;
 }
 
-.profile-preview .visible {
-  transform: translate(-50%, -50%);
-  opacity: 1;
+.hidden {
+  opacity: 0;
+  -webkit-transform: translate3d(0, 100px, 0);
+  transform: translate3d(0, 100px, 0);
 }
 
 .profile-preview h2 {
@@ -963,4 +966,17 @@ img {
 .fadeInRight {
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight;
+}
+
+/*==== FADE IN UP ===*/
+@-webkit-keyframes profilePreviewfadeIn {
+  from {
+    -webkit-transform: translate3d(0, 100px, 0);
+    transform: translate3d(0, 100px, 0);
+  }
+
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
 }

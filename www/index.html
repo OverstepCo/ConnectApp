@@ -12,8 +12,9 @@
 </head>
 
 <body>
+  <!--
   <div class="profile-preview">
-    <div class="profile-preview-container visible">
+    <div class="profile-preview-card visible">
       <div class="profile-pic"></div>
       <h2>Bob Ross</h2>
       <h4>A really cool tagline</h4>
@@ -23,6 +24,7 @@
       </div>
     </div>
   </div>
+-->
 
   <div id="app">
     <div class="panel panel-left panel-reveal panel-resizable">
@@ -425,22 +427,6 @@
           });
         });
     */
-
-    // Retrieve Firebase Messaging object.
-    const messaging = firebase.messaging();
-
-    // Add the public key generated from the console here.
-    messaging.usePublicVapidKey("AAAAxSqVg40:APA91bG1_iR8nf0ArJnd2u1S3tqyGbUjIVQNlvy6sfv8uy07qlz7EPQWNnkhEgwWjfrFp17xY6G3NfvseWuuc-7K2k3E5dC4Sc9bUZ5XHD60HEmSUyplZbSrMzR0Ch5mRl_j7enM2F6C");
-
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        console.log('Notification permission granted.');
-        // TODO(developer): Retrieve an Instance ID token for use with FCM.
-        // ...
-      } else {
-        console.log('Unable to get permission to notify.');
-      }
-    });
 
     var User; //An objects that contins the user data if the currently signed in user
     var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
