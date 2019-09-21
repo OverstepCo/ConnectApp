@@ -91,6 +91,7 @@ ext {
 
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "../cordova-plugin-firestore/helloworld-firestore.gradle"
+apply from: "../cordova-plugin-extension/helloworld-rjfun-libs.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -270,6 +271,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:16.0.8"
     implementation "com.google.firebase:firebase-firestore:18.2.0"
     implementation "com.google.code.gson:gson:2.8.2"
+    implementation "com.google.android.gms:play-services-ads:16.0.0"
     // SUB-PROJECT DEPENDENCIES END
 }
 

@@ -75,10 +75,20 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "id": "cordova-plugin-firestore.utils",
       "file": "plugins/cordova-plugin-firestore/www/android_ios/utils.js",
       "pluginId": "cordova-plugin-firestore"
+    },
+    {
+      "id": "cordova-plugin-admobpro-firebase.AdMob",
+      "file": "plugins/cordova-plugin-admobpro-firebase/www/AdMob.js",
+      "pluginId": "cordova-plugin-admobpro-firebase",
+      "clobbers": [
+        "window.AdMob"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-statusbar": "2.4.2",
-    "cordova-plugin-firestore": "3.0.0"
+    "cordova-plugin-firestore": "3.0.0",
+    "cordova-plugin-extension": "1.5.4",
+    "cordova-plugin-admobpro-firebase": "2.49.0"
   };
 });
