@@ -439,46 +439,6 @@ img {
 }
 
 /********** PROFILE **********/
-.profile-preview {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 10000;
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.profile-preview-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 50%);
-  opacity: 0;
-  width: 80%;
-  background-color: var(--f7-card-bg-color);
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 1);
-  transition: .5s cubic-bezier(.5, .5, 0, 1);
-}
-
-.profile-preview .visible {
-  transform: translate(-50%, -50%);
-  opacity: 1;
-}
-
-.profile-preview h2 {
-  text-align: center;
-  margin-bottom: 0;
-}
-
-.profile-preview h4 {
-  text-align: center;
-  margin-top: 0;
-  color: var(--f7-theme-color);
-}
-
 .profile-bg {
   height: 200px;
   background: linear-gradient(90deg, var(--f7-theme-color), #2245f5);
@@ -490,7 +450,11 @@ img {
   background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png');
   border-radius: 50%;
   background-size: cover;
-  margin: 0 auto;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, .3);
 }
 
 .edit-profile-pic {
