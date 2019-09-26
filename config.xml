@@ -12,7 +12,10 @@
 
 
   <plugin name="cordova-plugin-whitelist" />
-	
+
+  <preference name="android-build-tool" value="gradle" />
+  <gap:plugin name="cordova-plugin-admobpro" source="npm" />
+
 <access origin=" https://www.googleapis.com/" />
 <access origin=" http://www.googleapis.com/" />
 </widget>

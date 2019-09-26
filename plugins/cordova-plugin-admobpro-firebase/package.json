@@ -1,0 +1,98 @@
+{
+  "_from": "cordova-plugin-admobpro-firebase",
+  "_id": "cordova-plugin-admobpro-firebase@2.49.0",
+  "_inBundle": false,
+  "_integrity": "sha512-VR13PstAN6I+hQjYP3fvlcbC1bBKG1aRzI9B3auzYHlE9WK+jLZfyrPSgkqU20WCDHYhTSS38UfnqkskTVlETw==",
+  "_location": "/cordova-plugin-admobpro-firebase",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-admobpro-firebase",
+    "name": "cordova-plugin-admobpro-firebase",
+    "escapedName": "cordova-plugin-admobpro-firebase",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-admobpro-firebase/-/cordova-plugin-admobpro-firebase-2.49.0.tgz",
+  "_shasum": "fd8f2fa19abcbde9f607b4255de344630cb2987c",
+  "_spec": "cordova-plugin-admobpro-firebase",
+  "_where": "C:\\Users\\maxyn\\Documents\\GitHub\\ConnectApp",
+  "author": {
+    "name": "Liming Xie"
+  },
+  "bugs": {
+    "url": "https://github.com/floatinghotpot/cordova-admob-pro/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-admobpro-firebase",
+    "platforms": [
+      "android",
+      "ios",
+      "amazon-fireos",
+      "wp8"
+    ]
+  },
+  "deprecated": false,
+  "description": "Ultimate Cordova Plugin for Google AdMob and DFP to monetize hybrid apps. Show mobile Ad with single line of JavaScript. Compatible with Cordova CLI, PhoneGap Build, Intel XDK/Crosswalk, Google ChromeApp, Ionic, Meteor, etc.",
+  "homepage": "https://github.com/floatinghotpot/cordova-admob-pro#readme",
+  "keywords": [
+    "cordova",
+    "admob",
+    "plugin",
+    "phonegap",
+    "intel-xdk",
+    "intel",
+    "xdk",
+    "crosswalk",
+    "ionic",
+    "meteor",
+    "ad",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova-wp8",
+    "cordova-amazon-fireos",
+    "google",
+    "ads",
+    "eclipse",
+    "android-studio",
+    "simple",
+    "easy",
+    "android",
+    "ios",
+    "windows",
+    "phonegap",
+    "monetization",
+    "monetisation",
+    "money",
+    "banner",
+    "interstitial",
+    "advertisement",
+    "advertising",
+    "earn",
+    "cordova-admob",
+    "admobpro",
+    "iad",
+    "flurry",
+    "mobfox",
+    "mopub",
+    "inmobi",
+    "chartboost",
+    "domob",
+    "rjfun"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-admobpro-firebase",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/floatinghotpot/cordova-admob-pro.git"
+  },
+  "version": "2.49.0"
+}
