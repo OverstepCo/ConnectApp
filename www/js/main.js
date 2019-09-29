@@ -263,7 +263,7 @@ function loadMainPage() { //Loads all the data on the main page
          <div class="item-inner">\
            <div class="item-title-row">\
              <div class="item-title">' + doc.get("name") + '</div>\
-             <div class="item-after">' + doc.get("memberIDs").length + "" + ' Members</div>\
+             <div class="item-after">' + doc.get("numberOfMembers") + "" + ' Members</div>\
            </div>\
            <div class="item-text">' + doc.get("description") + '</div>\
          </div>\
@@ -307,20 +307,23 @@ function loadMainPage() { //Loads all the data on the main page
 
   //////////////Loads the users attending this school
   db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
-    var membersList = document.getElementById("members-list");
+    //  var membersList = document.getElementById("members-list");
     querySnapshot.forEach(function(doc) {
       //This loop runs once for every user in the current school
-      //console.log("username: " + doc.get("name"));
-      var a = document.createElement('a');
-      a.classList.add("item-link");
-      a.classList.add("no-chevron");
-      a.onclick = function() {
-        loadUserpage(doc.id);
-      };
-      a.innerHTML = '<li class="item-content"><div class="item-media">' +
-        ' <i class="material-icons gradient-icon">person</i></div>' +
-        '<div class="item-inner">' + doc.get("name") + '</div></li>';
-      membersList.appendChild(a);
+      getUserData(doc.id, function(user) {
+        var membersList = document.getElementById("members-list");
+        //console.log("username: " + doc.get("name"));
+        var a = document.createElement('a');
+        a.classList.add("item-link");
+        a.classList.add("no-chevron");
+        a.onclick = function() {
+          loadUserpage(doc.id);
+        };
+        a.innerHTML = '<li class="item-content"><div class="item-media">' +
+          ' <i class="material-icons gradient-icon">person</i></div>' +
+          '<div class="item-inner">' + user.username + '</div></li>';
+        membersList.appendChild(a);
+      });
     });
     var skeleton = document.getElementById('members-list-skeleton');
     skeleton.parentNode.removeChild(skeleton);
@@ -341,40 +344,45 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
 
   db.collection("school").doc(chatroomSchool).collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
     messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
-      var ls = document.getElementById("subscribed-chats");
-      var li = document.createElement('li');
-      li.innerHTML = '<a onclick="(loadChat(\'' + chatroomName + '\',\'' + chatroomSchool + '\'))" class="item-link item-content no-chevron">\
-             <div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >\
-               <div class="item-title-row">\
-                 <div class="item-title">' + chatroomName + '</div>\
-                 <div class="item-after">' + '12:14' + '</div>\
+      console.log(message.data());
+      getUserData(message.get("userID"), function(user) {
+        var ls = document.getElementById("subscribed-chats");
+        var li = document.createElement('li');
+        li.innerHTML = '<a onclick="(loadChat(\'' + chatroomName + '\',\'' + chatroomSchool + '\'))" class="item-link item-content no-chevron">\
+               <div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >\
+                 <div class="item-title-row">\
+                   <div class="item-title">' + chatroomName + '</div>\
+                   <div class="item-after">' + '12:14' + '</div>\
+                 </div>\
+                 <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
                </div>\
-               <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
-             </div>\
-           </a>';
-      ls.appendChild(li);
-      var skeleton = document.getElementById('subscribed-chats-skeleton');
-      skeleton.parentNode.removeChild(skeleton);
-      listener = db.collection("school").doc(chatroomSchool + "").collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "asc")
-        .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
-            snapshot.docChanges().forEach(function(change) {
-              if (change.type === "added") {
-                //console.log(change.doc.get("text"));
-                // TODO: change the text on the preveiw
-                var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
-                htmlToUpdate.innerHTML = '<div class="item-title-row">\
-                  <div class="item-title">' + chatroomName + '</div>\
-                  <div class="item-after">' + '12:14' + '</div>\
-                </div>\
-                <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
-                ';
-              }
+             </a>';
+        ls.appendChild(li);
+        var skeleton = document.getElementById('subscribed-chats-skeleton');
+        skeleton.parentNode.removeChild(skeleton);
+        listener = db.collection("school").doc(chatroomSchool + "").collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "asc")
+          .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
+              snapshot.docChanges().forEach(function(change) {
+                getUserData(change.get("uid"), function(user) {
+                  if (change.type === "added") {
+                    //console.log(change.doc.get("text"));
+                    // TODO: change the text on the preveiw
+                    var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
+                    htmlToUpdate.innerHTML = '<div class="item-title-row">\
+                        <div class="item-title">' + chatroomName + '</div>\
+                        <div class="item-after">' + '12:14' + '</div>\
+                      </div>\
+                      <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
+                      ';
+                  }
+                });
+              });
+              //...
+            },
+            function(error) {
+              //...
             });
-            //...
-          },
-          function(error) {
-            //...
-          });
+      });
     });
   }).catch(function(error) {
     console.error("Error loading chat: ", error);
@@ -543,7 +551,7 @@ function getUserData(userID, callback) {
     db.collection("users").doc(userID).get().then(function(userData) {
       loadedUsers[userID] = {
         uid: userID,
-        username: userData.get("firstName"),
+        username: userData.get("firstName") + " " + userData.get("lastName"),
         tagline: userData.get("tagline"),
         bio: userData.get("bio"),
         picURL: getProfilePicUrl(userID),

@@ -123,13 +123,13 @@ function rsvp(eventID) {
     }).then(function() {
       console.log("rsvpd");
       document.getElementById("rsvp").innerHTML = "un-rsvp";
-
     });
+    rsvpd=true;
   } else {
     db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).delete().then(function() {
       console.log("un-rsvpd");
       document.getElementById("rsvp").innerHTML = "rsvp";
-
+      rsvpd=false;
     });
   }
 }
