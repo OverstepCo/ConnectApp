@@ -264,8 +264,3 @@ function createNewSchool() {
     document.getElementById("newerrmsg").innerHTML = "Oops! " + error;
   });
 }
-
-function wsNext() {
-  console.log("hi");
-  app.swiper.get('.welcome-swiper').slideNext();
-}

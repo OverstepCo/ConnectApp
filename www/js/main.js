@@ -443,7 +443,10 @@ function loadUserpage(uid) {
   //if the uid is the same as the Users id then load the users page else load the preveiw page of the user with uid
   if (uid == User.uid) {
     self.app.views.main.router.navigate('/profile-screen/');
-
+    document.getElementById('profile-pic').style.backgroundImage = User.profilePic;
+    document.getElementById('profile-name').innerHTML = User.fullName;
+    document.getElementById('profile-tagline').innerHTML = User.fullName;
+    document.getElementById('profile-bio').innerHTML = User.fullName;
   } else {
     var profilePreview = document.createElement('div');
 
@@ -543,12 +546,25 @@ function getUserData(userID, callback) {
         username: userData.get("firstName"),
         tagline: userData.get("tagline"),
         bio: userData.get("bio"),
-        picURL: profilePic,
+        picURL: getProfilePicUrl(userID),
       };
       console.log("loaded user: " + userID);
       callback(loadedUsers[userID]);
     });
   }
+}
+
+function getProfilePicUrl(uid) {
+
+  // Create a reference to the file we want to download
+  var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+
+  // Get the download URL
+  profilePictureRef.getDownloadURL().then(function(url) {
+    return url;
+  }).catch(function(error) {
+    return "";
+  });
 }
 
 function setThemeColor(color) {
