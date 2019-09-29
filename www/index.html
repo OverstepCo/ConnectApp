@@ -439,19 +439,26 @@
         uid = user.uid;
         console.log(uid);
         //TODO if user has no school redirict to school selection page
-        db.collection("users").doc(uid).get().then(function(user) {
-          if (user.exists) { //If the user data exists load the user data
+        db.collection("users").doc(uid).get().then(function(userData) {
+          if (userData.exists) { //If the user data exists load the user data
             User = { //Load the users data and store it in an object
               uid: uid,
-              firstName: user.get("firstName"),
-              lastName: user.get("lastName"),
-              school: user.get("school"),
+              firstName: userData.get("firstName"),
+              lastName: userData.get("lastName"),
+              school: userData.get("school"),
               fullName: function() {
                 return "" + this.firstName + " " + this.lastName;
               },
-              chats: user.get("chatrooms")
+              chats: userData.get("chatrooms")
             }
             loadMainPage();
+          }else{
+            console.log("this user has no data");
+            db.collection("users").doc(uid).set({
+              firstName: "waa",
+              lastName: "waa",
+              school: "null"
+            })
           }
           /*
                      else {

@@ -233,6 +233,7 @@ toggleDarkMode(toggle);
 function loadMainPage() { //Loads all the data on the main page
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
   //addFreind("waaa");
+  console.log(User);
   //This loop runs once for every chat room the current user is subscribed to
   if (User.chats != null) {
     for (var i = 0; i < User.chats.length; i++) {

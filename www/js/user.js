@@ -1,12 +1,19 @@
 /////User Data/////
+
+var email;
+var password;
+var firstName;
+var lastName;
+var err;
+
 function signUp() { //signs up a new user
   app.progressbar.show(localStorage.getItem("themeColor"));
 
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("newpword").value;
-  var firstName = document.getElementById("firstName").value;
-  var lastName = document.getElementById("lastName").value;
-  var err = document.getElementById("newerrmsg");
+  email = document.getElementById("email").value;
+  password = document.getElementById("newpword").value;
+  firstName = document.getElementById("firstName").value;
+  lastName = document.getElementById("lastName").value;
+  err = document.getElementById("newerrmsg");
   err.innerHTML = "";
 
   console.log(firstName);
@@ -18,12 +25,12 @@ function signUp() { //signs up a new user
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     app.progressbar.hide();
     err.innerHTML = "Oops! " + error.message;
+    console.log("failed");
     return;
 
   }).then(function() {
-
+    console.log("making user doc");
     if (err.innerHTML != "") return;
-
     db.collection("users").doc(uid).set({
       firstName: firstName,
       lastName: lastName,
@@ -37,6 +44,7 @@ function signUp() { //signs up a new user
 
       self.app.views.main.router.navigate('/welcome-page/');
     });
+
   });
 
 }
@@ -68,7 +76,7 @@ function signOut() { //Signs out the user
 }
 
 function loadUserData() {
-
+console.log("load user data");
   User = {
     uid: uid,
     firstName: user.get("firstName"),
@@ -177,6 +185,7 @@ function setProgressbar(percent) {
 }
 
 function changeSchool(newSchoolID) {
+  console.log(User);
   var oldSchool = User.school;
   db.collection("users").doc(User.uid).update({
       school: newSchoolID
