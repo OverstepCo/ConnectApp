@@ -452,13 +452,14 @@
               chats: userData.get("chatrooms")
             }
             loadMainPage();
-          }else{
+          }else{//if the user has no data set there data
             console.log("this user has no data");
             db.collection("users").doc(uid).set({
-              firstName: "waa",
-              lastName: "waa",
+              firstName: firstName,
+              lastName: lastName,
               school: "null"
             })
+            loadUser();
           }
           /*
                      else {
