@@ -259,15 +259,10 @@ function loadMainPage() { //Loads all the data on the main page
         //this loop runs once for every chat room in the school
         var ul = document.getElementById("school-group-chats");
         var li = document.createElement('li')
-        li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">\
-         <div class="item-inner">\
-           <div class="item-title-row">\
-             <div class="item-title">' + doc.get("name") + '</div>\
-             <div class="item-after">' + doc.get("numberOfMembers") + "" + ' Members</div>\
-           </div>\
-           <div class="item-text">' + doc.get("description") + '</div>\
-         </div>\
-       </a>';
+        li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
+          '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
+          '</div><div class="item-after">' + doc.get("numberOfMembers") +
+          ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
         ul.appendChild(li);
         //if any of these dont exist in the database they return null or undefined
       }
@@ -358,34 +353,28 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
                </div>\
              </a>';
         ls.appendChild(li);
-        var skeleton = document.getElementById('subscribed-chats-skeleton');
-        skeleton.parentNode.removeChild(skeleton);
+
+        //Listens to the chat room for any new messages.
         listener = db.collection("school").doc(chatroomSchool + "").collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "asc")
-          .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
-              snapshot.docChanges().forEach(function(change) {
-                getUserData(change.get("uid"), function(user) {
-                  if (change.type === "added") {
-                    //console.log(change.doc.get("text"));
-                    // TODO: change the text on the preveiw
-                    var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
-                    htmlToUpdate.innerHTML = '<div class="item-title-row">\
-                        <div class="item-title">' + chatroomName + '</div>\
-                        <div class="item-after">' + '12:14' + '</div>\
-                      </div>\
-                      <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
-                      ';
-                  }
-                });
+          .onSnapshot(function(snapshot) {
+            snapshot.docChanges().forEach(function(change) {
+              getUserData(change.get("uid"), function(user) {
+                if (change.type === "added") {
+                  //console.log(change.doc.get("text"));
+                  // TODO: change the text on the preveiw
+                  var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
+                  htmlToUpdate.innerHTML = '<div class="item-title-row"><div class="item-title">' + chatroomName +
+                    '</div><div class="item-after">' + '12:14' + '</div></div><div class="item-text"><b>' +
+                    message.get("name") + ': </b>' + message.get("text") + '</div>';
+                }
               });
-              //...
-            },
-            function(error) {
-              //...
             });
+          });
       });
     });
-  }).catch(function(error) {
-    console.error("Error loading chat: ", error);
+  }).then(function() {
+    var skeleton = document.getElementById('subscribed-chats-skeleton');
+    skeleton.parentNode.removeChild(skeleton);
   });
 }
 
