@@ -439,46 +439,60 @@
         uid = user.uid;
         console.log(uid);
         //TODO if user has no school redirict to school selection page
-        db.collection("users").doc(uid).get().then(function(userData) {
-          if (userData.exists) { //If the user data exists load the user data
-            User = { //Load the users data and store it in an object
-              uid: uid,
-              firstName: userData.get("firstName"),
-              lastName: userData.get("lastName"),
-              school: userData.get("school"),
-              fullName: function() {
-                return "" + this.firstName + " " + this.lastName;
-              },
-              chats: userData.get("chatrooms")
-            }
-            loadMainPage();
-          }else{//if the user has no data set there data
-            console.log("this user has no data");
-            db.collection("users").doc(uid).set({
-              firstName: firstName,
-              lastName: lastName,
-              school: "null"
-            })
-            loadUser();
-          }
-          /*
-                     else {
-                      //If the user data does not exist create new user data // TODO: redirect the user to enter this info
-                      console.log("No user data document!");
-                      db.collection("users").doc(uid).set({
-                          firstName: "First Name",
-                          lastName: "Last Name",
-                          school: "null"
-                        })
-                        .then(function() {
-                          console.log("user data successfully created!");
-                        })
-                        .catch(function(error) {
-                          console.error("Error updating user data: ", error);
-                        });
-                    }
 
-                    */
+        var profilePic = "";
+        var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+
+        // Get the download URL
+        profilePictureRef.getDownloadURL().then(function(url) {
+          profilePic = url;
+        }).catch(function(error) {
+          profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+        }).then(function() {
+
+
+          db.collection("users").doc(uid).get().then(function(userData) {
+            if (userData.exists) { //If the user data exists load the user data
+              User = { //Load the users data and store it in an object
+                uid: uid,
+                firstName: userData.get("firstName"),
+                lastName: userData.get("lastName"),
+                school: userData.get("school"),
+                fullName: function() {
+                  return "" + this.firstName + " " + this.lastName;
+                },
+                chats: userData.get("chatrooms"),
+                profilePic: profilePic,
+              }
+              loadMainPage();
+            } else { //if the user has no data set there data
+              console.log("this user has no data");
+              db.collection("users").doc(uid).set({
+                firstName: firstName,
+                lastName: lastName,
+                school: "null"
+              })
+              loadUser();
+            }
+            /*
+                       else {
+                        //If the user data does not exist create new user data // TODO: redirect the user to enter this info
+                        console.log("No user data document!");
+                        db.collection("users").doc(uid).set({
+                            firstName: "First Name",
+                            lastName: "Last Name",
+                            school: "null"
+                          })
+                          .then(function() {
+                            console.log("user data successfully created!");
+                          })
+                          .catch(function(error) {
+                            console.error("Error updating user data: ", error);
+                          });
+                      }
+
+                      */
+          });
         });
         //close the login screen if it is open
         var currentPage = app.views.main.router.url;

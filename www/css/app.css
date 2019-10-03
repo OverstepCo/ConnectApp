@@ -493,6 +493,7 @@ img {
   background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png');
   border-radius: 50%;
   background-size: cover;
+  background-position: center;
   margin: 0 auto;
 }
 

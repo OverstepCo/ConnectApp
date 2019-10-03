@@ -11,23 +11,19 @@
   <div class="page-content">
     <div class="block no-margin-top">
       <h1>Edit Profile</h1>
-      <div class="row justify-content-center">
-        <div class="edit-profile-pic">
-          <div class="circle gradient-background" style="width: 40px; height: 40px; margin-left: 110px; margin-top:110px;">
-            <a href="#" class="link"><i class="material-icons white" style="margin: 8px">edit</i></a>
-          </div>
-
+      <label>
+        <div id="profile-pic-preview" class="profile-pic-upload">
+          <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+          <i id="profile-pic-icon" class="material-icons">edit</i>
         </div>
-
-      </div>
-      <div class="list no-hairlines">
+      </label>
+      <div class="list no-hairlines no-margin">
         <ul>
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
               <div class="item-title item-floating-label">First Name</div>
               <div class="item-input-wrap">
-                <input id="firstName" type="text">
-                <span class="input-clear-button"></span>
+                <input id="first-name" type="text" maxlength="40">
               </div>
             </div>
           </li>
@@ -35,23 +31,30 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Last Name</div>
               <div class="item-input-wrap">
-                <input id="lastName" type="text">
-                <span class="input-clear-button"></span>
+                <input id="last-name" type="text" maxlength="40">
               </div>
             </div>
           </li>
           <li class="item-content item-input item-input-outline">
             <div class="item-inner">
-              <div class="item-title item-floating-label">Password</div>
+              <div class="item-title item-floating-label">Tagline</div>
               <div class="item-input-wrap">
-                <input id="password" type="password">
+                <input id="tagline" type="text" maxlength="40">
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Bio</div>
+              <div class="item-input-wrap">
+                <textarea id="bio" rows="5" maxlength="200"></textarea>
                 <span class="input-clear-button"></span>
               </div>
             </div>
           </li>
         </ul>
       </div>
-      <button class="button button-fill button-round" onclick="editUserData()">Save</button>
+      <button id="update-user-info" class="button button-fill button-round">Update</button>
       <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
     </div>
   </div>

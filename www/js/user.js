@@ -76,7 +76,7 @@ function signOut() { //Signs out the user
 }
 
 function loadUserData() {
-console.log("load user data");
+  console.log("load user data");
   User = {
     uid: uid,
     firstName: user.get("firstName"),
@@ -94,7 +94,7 @@ function editUserData() {
 
   app.progressbar.show(localStorage.getItem("themeColor"));
 
-  var updatedUserInfo;
+  var updatedUserInfo = false;
   var updatedUserPic = false;
   var updatedUserPassword = false;
   var pageName = app.views.main.router.url;
@@ -110,15 +110,22 @@ function editUserData() {
 
   }).then(function() {
     updatedUserInfo = true;
-    if (pageName == "/welcome-page/" && updatedUserPic) {
-      self.app.views.main.router.navigate('/school-search-page/');
+    if (updatedUserPic) {
+      if (pageName == "/welcome-page/") {
+        self.app.views.main.router.navigate('/school-search-page/');
+      }
+
+      app.progressbar.hide();
+      app.toast.show({
+        text: 'User info sucessfully updated!',
+        closeTimeout: 2000,
+      });
     }
-    app.progressbar.hide();
+
   }).catch(function(error) {
     errorMessage.innerHTML += "Oops! " + error;
     console.error("Error updating user data: ", error);
     app.progressbar.hide();
-
   });
 
 
@@ -126,13 +133,20 @@ function editUserData() {
   var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
   profilePictureRef.put(file).then(function(snapshot) {
     updatedUserPic = true;
-    if (pageName == "/welcome-page/" && updatedUserInfo) {
-      self.app.views.main.router.navigate('/school-search-page/');
+    if (updatedUserInfo) {
+
+      if (pageName == "/welcome-page/") {
+        self.app.views.main.router.navigate('/school-search-page/');
+      }
+
+      app.progressbar.hide();
+      app.toast.show({
+        text: 'User info sucessfully updated!',
+        closeTimeout: 2000,
+      });
     }
-    app.progressbar.hide();
   }).catch(function(error) {
     app.progressbar.hide();
-
     errorMessage += "Oops! " + error;
   });
 
