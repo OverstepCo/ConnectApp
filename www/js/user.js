@@ -254,11 +254,11 @@ function searchSchools() { //Loads the schools from the database
 
       var li = document.createElement('li');
       li.classList.add("card-block");
-      li.innerHTML = '<div class="title">' + doc.get("name") +
-        '</div><div class="hairline"></div><div class="school-attributes"><p>' +
+      li.innerHTML = '<h3>' + doc.get("name") +
+        '</h3><div class="school-attributes"><p>' +
         doc.get("address") + ' ' + doc.get("city") + ', ' + doc.get("state") +
         '</p><p>' + doc.get("level") + ' School</p></div>' +
-        '<button onclick="changeSchool(\'' + doc.id + '\')" class="button">Select this School</button>';
+        '<button onclick="changeSchool(\'' + doc.id + '\')" class="button" style="width: auto">Select this School</button>';
       schoolsList.appendChild(li);
 
     });

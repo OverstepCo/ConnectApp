@@ -52,6 +52,8 @@
 
   function setupChat() {
     console.log("setting up chat " + currentChatSchool + currentChat);
+    document.getElementById("group-name").innerHTML = currentChat;
+
     var userList = document.getElementById("chat-members");
     oldestTimestamp = firebase.firestore.FieldValue.serverTimestamp();
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").get().then(function(users) {
@@ -71,7 +73,7 @@
           a.innerHTML =
             '<li class="item-content">' +
             '<div class="item-media"><i class="material-icons">person</i></div>' +
-            '<div class="item-inner">' + userData.get("firstName") + '</div>' +
+            '<div class="item-inner">' + userData.get("firstName") + ' ' + userData.get("lastName") + '</div>' +
             '</li>';
           userList.appendChild(a);
 
@@ -92,22 +94,12 @@
                   if (usersInChat.find(o => o.userid === change.get("userID")) != null) {
                     un = usersInChat.find(o => o.userid === change.get("userID")).username;
                   }
-
-                  // Create a reference to the file we want to download
-                  var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
-                  var avatar = "";
-
-                  // Get the download URL
-                  profilePictureRef.getDownloadURL().then(function(url) {
-                    avatar = "url(" + url + ")";
-                  }).catch(function(error) {});
-
                   messagesArray.unshift({
                     text: change.get("text"),
                     isTitle: change.get("isTitle"),
                     type: (change.get("userID") != User.uid) ? 'received' : 'sent',
                     name: un,
-                    avatar: avatar
+                    avatar: change.get("profilePicUrl"),
                   });
                   oldestTimestamp = change.get("timestamp");
                 });
@@ -205,7 +197,7 @@
                               isTitle: change.doc.get("isTitle"),
                               type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
                               name: usersInChat.find(o => o.userid === change.doc.get("userID")).username,
-                              avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+                              avatar: change.get("profilePicUrl"),
                             });
                           }
                           var source = snapshot.metadata.fromCache ? "local cache" : "server";
@@ -298,7 +290,7 @@
               isTitle: doc.get("isTitle"),
               type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
               name: usersInChat.find(o => o.userid === doc.get("userID")).username,
-              avatar: "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1" //TODO get user picture
+              avatar: doc.get("profilePicUrl"),
             }, "prepend");
             loadingMessages = false;
           });
@@ -390,7 +382,7 @@
 
     //subscribe added users to chat
     for (var i = 0; i < chatMembers.length; i++) {
-      //// TODO: send a notification instead of just subscribing them to chat 
+      //// TODO: send a notification instead of just subscribing them to chat
       subscribeToChat(chatMembers[i], User.school);
     }
   }

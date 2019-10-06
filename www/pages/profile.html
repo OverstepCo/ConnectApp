@@ -1,46 +1,45 @@
 <div class="page" data-page="profile">
-  <div class="profile-bg">
-    <div style="height: 150px">
-      <div class="float-left" style="padding: 16px">
-        <a class="link back">
-          <i class="material-icons" style="color: white; font-size: 20pt">arrow_back</i>
-        </a>
-      </div>
-      <div class="float-right" style="padding: 16px">
-        <a href="/edit-profile-screen/" class="link">
-          <i class="material-icons" style="color: white; font-size: 20pt">edit</i>
-        </a>
+
+  <div class="expanded-card" style="display: inherit;">
+    <div id="profile-pic" class="card-media">
+      <div class="row justify-content-between">
+        <a href="#" class="link back"><i class="material-icons white">close</i></a>
+        <a href="/edit-profile-screen/" class="link"><i class="material-icons white">edit</i></a>
       </div>
     </div>
-    <img src="media/profile-bump.png" class="profile-bump" style="border-radius: 0" />
-    <div id="profile-pic" class="profile-pic"></div>
-  </div>
-  <div class="block no-margin-top">
-    <div class="text-align-center no-margin-top">
-      <h2 id="profile-name" class="profile-title"></h2>
+    <div class="scrollable">
+      <div style="height: 33.33%"></div>
+      <div class="card-content">
+        <div class="block no-margin-top" style="padding-top: 16px;">
+          <div class="text-align-center">
+            <h2 id="profile-name" class="profile-title"></h2>
 
-      <p id="profile-tagline" class="no-margin-top"></p>
+            <p id="profile-tagline"></p>
+          </div>
+          <p id="profile-bio"></p>
+
+
+          <div class="list no-hairlines">
+            <div class="block-title" style="margin-left: 16px">Friends</div>
+            <ul id=friends>
+              <a href="#" class="item-link no-chevron">
+                <li class="item-content">
+                  <div class="item-media"><i class="material-icons">person</i></div>
+                  <div class="item-inner">Krombopulos Mike</div>
+                </li>
+              </a>
+              <a href="#" class="item-link no-chevron">
+                <li class="item-content">
+                  <div class="item-media"><i class="material-icons">person</i></div>
+                  <div class="item-inner">Jane Smith</div>
+                </li>
+              </a>
+
+            </ul>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <p id="profile-bio" class="no-margin-top"></p>
-
-
-  </div>
-  <div class="list no-hairlines">
-    <div class="block-title" style="margin-left: 16px">Friends</div>
-    <ul id=friends>
-      <a href="#" class="item-link no-chevron">
-        <li class="item-content">
-          <div class="item-media"><i class="material-icons">person</i></div>
-          <div class="item-inner">Krombopulos Mike</div>
-        </li>
-      </a>
-      <a href="#" class="item-link no-chevron">
-        <li class="item-content">
-          <div class="item-media"><i class="material-icons">person</i></div>
-          <div class="item-inner">Jane Smith</div>
-        </li>
-      </a>
-
-    </ul>
   </div>
 </div>
