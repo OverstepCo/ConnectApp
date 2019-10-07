@@ -4,6 +4,7 @@
   --f7-messagebar-border-color: rgba(0, 0, 0, 0);
   --f7-panel-shadow: rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 30%, rgba(0, 0, 0, 0) 100%;
   --f7-fab-box-shadow: 0 7px 15px -5px rgba(var(--f7-theme-color-rgb), .7);
+  --f7-searchbar-input-bg-color: rgba(0, 0, 0, 0) !important;
 }
 
 @font-face {
@@ -134,7 +135,11 @@ ul {
   padding: 8px;
   border: .5px solid lightgray;
   background-color: var(--f7-page-bg-color);
-  border-radius: 15px;
+  border-radius: 100vh;
+}
+
+.searchbar {
+  padding: 4px 0;
 }
 
 img {
@@ -413,10 +418,6 @@ img {
   font-size: 20px;
 }
 
-.searchbar-input-wrap {
-  margin: 16px;
-}
-
 .lightbox {
   position: fixed;
   width: 80%;
@@ -538,6 +539,10 @@ img {
   margin: 16px;
   padding-top: 100%;
   border-radius: 10px;
+}
+
+.chip {
+  animation: fadeInUp .2s;
 }
 
 /********** PREVIEW CHAT **********/

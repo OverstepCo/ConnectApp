@@ -150,6 +150,39 @@ var app = new Framework7({
     {
       path: '/new-event-screen/',
       url: 'pages/new_event.html',
+      on: {
+        pageInit: function(e, page) {
+          // do something when page initialized
+          var searchbar = app.searchbar.create({
+            el: '#new-event-searchbar',
+            searchContainer: '#new-event-members-list',
+            searchIn: '.item-inner',
+          });
+
+          ///load the school members into the things
+
+          db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
+            var membersList = document.getElementById("new-event-members-list");
+            querySnapshot.forEach(function(doc) {
+              //This loop runs once for every user in the current school
+              getUserData(doc.id, function(user) {
+                console.log(user.username + "woooooo");
+                var l = document.createElement('div');
+                l.innerHTML = '<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="' + user.uid + '" data-checked="0" data-name="' + user.username + '"data-pic="' + user.picURL + '" data-checked="0">' +
+                  '<li class="item-content">' +
+                  '<div class="item-media">' +
+                  '<div class="li-profile-pic" style="background-image: url(' + user.picURL + ')"></div>' +
+                  '</div>' +
+                  '<div class="item-inner">' + user.username + '</div>' +
+                  '<div id="right" class="right"></div>' +
+                  '</li>' +
+                  '</a>';
+                membersList.appendChild(l);
+              });
+            });
+          });
+        },
+      }
     },
     // edit new chat page
     {

@@ -397,7 +397,7 @@
       chip.innerHTML = '<div class="chip-media">\
   <div class="chip-pic" style="background-image: url(\'' + li.dataset.pic + '\')"></div>\
   </div>\
-  <div class="chip-label">' + li.dataset.name + '</div>\
+  <div class="chip-label">' + li.dataset.name.split(" ")[0] + " " + li.dataset.name.split(" ")[1].charAt(0).toUpperCase() + "." + '</div>\
   <a href="#" onclick="removeChip(this, \'' + li.dataset.uid + '\')" class="chip-delete"></a>';
 
       //add chip to the screen
