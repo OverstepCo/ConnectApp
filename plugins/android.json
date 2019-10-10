@@ -15,11 +15,6 @@
       "ANDROID_FIREBASE_FIRESTORE_VERSION": "18.2.0",
       "PACKAGE_NAME": "com.phonegap.helloworld"
     },
-    "cordova-plugin-admobpro-firebase": {
-      "ADMOB_APP_ID": "ca-app-pub-8428723406877921~1827953079",
-      "PLAY_SERVICES_VERSION": "16.0.0",
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    }
   },
   "dependent_plugins": {
     "cordova-plugin-extension": {

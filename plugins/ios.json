@@ -10,18 +10,10 @@
     "cordova-plugin-statusbar": {
       "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
-    "cordova-plugin-admobpro-firebase": {
-      "ADMOB_APP_ID": "ca-app-pub-8428723406877921~1827953079",
-      "PLAY_SERVICES_VERSION": "16.0.0",
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
-    }
   },
   "dependent_plugins": {
     "cordova-plugin-extension": {
       "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
-    "cordova-admobsdk": {
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
-    }
   }
 }
