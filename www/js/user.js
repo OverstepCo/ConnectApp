@@ -239,19 +239,27 @@ function changeSchool(newSchoolID) {
 }
 
 function searchSchools() { //Loads the schools from the database
-  console.log("load schools");
+  app.progressbar.show(localStorage.getItem("themeColor"));
+
   var zip = parseInt(document.getElementById("school-zip").value);
   var schoolsList = document.getElementById("schools-list");
   var foundSchools = false;
   console.log(zip);
 
+  //check for a valid zip code before search
+  if (!zip) {
+    schoolsList.innerHTML = '<div class="text-align-center">Please enter a valid zip code</div>';
+    app.progressbar.hide();
+    return;
+  }
+
   schoolsList.innerHTML = "";
+
+  //search database for schools with given zip code
   var schools = db.collection("school").where("zip", "==", zip);
   schools.get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
+    querySnapshot.forEach(function(doc) { // add results to page
       foundSchools = true;
-
-
       var li = document.createElement('li');
       li.classList.add("card-block");
       li.innerHTML = '<h3>' + doc.get("name") +
@@ -262,10 +270,12 @@ function searchSchools() { //Loads the schools from the database
       schoolsList.appendChild(li);
 
     });
+  }).catch(function(error) {
+    schoolsList.innerHTML += '<div class="text-align-center">Oops! ' + error + '</div>';
+    app.progressbar.hide();
   }).then(function() {
     schoolsList.innerHTML += '<div class="text-align-center">Don\'t see your school?</div><div class="display-flex justify-content-center"><a class="text-align-center" href="/new-school-page/">Add a new school</a></div>';
-  }).catch(function(error) {
-
+    app.progressbar.hide();
   });
 }
 

@@ -435,7 +435,8 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
     });
   }).then(function() {
     var skeleton = document.getElementById('subscribed-chats-skeleton');
-    skeleton.parentNode.removeChild(skeleton);
+    if (skeleton)
+      skeleton.parentNode.removeChild(skeleton);
   });
 }
 
