@@ -64,6 +64,14 @@ ext {
     if (!project.hasProperty('cdvMinSdkVersion')) {
         cdvMinSdkVersion = null
     }
+    // Sets the maxSdkVersion to the given value.
+    if (!project.hasProperty('cdvMaxSdkVersion')) {
+        cdvMaxSdkVersion = null
+    }
+    // The value for android.targetSdkVersion.
+    if (!project.hasProperty('cdvTargetSdkVersion')) {
+        cdvTargetSdkVersion = null;
+    }
     // Whether to build architecture-specific APKs.
     if (!project.hasProperty('cdvBuildMultipleApks')) {
         cdvBuildMultipleApks = null
@@ -90,8 +98,7 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "../cordova-plugin-firestore/helloworld-firestore.gradle"
-apply from: "../cordova-plugin-extension/helloworld-rjfun-libs.gradle"
+apply from: "../cordova-plugin-firebasex/connect-build.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -105,10 +112,12 @@ if (hasBuildExtras2) {
 }
 
 // Set property defaults after extension .gradle files.
-if (ext.cdvCompileSdkVersion == null) {
-    ext.cdvCompileSdkVersion = privateHelpers.getProjectTarget()
-    //ext.cdvCompileSdkVersion = project.ext.defaultCompileSdkVersion
-}
+ext.cdvCompileSdkVersion = cdvCompileSdkVersion == null ? (
+    defaultCompileSdkVersion == null 
+        ? privateHelpers.getProjectTarget()
+        : defaultCompileSdkVersion 
+) : Integer.parseInt('' + cdvCompileSdkVersion);
+
 if (ext.cdvBuildToolsVersion == null) {
     ext.cdvBuildToolsVersion = privateHelpers.findLatestInstalledBuildTools()
     //ext.cdvBuildToolsVersion = project.ext.defaultBuildToolsVersion
@@ -123,7 +132,14 @@ if (ext.cdvReleaseSigningPropertiesFile == null && file('../release-signing.prop
 // Cast to appropriate types.
 ext.cdvBuildMultipleApks = cdvBuildMultipleApks == null ? false : cdvBuildMultipleApks.toBoolean();
 ext.cdvVersionCodeForceAbiDigit = cdvVersionCodeForceAbiDigit == null ? false : cdvVersionCodeForceAbiDigit.toBoolean();
+
+// minSdkVersion, maxSdkVersion and targetSdkVersion
 ext.cdvMinSdkVersion = cdvMinSdkVersion == null ? defaultMinSdkVersion : Integer.parseInt('' + cdvMinSdkVersion)
+if (cdvMaxSdkVersion != null) {
+    ext.cdvMaxSdkVersion = Integer.parseInt('' + cdvMaxSdkVersion)
+}
+ext.cdvTargetSdkVersion = cdvTargetSdkVersion == null ? defaultTargetSdkVersion  : Integer.parseInt('' + cdvTargetSdkVersion)
+
 ext.cdvVersionCode = cdvVersionCode == null ? null : Integer.parseInt('' + cdvVersionCode)
 
 def computeBuildTargetName(debugBuild) {
@@ -153,6 +169,8 @@ task cdvPrintProps {
         println('cdvVersionCode=' + cdvVersionCode)
         println('cdvVersionCodeForceAbiDigit=' + cdvVersionCodeForceAbiDigit)
         println('cdvMinSdkVersion=' + cdvMinSdkVersion)
+        println('cdvMaxSdkVersion=' + cdvMaxSdkVersion)
+        println('cdvTargetSdkVersion=' + cdvTargetSdkVersion)
         println('cdvBuildMultipleApks=' + cdvBuildMultipleApks)
         println('cdvReleaseSigningPropertiesFile=' + cdvReleaseSigningPropertiesFile)
         println('cdvDebugSigningPropertiesFile=' + cdvDebugSigningPropertiesFile)
@@ -171,6 +189,14 @@ android {
 
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
+        }
+
+        if (cdvMaxSdkVersion != null) {
+            maxSdkVersion cdvMaxSdkVersion
+        }
+
+        if(cdvTargetSdkVersion != null) {
+            targetSdkVersion cdvTargetSdkVersion
         }
     }
 
@@ -268,10 +294,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // SUB-PROJECT DEPENDENCIES START
     implementation(project(path: ":CordovaLib"))
-    implementation "com.google.firebase:firebase-core:16.0.8"
-    implementation "com.google.firebase:firebase-firestore:18.2.0"
-    implementation "com.google.code.gson:gson:2.8.2"
-    implementation "com.google.android.gms:play-services-ads:16.0.0"
+    implementation "com.google.android.gms:play-services-tagmanager:17.0.0"
+    implementation "com.google.firebase:firebase-core:17.0.0"
+    implementation "com.google.firebase:firebase-messaging:19.0.0"
+    implementation "com.google.firebase:firebase-config:18.0.0"
+    implementation "com.google.firebase:firebase-perf:18.0.0"
+    implementation "com.google.firebase:firebase-auth:18.0.0"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
+    implementation "com.crashlytics.sdk.android:crashlytics-ndk:2.1.0"
+    implementation "me.leolin:ShortcutBadger:1.1.22"
     // SUB-PROJECT DEPENDENCIES END
 }
 

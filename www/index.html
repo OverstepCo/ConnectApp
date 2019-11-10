@@ -338,7 +338,7 @@
       messagingSenderId: "846822998925"
 
     };
-    // Initialize Firebase
+    // Initialize Firebase and inable offline cache
     firebase.initializeApp(firebaseConfig);
     firebase.firestore().enablePersistence()
       .catch(function(err) {
@@ -362,58 +362,6 @@
 
     // Create a child reference
     var PPRef = storageRef.child('profile-pictures');
-    /*
-        // Retrieve Firebase Messaging object.
-        const messaging = firebase.messaging();
-
-        // Add the public key generated from the console here.
-        messaging.usePublicVapidKey("AAAAxSqVg40:APA91bG1_iR8nf0ArJnd2u1S3tqyGbUjIVQNlvy6sfv8uy07qlz7EPQWNnkhEgwWjfrFp17xY6G3NfvseWuuc-7K2k3E5dC4Sc9bUZ5XHD60HEmSUyplZbSrMzR0Ch5mRl_j7enM2F6C");
-
-        Notification.requestPermission().then((permission) => {
-          if (permission === 'granted') {
-            console.log('Notification permission granted.');
-            // TODO(developer): Retrieve an Instance ID token for use with FCM.
-            // ...
-          } else {
-            console.log('Unable to get permission to notify.');
-          }
-        });
-
-        // Get Instance ID token. Initially this makes a network call, once retrieved
-        // subsequent calls to getToken will return from cache.
-        messaging.getToken().then((currentToken) => {
-          if (currentToken) {
-            sendTokenToServer(currentToken);
-            updateUIForPushEnabled(currentToken);
-          } else {
-            // Show permission request.
-            console.log('No Instance ID token available. Request permission to generate one.');
-            // Show permission UI.
-            updateUIForPushPermissionRequired();
-            setTokenSentToServer(false);
-          }
-        }).catch((err) => {
-          console.log('An error occurred while retrieving token. ', err);
-          showToken('Error retrieving Instance ID token. ', err);
-          setTokenSentToServer(false);
-        });
-
-        // Callback fired if Instance ID token is updated.
-        messaging.onTokenRefresh(() => {
-          messaging.getToken().then((refreshedToken) => {
-            console.log('Token refreshed.');
-            // Indicate that the new Instance ID token has not yet been sent to the
-            // app server.
-            setTokenSentToServer(false);
-            // Send Instance ID token to app server.
-            sendTokenToServer(refreshedToken);
-            // ...
-          }).catch((err) => {
-            console.log('Unable to retrieve refreshed token ', err);
-            showToken('Unable to retrieve refreshed token ', err);
-          });
-        });
-    */
 
     var User; //An objects that contins the user data if the currently signed in user
     var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
@@ -524,6 +472,60 @@
     }
 
     document.addEventListener('deviceready', initApp, false);
+    */
+
+    //This will probablty never be used 
+    /*
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+
+        // Add the public key generated from the console here.
+        messaging.usePublicVapidKey("AAAAxSqVg40:APA91bG1_iR8nf0ArJnd2u1S3tqyGbUjIVQNlvy6sfv8uy07qlz7EPQWNnkhEgwWjfrFp17xY6G3NfvseWuuc-7K2k3E5dC4Sc9bUZ5XHD60HEmSUyplZbSrMzR0Ch5mRl_j7enM2F6C");
+
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            // TODO(developer): Retrieve an Instance ID token for use with FCM.
+            // ...
+          } else {
+            console.log('Unable to get permission to notify.');
+          }
+        });
+
+        // Get Instance ID token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+        messaging.getToken().then((currentToken) => {
+          if (currentToken) {
+            sendTokenToServer(currentToken);
+            updateUIForPushEnabled(currentToken);
+          } else {
+            // Show permission request.
+            console.log('No Instance ID token available. Request permission to generate one.');
+            // Show permission UI.
+            updateUIForPushPermissionRequired();
+            setTokenSentToServer(false);
+          }
+        }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+          showToken('Error retrieving Instance ID token. ', err);
+          setTokenSentToServer(false);
+        });
+
+        // Callback fired if Instance ID token is updated.
+        messaging.onTokenRefresh(() => {
+          messaging.getToken().then((refreshedToken) => {
+            console.log('Token refreshed.');
+            // Indicate that the new Instance ID token has not yet been sent to the
+            // app server.
+            setTokenSentToServer(false);
+            // Send Instance ID token to app server.
+            sendTokenToServer(refreshedToken);
+            // ...
+          }).catch((err) => {
+            console.log('Unable to retrieve refreshed token ', err);
+            showToken('Unable to retrieve refreshed token ', err);
+          });
+        });
     */
   </script>
 

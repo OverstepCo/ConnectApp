@@ -1,0 +1,61 @@
+<div class="page" data-page="chat">
+  <div class="navbar no-shadow no-harline">
+    <div class="navbar-inner">
+      <div class="left">
+        <a class="link icon-only back">
+          <i class="material-icons">arrow_back</i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="block no-margin-top">
+      <h1>Edit Profile</h1>
+      <label>
+        <div id="profile-pic-preview" class="profile-pic-upload">
+          <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+          <i id="profile-pic-icon" class="material-icons">edit</i>
+        </div>
+      </label>
+      <div class="list no-hairlines no-margin">
+        <ul>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">First Name</div>
+              <div class="item-input-wrap">
+                <input id="first-name" type="text" maxlength="40">
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Last Name</div>
+              <div class="item-input-wrap">
+                <input id="last-name" type="text" maxlength="40">
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Tagline</div>
+              <div class="item-input-wrap">
+                <input id="tagline" type="text" maxlength="40">
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Bio</div>
+              <div class="item-input-wrap">
+                <textarea id="bio" rows="5" maxlength="200"></textarea>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button id="update-user-info" class="button button-fill button-round">Update</button>
+      <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
+    </div>
+  </div>
+</div>

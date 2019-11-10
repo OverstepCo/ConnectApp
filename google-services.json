@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "846822998925",
+    "firebase_url": "https://connect-proj.firebaseio.com",
+    "project_id": "connect-proj",
+    "storage_bucket": "connect-proj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846822998925:android:727ad323cf04f04c",
+        "android_client_info": {
+          "package_name": "com.companyname.Connekt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846822998925-berdtcif6stj7mg8hsrme9pqgpek3us5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRD7blRbLoepKg2oNB_T_Xn4qJ8IIb8J8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846822998925-berdtcif6stj7mg8hsrme9pqgpek3us5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "846822998925-a67mqa1oc447ape3tovp783ijjg21pui.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.companyname.Connekt"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846822998925:android:241618703da644c46533c4",
+        "android_client_info": {
+          "package_name": "com.overstep.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846822998925-berdtcif6stj7mg8hsrme9pqgpek3us5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRD7blRbLoepKg2oNB_T_Xn4qJ8IIb8J8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846822998925-berdtcif6stj7mg8hsrme9pqgpek3us5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "846822998925-a67mqa1oc447ape3tovp783ijjg21pui.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.companyname.Connekt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
