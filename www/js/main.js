@@ -291,6 +291,7 @@ function loadMainPage() { //Loads all the data on the main page
   //addFreind("waaa");
   console.log(User);
 
+
   document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic +
     ')"></div>'
   //This loop runs once for every chat room the current user is subscribed to

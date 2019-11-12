@@ -329,16 +329,14 @@
 
   <script>
     var firebaseConfig = {
-
       apiKey: "AIzaSyBUSM_BAQ81dWuIdGJEyIPWcGul6LQ4HEw",
       authDomain: "connect-proj.firebaseapp.com",
       databaseURL: "https://connect-proj.firebaseio.com",
       projectId: "connect-proj",
       storageBucket: "connect-proj.appspot.com",
       messagingSenderId: "846822998925"
-
     };
-    // Initialize Firebase
+    // Initialize Firebase and enable offline cache
     firebase.initializeApp(firebaseConfig);
     firebase.firestore().enablePersistence()
       .catch(function(err) {
@@ -348,8 +346,6 @@
           console.log("error enableing offline cache");
         }
       });
-
-    //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
 
     //The referance to the firestore database
     var db = firebase.firestore();
@@ -362,6 +358,57 @@
 
     // Create a child reference
     var PPRef = storageRef.child('profile-pictures');
+
+    var User; //An objects that contins the user data if the currently signed in user
+    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
+
+    /////////authentication section
+    firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
+      if (user) { // User is signed in
+        uid = user.uid;
+        //TODO if user has no school redirict to school selection page//this should actuall be done on sign up. (so just cover as an edge case)
+        loadUserData();
+
+      } else { //User is signed out.
+        console.log("nobody is signed in");
+        self.app.views.main.router.navigate('/login-screen/', {
+          reloadCurrent: true,
+          ignoreCache: true,
+        });
+      }
+    });
+  </script>
+
+
+  <script>
+    /*
+    var admobid = {};
+    if (/(android)/i.test(navigator.userAgent)) {
+      admobid = { // for Android
+        banner: 'ca-app-pub-8428723406877921/1070594544',
+        interstitial: 'ca-app-pub-8428723406877921/1070594544'
+      };
+    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      admobid = { // for iOS
+        banner: 'ca-app-pub-6869992474017983/4806197152',
+        interstitial: 'ca-app-pub-6869992474017983/7563979554'
+      };
+    }
+
+    function initApp() {
+      if (AdMob) {
+        AdMob.createBanner({
+          adId: admobid.banner,
+          position: AdMob.AD_POSITION.BOTTOM_CENTER,
+          autoShow: true
+        });
+      }
+    }
+
+    document.addEventListener('deviceready', initApp, false);
+    */
+
+    //This will probablty never be used
     /*
         // Retrieve Firebase Messaging object.
         const messaging = firebase.messaging();
@@ -413,117 +460,6 @@
             showToken('Unable to retrieve refreshed token ', err);
           });
         });
-    */
-
-    var User; //An objects that contins the user data if the currently signed in user
-    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
-
-    /////////authentication section
-    firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
-      if (user) { // User is signed in.
-        uid = user.uid;
-        console.log(uid);
-        //TODO if user has no school redirict to school selection page
-
-        var profilePic = "";
-        var profilePictureRef = storageRef.child('profile-pictures').child(uid);
-
-        // Get the download URL
-        profilePictureRef.getDownloadURL().then(function(url) {
-          profilePic = url;
-        }).catch(function(error) {
-          profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
-        }).then(function() {
-
-
-          db.collection("users").doc(uid).get().then(function(userData) {
-            if (userData.exists) { //If the user data exists load the user data
-              User = { //Load the users data and store it in an object
-                uid: uid,
-                firstName: userData.get("firstName"),
-                lastName: userData.get("lastName"),
-                school: userData.get("school"),
-                fullName: function() {
-                  return "" + this.firstName + " " + this.lastName;
-                },
-                chats: userData.get("chatrooms"),
-                profilePic: profilePic,
-              }
-              loadMainPage();
-            } else { //if the user has no data set there data
-              console.log("this user has no data");
-              db.collection("users").doc(uid).set({
-                firstName: firstName,
-                lastName: lastName,
-                school: "null"
-              })
-              loadUser();
-            }
-            /*
-                       else {
-                        //If the user data does not exist create new user data // TODO: redirect the user to enter this info
-                        console.log("No user data document!");
-                        db.collection("users").doc(uid).set({
-                            firstName: "First Name",
-                            lastName: "Last Name",
-                            school: "null"
-                          })
-                          .then(function() {
-                            console.log("user data successfully created!");
-                          })
-                          .catch(function(error) {
-                            console.error("Error updating user data: ", error);
-                          });
-                      }
-
-                      */
-          });
-        });
-        //close the login screen if it is open
-        var currentPage = app.views.main.router.url;
-        if (currentPage == "/login-screen/") {
-          self.app.views.main.router.navigate('/home/', {
-            reloadCurrent: true,
-            ignoreCache: true,
-          });
-        }
-        app.preloader.hide();
-      } else { //User is signed out.
-        self.app.views.main.router.navigate('/login-screen/', {
-          reloadCurrent: true,
-          ignoreCache: true,
-        });
-      }
-    });
-  </script>
-
-
-  <script>
-    /*
-    var admobid = {};
-    if (/(android)/i.test(navigator.userAgent)) {
-      admobid = { // for Android
-        banner: 'ca-app-pub-8428723406877921/1070594544',
-        interstitial: 'ca-app-pub-8428723406877921/1070594544'
-      };
-    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
-      admobid = { // for iOS
-        banner: 'ca-app-pub-6869992474017983/4806197152',
-        interstitial: 'ca-app-pub-6869992474017983/7563979554'
-      };
-    }
-
-    function initApp() {
-      if (AdMob) {
-        AdMob.createBanner({
-          adId: admobid.banner,
-          position: AdMob.AD_POSITION.BOTTOM_CENTER,
-          autoShow: true
-        });
-      }
-    }
-
-    document.addEventListener('deviceready', initApp, false);
     */
   </script>
 

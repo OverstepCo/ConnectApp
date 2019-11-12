@@ -1,63 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Connect App</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
-  <link rel="stylesheet" href="css/framework7.css">
   <link rel="stylesheet" href="css/framework7.bundle.min.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
   <div id="app">
-    <div class="panel panel-left panel-cover panel-resizable">
-      <div class="block panel-header gradient-background">
-        <img src="media/logo.png">
-        <h2>Connect</h2>
-        <p>Connect App Description</p>
-      </div>
+    <div class="panel panel-left panel-reveal panel-resizable">
+      <h2>Connect App Logo</h2>
       <div class="list no-hairlines" style="margin-top: 10px;">
         <ul>
           <a href="/profile-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
+              <div class="item-media"><i class="material-icons">person</i></div>
               <div class="item-inner">My Profile</div>
             </li>
           </a>
-          <a href="#" class="panel-close item-link no-chevron">
+          <a href="/school-search-page/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">school</i></div>
+              <div class="item-media"><i class="material-icons">school</i></div>
               <div class="item-inner">Change School</div>
             </li>
           </a>
           <a href="/settings-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">settings</i></div>
+              <div class="item-media"><i class="material-icons">settings</i></div>
               <div class="item-inner">Settings</div>
             </li>
           </a>
           <a href="/about-screen/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">info</i></div>
+              <div class="item-media"><i class="material-icons">info</i></div>
               <div class="item-inner">About</div>
             </li>
           </a>
           <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">cloud_off</i></div>
+              <div class="item-media"><i class="material-icons">cloud_off</i></div>
               <div class="item-inner">Sign Out</div>
             </li>
           </a>
-          <a href="/login-screen/" class="panel-close item-link no-chevron">
+
+
+
+          <a href="/welcome-page/" class="panel-close item-link no-chevron">
             <li class="item-content">
-              <div class="item-media"><i class="material-icons gradient-icon">cloud</i></div>
-              <div class="item-inner">Sign In</div>
+              <div class="item-media"><i class="material-icons">add</i></div>
+              <div class="item-inner">Welcome Screen</div>
             </li>
           </a>
+
         </ul>
       </div>
     </div>
@@ -66,6 +64,53 @@
       <div data-page="index" class="page">
 
 
+        <div id="expandable-card" class="expanded-card">
+          <div id="expandable-card-media" class="card-media card-media-closed">
+            <a id="card-close" onclick="closeCard()" href="#" class="link"><i class="material-icons white">close</i></a>
+          </div>
+          <div class="scrollable">
+            <div style="height: 33.33%"></div>
+            <div id="expandable-card-content" class="card-content card-content-closed">
+              <div style="padding: 32px 32px 0 32px ">
+                <div class="row align-items-center">
+                  <div class="col-75">
+                    <h1 id="expandable-card-name" class="no-margin">Event Name that is really long.</h1>
+                  </div>
+                  <div class="col-25">
+                    <button id="rsvp" class="button button-round button-fill" style="width: 100%">RSVP</button>
+                  </div>
+                </div>
+                <p id="expandable-card-description"> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
+              </div>
+              <div class="block-title">Who's Going</div>
+              <div id="attendees" class="row justify-content-space-around">
+
+                <div class="attendee">
+                  <div class="pic"></div>
+                  <p>Bob Rosspool</p>
+
+                </div>
+              </div>
+
+              <div class="block-title">Comments</div>
+
+              <div class="page-content messages-content">
+                <div class="messages event-messages">
+
+                </div>
+              </div>
+              <div class="toolbar messagebar event-messagebar">
+                <div class="toolbar-inner">
+                  <div class="messagebar-area">
+                    <textarea class="resizable" placeholder="Message"></textarea>
+                  </div><a id="event-send-link" class="link send-link" href="#">Send</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
         <div class="navbar no-shadow no-harline navbar-home">
           <div id="navbar" class="navbar-inner school-header">
             <div class="left">
@@ -73,12 +118,8 @@
                 <i class="material-icons icon">menu</i>
               </a>
             </div>
-            <div>
-              <h1>School Of Ross</h1>
-              <p>32 Members | 12 Chats | 7 Events</p>
-            </div>
             <div class="right">
-              <a href="/profile-screen/" class="link icon-only">
+              <a id="profile-icon" href="/profile-screen/" class="link">
                 <i class="material-icons icon">person</i>
               </a>
             </div>
@@ -88,143 +129,176 @@
         <!-- Floating Action Button -->
         <div class="fab fab-right-bottom">
           <a href="#">
-            <i class="icon material-icons">add</i>
-            <i class="icon material-icons">close</i>
+            <i class="icon material-icons text-color-white">add</i>
+            <i class="icon material-icons text-color-white">close</i>
           </a>
           <!-- FAB speed dial actions with labels -->
           <div class="fab-buttons fab-buttons-top fab-morf" data-morph-to=".card-block">
-            <a href="#" class="fab-label-button fab-close">
-              <i class="icon material-icons" style="font-size: 15pt">message</i>
+            <a href="/new-chat-screen/" class="fab-label-button fab-close">
+              <i class="icon material-icons text-color-white" style="font-size: 15pt">message</i>
               <span class="fab-label">New Chat</span>
             </a>
             <a href="/new-event-screen/" class="fab-label-button fab-close">
-              <i class="icon material-icons">event_note</i>
+              <i class="icon material-icons text-color-white">event_note</i>
               <span class="fab-label">New Event</span>
             </a>
           </div>
         </div>
 
-        <div class="page-content" style="overflow-x: hidden; background-color: #edeff2">
-          <div class="row title justify-items-left no-margin-bottom">
-            <div>Upcoming Events</div>
-            <div class="left">
-              <i onclick="swipeLeft()" class="material-icons">keyboard_arrow_left</i>
-              <i onclick="swipeRight()" class="material-icons">keyboard_arrow_right</i>
-            </div>
-          </div>
-          <div id="event-swiper-wrapper" data-space-between="0" data-slides-per-view="1" class="swiper-container event-swiper">
-            <div id="event-swiper" class="swiper-wrapper">
 
 
-
-
-            </div>
-          </div>
-          <div class="card-block no-margin-top">
-            <div class="title">Subscribed Chats</div>
-            <div class="hairline"></div>
-
-            <div id="subscribed-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
-              <ul>
-                <li class="item-content skeleton-effect-pulse">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text line 2
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
-                    </div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
-              <ul id="subscribed-chats">
-
-              </ul>
-            </div>
-          </div>
-          <div class="card-block">
-            <div class="title">Unsubscribed Chats</div>
-            <div class="hairline"></div>
-
-            <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
-              <ul>
-                <li class="item-content skeleton-effect-pulse">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
-                    </div>
-                    <div class="item-subtitle">Subtitle</div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text line 2
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content skeleton-effect-pulse">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">This is Title</div>
-                    </div>
-                    <div class="item-subtitle">Subtitle</div>
-                    <div class="item-text">
-                      Placeholder text line 1 Text
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="list media-list chevron-center no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
-              <ul class="school-group-chats" id="school-group-chats">
-
-              </ul>
-            </div>
-            <div class="row justify-content-center"><a class="link"><i class="material-icons">expand_more</i></a></div>
-          </div>
-          <div class="card-block">
-            <div class="title">School Members</div>
-            <div class="hairline"></div>
-
-            <div class="searchbar searchbar-inline">
-              <div class="searchbar-input-wrap row">
-                <input class="no-padding" type="search" placeholder="Search List">
-                <span class="input-clear-button"></span>
+        <div class="page-content">
+          <div style="min-height: 30%">
+            <div id="event-swiper-wrapper" class="swiper-container event-swiper" data-space-between="0" data-slides-per-view="2">
+              <div id="event-swiper" class="swiper-wrapper">
               </div>
             </div>
-            <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-              <ul>
-                <a href="#" class="item-link no-chevron">
-                  <li class="item-content">
-                    <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
-                    <div class="item-inner">Krombopulos Mike</div>
-                  </li>
-                </a>
-                <a href="#" class="item-link no-chevron">
-                  <li class="item-content">
-                    <div class="item-media"><i class="material-icons gradient-icon">person</i></div>
-                    <div class="item-inner">Jane Smith</div>
-                  </li>
-                </a>
-
-              </ul>
-            </div>
-            <!-- Nothing found message -->
-            <div class="block searchbar-not-found">
-              <div class="block-inner">Nothing found</div>
+          </div>
+          <div class="toolbar toolbar-home">
+            <a href="#tab-1" class="tab-link tab-link-active">Subscribed</a>
+            <a href="#tab-2" class="tab-link">Unsubscribed</a>
+            <a href="#tab-3" class="tab-link">Members</a>
+          </div>
+          <div class="tabs-swipeable-wrap" style="height: 50%">
+            <div class="tabs">
+              <div id="tab-1" class="page-content tab tab-active no-padding-top">
+                <div class="block no-margin-top">
+                  <div id="subscribed-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
+                    <ul>
+                      <li class="item-content skeleton-effect-pulse">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text line 2
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-1ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title because why not</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-2ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is a longer Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text becuz im cool
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
+                    <ul id="subscribed-chats">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="tab-2" class="page-content tab no-padding-top">
+                <div class="block no-margin-top">
+                  <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
+                    <ul>
+                      <li class="item-content skeleton-effect-pulse">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text line 2
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-1ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is Title because why not</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-2ds">
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">This is a longer Title</div>
+                          </div>
+                          <div class="item-text">
+                            Placeholder text line 1 Text becuz im
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="list media-list no-chevron no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
+                    <ul class="school-group-chats" id="school-group-chats">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="tab-3" class="page-content tab no-padding-top">
+                <div class="block no-margin-top">
+                  <div class="search-block no-padding">
+                    <form id="school-searchbar" class="searchbar searchbar-inline">
+                      <div class="searchbar-inner">
+                        <div class="searchbar-input-wrap">
+                          <input type="search" placeholder="Search">
+                          <i class="searchbar-icon"></i>
+                          <span class="input-clear-button"></span>
+                        </div>
+                        <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+                      </div>
+                    </form>
+                  </div>
+                  <div id="members-list-skeleton" class="list media-list no-hairlines no-hairlines-between no-margin-top skeleton-text">
+                    <ul>
+                      <li class="item-content skeleton-effect-pulse">
+                        <div class="item-media">
+                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                        </div>
+                        <div class="item-inner">
+                          <div>Title Long</div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-1ds">
+                        <div class="item-media">
+                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                        </div>
+                        <div class="item-inner">
+                          <div>Title Even Longer</div>
+                        </div>
+                      </li>
+                      <li class="item-content skeleton-effect-pulse delay-2ds">
+                        <div class="item-media">
+                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
+                        </div>
+                        <div class="item-inner">
+                          <div>Title Longerr</div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+                    <ul id="members-list">
+                    </ul>
+                  </div>
+                  <!-- Nothing found message -->
+                  <div class="block searchbar-not-found">
+                    <div class="block-inner">Nothing found</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
 
         </div>
       </div>
@@ -232,86 +306,165 @@
   </div>
 
 
+  <script type="text/javascript" src="js/cordova.js"></script>
   <script type="text/javascript" src="js/framework7.bundle.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/chats.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/events.js"></script>
+  <script type="text/javascript" src="js/messaging.js"></script>
 
 
 
 
 
   <!-- Firebase stuff-->
-  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.9.4/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-firestore.js"></script>
+  <script src="js/firebase/firebase-app.js"></script>
+  <script src="js/firebase/firebase-auth.js"></script>
+  <script src="js/firebase/firebase-database.js"></script>
+  <script src="js/firebase/firebase-firestore.js"></script>
+  <script src="js/firebase/firebase-storage.js"></script>
+  <script src="js/firebase/firebase-messaging.js"></script>
 
 
   <script>
     var firebaseConfig = {
-
       apiKey: "AIzaSyBUSM_BAQ81dWuIdGJEyIPWcGul6LQ4HEw",
       authDomain: "connect-proj.firebaseapp.com",
       databaseURL: "https://connect-proj.firebaseio.com",
       projectId: "connect-proj",
       storageBucket: "connect-proj.appspot.com",
       messagingSenderId: "846822998925"
-
     };
-    // Initialize Firebase
+    // Initialize Firebase and enable offline cache
     firebase.initializeApp(firebaseConfig);
-    //firebase.auth().signInWithEmailAndPassword("ethandisilvestro@gmail.com", "123456").catch(function(error) {});
+    firebase.firestore().enablePersistence()
+      .catch(function(err) {
+        if (err.code == 'unimplemented') {
+          console.log("Offline cache is not compatable with this device");
+        } else {
+          console.log("error enableing offline cache");
+        }
+      });
+
+    //The referance to the firestore database
     var db = firebase.firestore();
-    var User; //TODO change this to referance the custom userdata intead of firebases auth user
-    var uid;
+
+    // firestore media storage reference
+    var storage = firebase.storage();
+
+    // Create a storage reference from our storage service
+    var storageRef = storage.ref();
+
+    // Create a child reference
+    var PPRef = storageRef.child('profile-pictures');
+
+    var User; //An objects that contins the user data if the currently signed in user
+    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
 
     /////////authentication section
-
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
-      if (user) { // User is signed in.
+      if (user) { // User is signed in
         uid = user.uid;
-        console.log(uid);
-        //TODO if user has no school redirict to school selection page
-        db.collection("users").doc(uid).get().then(function(user) {
-          User = {
-            uid: uid,
-            firstName: user.get("firstName"),
-            lastName: user.get("lastName"),
-            school: user.get("school"),
-            firstName: user.get("picUrl"),
-            fullName: function() {
-              return this.firstName + " " + this.lastName;
-            }
-          }
+        //TODO if user has no school redirict to school selection page//this should actuall be done on sign up. (so just cover as an edge case)
+        loadUserData();
 
-          loadSchoolEvents();
-          loadSchoolChats();
-          loadSubscribedChats();
-          //addMessage("school of ross", "room1", "hi this is the message you should be reading ");
-          //  loadChatMessages("school of ross", "room1");
-        });
-
-        //close the login screen if it is open
-        var currentPage = app.views.main.router.url;
-        if (currentPage == "/login-screen/") {
-          self.app.views.main.router.navigate('/home/', {
-            reloadCurrent: true
-          });
-        }
-        //self.app.views.main.router.navigate('/home/', {
-        //  reloadCurrent: true
-        //});
-        app.preloader.hide();
-        // ...
       } else { //User is signed out.
+        console.log("nobody is signed in");
         self.app.views.main.router.navigate('/login-screen/', {
-          reloadCurrent: true
+          reloadCurrent: true,
+          ignoreCache: true,
         });
       }
     });
   </script>
+
+
+  <script>
+    /*
+    var admobid = {};
+    if (/(android)/i.test(navigator.userAgent)) {
+      admobid = { // for Android
+        banner: 'ca-app-pub-8428723406877921/1070594544',
+        interstitial: 'ca-app-pub-8428723406877921/1070594544'
+      };
+    } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      admobid = { // for iOS
+        banner: 'ca-app-pub-6869992474017983/4806197152',
+        interstitial: 'ca-app-pub-6869992474017983/7563979554'
+      };
+    }
+
+    function initApp() {
+      if (AdMob) {
+        AdMob.createBanner({
+          adId: admobid.banner,
+          position: AdMob.AD_POSITION.BOTTOM_CENTER,
+          autoShow: true
+        });
+      }
+    }
+
+    document.addEventListener('deviceready', initApp, false);
+    */
+
+    //This will probablty never be used
+    /*
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+
+        // Add the public key generated from the console here.
+        messaging.usePublicVapidKey("AAAAxSqVg40:APA91bG1_iR8nf0ArJnd2u1S3tqyGbUjIVQNlvy6sfv8uy07qlz7EPQWNnkhEgwWjfrFp17xY6G3NfvseWuuc-7K2k3E5dC4Sc9bUZ5XHD60HEmSUyplZbSrMzR0Ch5mRl_j7enM2F6C");
+
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            // TODO(developer): Retrieve an Instance ID token for use with FCM.
+            // ...
+          } else {
+            console.log('Unable to get permission to notify.');
+          }
+        });
+
+        // Get Instance ID token. Initially this makes a network call, once retrieved
+        // subsequent calls to getToken will return from cache.
+        messaging.getToken().then((currentToken) => {
+          if (currentToken) {
+            sendTokenToServer(currentToken);
+            updateUIForPushEnabled(currentToken);
+          } else {
+            // Show permission request.
+            console.log('No Instance ID token available. Request permission to generate one.');
+            // Show permission UI.
+            updateUIForPushPermissionRequired();
+            setTokenSentToServer(false);
+          }
+        }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+          showToken('Error retrieving Instance ID token. ', err);
+          setTokenSentToServer(false);
+        });
+
+        // Callback fired if Instance ID token is updated.
+        messaging.onTokenRefresh(() => {
+          messaging.getToken().then((refreshedToken) => {
+            console.log('Token refreshed.');
+            // Indicate that the new Instance ID token has not yet been sent to the
+            // app server.
+            setTokenSentToServer(false);
+            // Send Instance ID token to app server.
+            sendTokenToServer(refreshedToken);
+            // ...
+          }).catch((err) => {
+            console.log('Unable to retrieve refreshed token ', err);
+            showToken('Unable to retrieve refreshed token ', err);
+          });
+        });
+    */
+  </script>
+
+
+
 </body>
 
 </html>
