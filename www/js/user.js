@@ -18,6 +18,7 @@ function signUp() { //signs up a new user
 
   console.log(firstName);
   if (firstName == "" || lastName == "") {
+    app.progressbar.hide();
     err.innerHTML = "Oops! The first or last name field is empty.";
     return;
   }
@@ -25,12 +26,8 @@ function signUp() { //signs up a new user
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     app.progressbar.hide();
     err.innerHTML = "Oops! " + error.message;
-    console.log("failed");
     return;
-
   }).then(function() {
-    console.log("making user doc");
-    if (err.innerHTML != "") return;
     db.collection("users").doc(uid).set({
       firstName: firstName,
       lastName: lastName,
@@ -41,12 +38,9 @@ function signUp() { //signs up a new user
       return;
     }).then(function() {
       app.progressbar.hide();
-
       self.app.views.main.router.navigate('/welcome-page/');
     });
-
   });
-
 }
 
 function signIn() { //Signs in a user
@@ -241,16 +235,17 @@ function changeSchool(newSchoolID) {
 function searchSchools() { //Loads the schools from the database
   app.progressbar.show(localStorage.getItem("themeColor"));
 
-  var zip = parseInt(document.getElementById("school-zip").value);
+  var query = document.getElementById("school-zip").value;
   var schoolsList = document.getElementById("schools-list");
   var foundSchools = false;
-  console.log(zip);
 
   //check for a valid zip code before search
-  if (!zip) {
+  if (isNaN(query)) {
     schoolsList.innerHTML = '<div class="text-align-center">Please enter a valid zip code</div>';
     app.progressbar.hide();
     return;
+  } else {
+    var zip = parseInt(query);
   }
 
   schoolsList.innerHTML = "";
