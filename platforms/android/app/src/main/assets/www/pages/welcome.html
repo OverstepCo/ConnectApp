@@ -1,0 +1,91 @@
+<div class="page" data-page="welcome">
+  <div class="page-content">
+    <div data-pagination='{"el": ".swiper-pagination"}' class="welcome-swiper swiper-init">
+      <div class="swiper-pagination" style="bottom: 50px; left: 50px; width: auto"></div>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="slide-content">
+            <img src="media/welcome_screen_1.jpg" width="100%" style="border-radius: 15px" />
+          </div>
+          <div class="slide-description">
+            <h2>Our Vision</h2>
+            <p>We designed this app to reduce bullying in schools by fostering a healthy and constructive community.</p>
+
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="slide-content">
+            <img src="media/welcome_screen_2.jpg" width="100%" style="border-radius: 15px" />
+          </div>
+          <div class="slide-description">
+            <h2>Our Mission</h2>
+            <p>We hope you use this app to connect with your fellow classmates about school related topics and maybe send the occasional meme ;)</p>
+
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="slide-content">
+            <div style="width: 100%">
+              <label>
+                <div id="profile-pic-preview" class="profile-pic-upload">
+                  <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+                  <i id="profile-pic-icon" class="material-icons">add_photo_alternate</i>
+                </div>
+              </label>
+              <div class="list no-hairlines no-margin">
+                <ul>
+                  <li class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                      <div class="item-title item-floating-label">Tagline</div>
+                      <div class="item-input-wrap">
+                        <input id="tagline" type="text" maxlength="40">
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                      <div class="item-title item-floating-label">Bio</div>
+                      <div class="item-input-wrap">
+                        <textarea id="bio" rows="5" maxlength="200"></textarea>
+                        <span class="input-clear-button"></span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <button class="button button-fill button-round" onclick="signUp()">NEXT</button>
+              <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
+            </div>
+          </div>
+          <div class="slide-description">
+            <h2>More Info & Customization</h2>
+            <p>Before you get started, we need a few more things from you. You can always change this later in settings.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color Palette Sheet Modal -->
+    <div class="sheet-modal color-palette" style="height: auto">
+      <div class="sheet-modal-inner">
+        <div class="page-content">
+          <div class="palette-container">
+            <div class="palette-item sheet-close" style="background-color: #ff3b30" onclick="setThemeColor('red')"></div>
+            <div class="palette-item sheet-close" style="background-color: #ff2d55" onclick="setThemeColor('pink')"></div>
+            <div class="palette-item sheet-close" style="background-color: #ff9500" onclick="setThemeColor('orange')"></div>
+            <div class="palette-item sheet-close" style="background-color: #cddc39" onclick="setThemeColor('lime')"></div>
+            <div class="palette-item sheet-close" style="background-color: #4cd964" onclick="setThemeColor('green')"></div>
+          </div>
+          <div class="palette-container">
+            <div class="palette-item sheet-close" style="background-color: #009688" onclick="setThemeColor('teal')"></div>
+            <div class="palette-item sheet-close" style="background-color: #2196f3" onclick="setThemeColor('blue')"></div>
+            <div class="palette-item sheet-close" style="background-color: #9c27b0" onclick="setThemeColor('purple')"></div>
+            <div class="palette-item sheet-close" style="background-color: #8e8e93" onclick="setThemeColor('gray')"></div>
+            <div class="palette-item sheet-close" style="background-color: #000000" onclick="setThemeColor('black')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

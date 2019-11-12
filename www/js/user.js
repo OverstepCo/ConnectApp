@@ -1,12 +1,16 @@
 /////User Data/////
-
+//this is where evrer thing related to getting userdata should be
 var email;
 var password;
 var firstName;
 var lastName;
+var bio;
+var tagline;
 var err;
+var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 
-function signUp() { //signs up a new user
+//This advances the signUp process.... yeah thats as good of a description your going to get
+function signupNext() {
   app.progressbar.show(localStorage.getItem("themeColor"));
 
   email = document.getElementById("email").value;
@@ -15,35 +19,33 @@ function signUp() { //signs up a new user
   lastName = document.getElementById("lastName").value;
   err = document.getElementById("newerrmsg");
   err.innerHTML = "";
-
   console.log(firstName);
-  if (firstName == "" || lastName == "") {
+
+
+  if (true) { ////TODO:check email validity
+
+  } else if (firstName == "" || lastName == "") {
     err.innerHTML = "Oops! The first or last name field is empty.";
     return;
   }
+
+  self.app.views.main.router.navigate('/welcome-page/');
+}
+
+function signUp() { //signs up a new user
+  app.progressbar.show(localStorage.getItem("themeColor"));
+  console.log("signing up a new user");
+
+  bio = document.getElementById("bio").value;
+  tagline = document.getElementById("tagline").value;
 
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     app.progressbar.hide();
     err.innerHTML = "Oops! " + error.message;
     console.log("failed");
     return;
-
   }).then(function() {
-    console.log("making user doc");
-    if (err.innerHTML != "") return;
-    db.collection("users").doc(uid).set({
-      firstName: firstName,
-      lastName: lastName,
-      school: "null"
-    }).catch(function(error) {
-      app.progressbar.hide();
-      err.innerHTML = "Oops! " + error.message;
-      return;
-    }).then(function() {
-      app.progressbar.hide();
-
-      self.app.views.main.router.navigate('/welcome-page/');
-    });
+    madeNewUser = true;
 
   });
 
@@ -76,17 +78,65 @@ function signOut() { //Signs out the user
 }
 
 function loadUserData() {
-  console.log("load user data");
-  User = {
-    uid: uid,
-    firstName: user.get("firstName"),
-    lastName: user.get("lastName"),
-    school: user.get("school"),
-    fullName: function() {
-      return "" + this.firstName + " " + this.lastName;
-    },
-    chats: db.collection("users").doc(uid).collection("chats").get()
-  }
+  console.log("loading User data");
+  db.collection("users").doc(uid).get().then(function(userData) {
+    //If the user data exists load the user data
+    if (userData.exists) {
+      //store the user data in an object
+
+      var profilePic = "";
+      var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+
+      // Get the download URL for profile pic//// TODO: Put this in userData
+      profilePictureRef.getDownloadURL().then(function(url) {
+        profilePic = url;
+      }).catch(function(error) {
+        profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+      }).then(function() {});
+
+      User = {
+        uid: uid,
+        firstName: userData.get("firstName"),
+        lastName: userData.get("lastName"),
+        school: userData.get("school"),
+        fullName: function() {
+          return "" + this.firstName + " " + this.lastName;
+        },
+        tagline: userData.get("tagline"),
+        bio: userData.get("bio"),
+        chats: userData.get("chatrooms"),
+        profilePic: profilePic, //// TODO: Load that here
+      }
+
+      loadMainPage();
+    } //if the user has no data they were just made or an error happened when setting there data//// TODO: this is an edge case and it should redirect the user to sign up page
+    else {
+      console.log("this user has no data");
+      //If we just made this user then we should...
+      if (madeNewUser) {
+        //set their data...
+        db.collection("users").doc(uid).set({
+          firstName: firstName,
+          lastName: lastName,
+          tagline: tagline,
+          bio: bio,
+          school: "null"
+        }).then(function() {
+          self.app.views.main.router.navigate('/home/', {
+            reloadCurrent: true,
+          });
+          //and then we should load them.
+          loadUserData();
+        });
+      }
+      //Else if we did not make this user there has been an error.(most likely the app crashed while making the user or they lost internet connection at nearly the exact same time as they pressed signup)
+      else {
+        //// TODO: we should probably display a page that says"sorry there has been an error please try again" then we should ethier delete the account and then have them signup again or just redirect them to the signup page
+      }
+    }
+  });
+
+  app.preloader.hide();
 }
 
 //Edits the users profile data.
