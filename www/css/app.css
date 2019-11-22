@@ -101,6 +101,11 @@ ul {
   color: white;
 }
 
+.navbar {
+  background-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0);
+}
+
 .navbar-home {
   background-color: rgba(0, 0, 0, 0);
 }
