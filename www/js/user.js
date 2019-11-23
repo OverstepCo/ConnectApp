@@ -1,7 +1,6 @@
 /////User Data/////
 //this is where evrer thing related to getting userdata should be
-var email;
-var password;
+
 var firstName;
 var lastName;
 var bio;
@@ -11,34 +10,27 @@ var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 
 //This advances the signUp process.... yeah thats as good of a description your going to get
 function signupNext() {
-  app.progressbar.show(localStorage.getItem("themeColor"));
+  tagline = document.getElementById("tagline").value;
+  bio = document.getElementById("bio").value;
+  setUsersData(bio, tagline, null, null);
+  self.app.views.main.router.once('pageAfterIn', loadUserData())
+  self.app.views.main.router.navigate('/home/', {
+    reloadCurrent: true,
+  });
 
-  email = document.getElementById("email").value;
-  password = document.getElementById("newpword").value;
-  firstName = document.getElementById("firstName").value;
-  lastName = document.getElementById("lastName").value;
-  err = document.getElementById("newerrmsg");
-  err.innerHTML = "";
-  console.log(firstName);
-
-
-  if (true) { ////TODO:check email validity
-
-  } else if (firstName == "" || lastName == "") {
-    app.progressbar.hide();
-    err.innerHTML = "Oops! The first or last name field is empty.";
-    return;
-  }
-
-  self.app.views.main.router.navigate('/welcome-page/');
 }
 
 function signUp() { //signs up a new user
   app.progressbar.show(localStorage.getItem("themeColor"));
   console.log("signing up a new user");
 
-  bio = document.getElementById("bio").value;
-  tagline = document.getElementById("tagline").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("newpword").value;
+  firstName = document.getElementById("firstName").value;
+  lastName = document.getElementById("lastName").value;
+  err = document.getElementById("newerrmsg");
+  err.innerHTML = "";
+  console.log(firstName);
 
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     app.progressbar.hide();
@@ -46,7 +38,6 @@ function signUp() { //signs up a new user
     return;
   }).then(function() {
     madeNewUser = true;
-
   });
 }
 
@@ -81,33 +72,57 @@ function loadUserData() {
   db.collection("users").doc(uid).get().then(function(userData) {
     //If the user data exists load the user data
     if (userData.exists) {
-      //store the user data in an object
+      //CHeck to see if they have a bio and if not direct them to the welcome page
+      if (userData.get("bio") && userData.get("tagline")) {
+        console.log("the user has a bio and a tagline");
+        //check to see if the user has selected a valid school
 
-      var profilePic = "";
-      var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+        //store the user data in an object
+        var profilePic = "";
+        var profilePictureRef = storageRef.child('profile-pictures').child(uid);
 
-      // Get the download URL for profile pic//// TODO: Put this in userData
-      profilePictureRef.getDownloadURL().then(function(url) {
-        profilePic = url;
-      }).catch(function(error) {
-        profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
-      }).then(function() {});
+        // Get the download URL for profile pic//// TODO: Put this in userData
+        profilePictureRef.getDownloadURL().then(function(url) {
+          profilePic = url;
+        }).catch(function(error) {
+          profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+        }).then(function() {
 
-      User = {
-        uid: uid,
-        firstName: userData.get("firstName"),
-        lastName: userData.get("lastName"),
-        school: userData.get("school"),
-        fullName: function() {
-          return "" + this.firstName + " " + this.lastName;
-        },
-        tagline: userData.get("tagline"),
-        bio: userData.get("bio"),
-        chats: userData.get("chatrooms"),
-        profilePic: profilePic, //// TODO: Load that here
+          User = {
+            uid: uid,
+            firstName: userData.get("firstName"),
+            lastName: userData.get("lastName"),
+            school: userData.get("school"),
+            fullName: function() {
+              return "" + this.firstName + " " + this.lastName;
+            },
+            tagline: userData.get("tagline"),
+            bio: userData.get("bio"),
+            chats: userData.get("chatrooms"),
+            profilePic: profilePic, //// TODO: Load that here
+          }
+          if (userData.get("school")) {
+            loadMainPage();
+            self.app.views.main.router.once('pageAfterIn', loadMainPage());
+            self.app.views.main.router.navigate('/home/', {
+              reloadCurrent: true,
+              ignoreCache: true
+            });
+          } else {
+            //Go to the school selection page
+            console.log("the user needs to select a school");
+            self.app.views.main.router.navigate('/school-search-page/', {
+              reloadCurrent: true,
+            });
+          }
+        });
+      } else {
+        //Go to the welcome page
+        console.log("the user needs a bio or tagline");
+        self.app.views.main.router.navigate('/welcome-page/', {
+          reloadCurrent: true,
+        });
       }
-
-      loadMainPage();
     } //if the user has no data they were just made or an error happened when setting there data//// TODO: this is an edge case and it should redirect the user to sign up page
     else {
       console.log("this user has no data");
@@ -117,9 +132,6 @@ function loadUserData() {
         db.collection("users").doc(uid).set({
           firstName: firstName,
           lastName: lastName,
-          tagline: tagline,
-          bio: bio,
-          school: "null"
         }).then(function() {
           self.app.views.main.router.navigate('/home/', {
             reloadCurrent: true,
@@ -136,6 +148,33 @@ function loadUserData() {
   });
 
   app.preloader.hide();
+}
+
+//THis replaces editUserData as it is robust
+function setUsersData(bio, tag, pic, password) {
+
+  //If the bio is not emty set it here
+  if (bio) {
+    console.log("updating user bio");
+    db.collection("users").doc(uid).update({
+      bio: bio
+    });
+  }
+  //if the tagline is not empty set it here
+  if (tag) {
+    db.collection("users").doc(uid).update({
+      tagline: tag
+    });
+  }
+  //if the pic is not empty setit here
+  if (pic) {
+
+  }
+  //if the password is not emty set it there
+  if (password) {
+
+  }
+
 }
 
 //Edits the users profile data.
@@ -177,7 +216,6 @@ function editUserData() {
     app.progressbar.hide();
   });
 
-
   var file = document.getElementById('profile-pic').files[0];
   var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
   profilePictureRef.put(file).then(function(snapshot) {
@@ -198,9 +236,6 @@ function editUserData() {
     app.progressbar.hide();
     errorMessage += "Oops! " + error;
   });
-
-
-
 
   var newPassword = document.getElementById("password");
   if (newPassword) {
@@ -249,21 +284,26 @@ function setProgressbar(percent) {
 
 function changeSchool(newSchoolID) {
   console.log(User);
-  var oldSchool = User.school;
+  var oldSchool;
+  if (User.school) {
+    oldSchool = User.school;
+  }
   db.collection("users").doc(User.uid).update({
       school: newSchoolID
     })
     .then(function() {
-      //Removes the user from the old school
-      db.collection("school").doc(oldSchool).collection("users").doc(User.uid).delete().then(function() {
-        console.log("Document successfully deleted! Document id: " + oldSchool);
-        self.app.views.main.router.navigate('/home/', {
-          reloadCurrent: true,
-          ignoreCache: true,
+      //Removes the user from the old school///// TODO: check if ther eis an old school
+      if (oldSchool) {
+        db.collection("school").doc(oldSchool).collection("users").doc(User.uid).delete().then(function() {
+          console.log("Document successfully deleted! Document id: " + oldSchool);
+          self.app.views.main.router.navigate('/home/', {
+            reloadCurrent: true,
+            ignoreCache: true,
+          });
+        }).catch(function(error) {
+          console.error("Error removing document: ", error);
         });
-      }).catch(function(error) {
-        console.error("Error removing document: ", error);
-      });
+      }
       //Adds the user to the new school
       db.collection("school").doc(newSchoolID).collection("users").doc(User.uid).set({
           name: "" + User.firstName + " " + User.lastName
@@ -276,7 +316,7 @@ function changeSchool(newSchoolID) {
         });
 
 
-      loadMainPage();
+      loadUserData();
       console.log("user school successfully updated!");
       //TODO add user to user array
 
