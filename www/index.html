@@ -13,7 +13,8 @@
 <body>
   <div id="app">
     <div class="panel panel-left panel-reveal panel-resizable">
-      <h2>Connect App Logo</h2>
+      <img src="media/logo.png" width="64px" style="padding: 16px; border-radius: 0;" />
+      <div class="hairline"></div>
       <div class="list no-hairlines" style="margin-top: 10px;">
         <ul>
           <a href="/profile-screen/" class="panel-close item-link no-chevron">
@@ -360,10 +361,11 @@
     var PPRef = storageRef.child('profile-pictures');
 
     var User; //An objects that contins the user data if the currently signed in user
-    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
+    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later maybe
 
     /////////authentication section
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
+
       if (user) { // User is signed in
         uid = user.uid;
         //TODO if user has no school redirict to school selection page//this should actuall be done on sign up. (so just cover as an edge case)

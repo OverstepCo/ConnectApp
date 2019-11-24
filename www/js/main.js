@@ -21,6 +21,7 @@ var app = new Framework7({
     {
       path: '/home/',
       url: 'index.html',
+
     },
     // profile page
     {
@@ -277,16 +278,18 @@ var searchbar = app.searchbar.create({
   searchIn: '.item-inner',
 });
 
+// TODO: check for premium user
+if (false) {
+  //set theme color
+  var storedThemeColor = localStorage.getItem("themeColor");
+  var color = storedThemeColor != null ? storedThemeColor : 'red';
+  document.documentElement.classList.add('color-theme-' + color);
 
-//set theme color
-var storedThemeColor = localStorage.getItem("themeColor");
-var color = storedThemeColor != null ? storedThemeColor : 'red';
-document.documentElement.classList.add('color-theme-' + color);
+  var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
+  toggleDarkMode(toggle);
+}
 
-var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
-toggleDarkMode(toggle);
-
-function loadMainPage() { //Loads all the data on the main page
+function loadMainPage() { //Loads all the data on the main page//// TODO: make sure to cean all leftover data
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
   //addFreind("waaa");
   console.log(User);

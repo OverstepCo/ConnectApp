@@ -5,6 +5,10 @@
   --f7-panel-shadow: rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 30%, rgba(0, 0, 0, 0) 100%;
   --f7-fab-box-shadow: 0 7px 15px -5px rgba(var(--f7-theme-color-rgb), .7);
   --f7-searchbar-input-bg-color: rgba(0, 0, 0, 0) !important;
+  --f7-theme-color: #0045ff;
+  --f7-theme-color-rgb: 0, 69, 255;
+  --f7-theme-color-shade: #003ad6;
+  --f7-theme-color-tint: #2963ff;
 }
 
 @font-face {
