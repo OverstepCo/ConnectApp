@@ -399,6 +399,7 @@ function onDeviceReady() {
 }
 
 
+
 function loadSubscribedChat(chatroomName, chatroomSchool) {
   //console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
 
@@ -408,15 +409,12 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
       getUserData(message.get("userID"), function(user) {
         var ls = document.getElementById("subscribed-chats");
         var li = document.createElement('li');
-        li.innerHTML = '<a onclick="(loadChat(\'' + chatroomName + '\',\'' + chatroomSchool + '\'))" class="item-link item-content no-chevron">\
-               <div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >\
-                 <div class="item-title-row">\
-                   <div class="item-title">' + chatroomName + '</div>\
-                   <div class="item-after">' + '12:14' + '</div>\
-                 </div>\
-                 <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
-               </div>\
-             </a>';
+        li.innerHTML = '<a onclick="(loadChat(\'' + chatroomName + '\',\'' + chatroomSchool + '\'))" class="item-link item-content no-chevron">' +
+          '<div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >' +
+          '<div class="item-title-row">' +
+          '<div class="item-title">' + chatroomName + '</div>' +
+          '<div class="item-after">' + timeSinceShort(message.get("timestamp").toDate()) + '</div></div>' +
+          '<div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div></div></a>';
         ls.appendChild(li);
 
         //Listens to the chat room for any new messages.
@@ -429,7 +427,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
                   // TODO: change the text on the preveiw
                   var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
                   htmlToUpdate.innerHTML = '<div class="item-title-row"><div class="item-title">' + chatroomName +
-                    '</div><div class="item-after">' + '12:14' + '</div></div><div class="item-text"><b>' +
+                    '</div><div class="item-after">' + timeSinceShort(message.get("timestamp").toDate()) + '</div></div><div class="item-text"><b>' +
                     message.get("name") + ': </b>' + message.get("text") + '</div>';
                 }
               });
@@ -498,6 +496,57 @@ function timeSince(time) {
         return format[list_choice];
       else
         return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+    }
+  return time;
+}
+
+function timeSinceShort(time) {
+
+  switch (typeof time) {
+    case 'number':
+      break;
+    case 'string':
+      time = +new Date(time);
+      break;
+    case 'object':
+      if (time.constructor === Date) time = time.getTime();
+      break;
+    default:
+      time = +new Date();
+  }
+  var time_formats = [
+    [60, 'seconds', 1],
+    [120, '1 min', '1min from now'],
+    [3600, 'mins', 60],
+    [7200, '1 hr', '1hr from now'],
+    [86400, 'hrs', 3600],
+    [172800, '1 day', '1d ago'],
+    [604800, 'days', 86400],
+    [1209600, '1 wk', 'Next week'],
+    [2419200, 'wks', 604800],
+    [4838400, '1 mnth', 'Next month'],
+    [29030400, 'mnths', 2419200],
+    [58060800, '1 yr', 'Next year'],
+    [2903040000, 'yrs', 29030400],
+  ];
+  var seconds = (+new Date() - time) / 1000,
+    list_choice = 1;
+
+  if (seconds == 0) {
+    return 'now'
+  }
+  if (seconds < 0) {
+    seconds = Math.abs(seconds);
+    list_choice = 2;
+  }
+  var i = 0,
+    format;
+  while (format = time_formats[i++])
+    if (seconds < format[0]) {
+      if (typeof format[2] == 'string')
+        return format[list_choice];
+      else
+        return Math.floor(seconds / format[2]) + ' ' + format[1];
     }
   return time;
 }
@@ -669,4 +718,12 @@ function setDarkMode() {
     document.documentElement.classList.remove('theme-dark');
     localStorage.setItem("darkMode", "false");
   }
+}
+
+function comingSoon() {
+  var toastBottom = app.toast.create({
+    text: 'This feature is coming soon!',
+    closeTimeout: 2000,
+  });
+  toastBottom.open();
 }

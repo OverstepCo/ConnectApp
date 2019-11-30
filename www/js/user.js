@@ -30,6 +30,11 @@ function signUp() { //signs up a new user
   lastName = document.getElementById("lastName").value;
   err = document.getElementById("newerrmsg");
   err.innerHTML = "";
+  if (document.getElementById("age").value < 13) {
+    err.innerHTML = "Oops! You must be 13 years of age or older to sign up.";
+    app.progressbar.hide();
+    return;
+  }
   console.log(firstName);
 
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
