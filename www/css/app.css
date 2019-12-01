@@ -109,7 +109,11 @@ ul {
   background-color: rgba(255, 255, 255, .9);
 }
 
-.navbar-home {
+.theme-dark .navbar {
+  background-color: rgba(20, 20, 20, .9);
+}
+
+.navbar-home, .theme-dark .navbar-home {
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -401,16 +405,19 @@ img {
   opacity: .7;
 }
 
+.event-swiper {
+  height: 30%;
+}
+
 .event-swiper .slide-content {
   background-color: var(--f7-theme-color);
-  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80');
   background-position: center;
   background-size: cover;
   border-radius: 15px;
   box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 1);
   margin: 30px;
   padding: 16px;
-  height: 200px;
+  height: calc(100% - 92px);
   align-items: flex-end;
   display: flex;
 }
@@ -460,6 +467,11 @@ img {
   font-size: 15pt;
 }
 
+.list .item-text {
+  max-height: none;
+  white-space: normal;
+}
+
 /********** PROFILE **********/
 .profile-preview {
   position: absolute;
@@ -476,7 +488,7 @@ img {
 }
 
 .profile-preview-card {
-  width: 80%;
+  width: 70%;
   max-width: 300px;
   background-color: var(--f7-card-bg-color);
   border-radius: 15px;
@@ -678,6 +690,12 @@ img {
 }
 
 /*Sign in / Sign up*/
+.login-screen-content {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
 .login-icon {
   display: flex;
   justify-content: center;

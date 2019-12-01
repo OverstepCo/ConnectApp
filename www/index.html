@@ -149,18 +149,19 @@
 
 
         <div class="page-content">
-          <div style="min-height: 30%">
-            <div id="event-swiper-wrapper" class="swiper-container event-swiper" data-space-between="0" data-slides-per-view="2">
-              <div id="event-swiper" class="swiper-wrapper">
+          <div id="event-swiper-wrapper" class="swiper-container event-swiper" data-space-between="0" data-slides-per-view="1">
+            <div id="event-swiper" class="swiper-wrapper">
+              <div id="skeleton-event" class="swiper-slide">
+                <div class="slide-content skeleton-effect-pulse"></div>
               </div>
             </div>
           </div>
           <div class="toolbar toolbar-home">
-            <a href="#tab-1" class="tab-link tab-link-active">Subscribed</a>
-            <a href="#tab-2" class="tab-link">Unsubscribed</a>
-            <a href="#tab-3" class="tab-link">Members</a>
+            <a href="#tab-1" class="tab-link tab-link-active no-ripple">Subscribed</a>
+            <a href="#tab-2" class="tab-link no-ripple">Unsubscribed</a>
+            <a href="#tab-3" class="tab-link no-ripple">Members</a>
           </div>
-          <div class="tabs-swipeable-wrap" style="height: 50%">
+          <div class="tabs-swipeable-wrap" style="height: calc(70% - 48px)">
             <div class="tabs">
               <div id="tab-1" class="page-content tab tab-active no-padding-top">
                 <div class="block no-margin-top">

@@ -52,6 +52,14 @@ var app = new Framework7({
       options: {
         animate: false,
       },
+      on: {
+        pageInit: function(e, page) {
+          // Create Popup with swipe to close
+          var swipeToClosePopup = app.popup.create({
+            el: '.popup-terms-and-conditions',
+          });
+        },
+      },
     },
     // login page
     {
@@ -362,6 +370,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       //this loop runs once for every event in the current school
     });
     app.swiper.create('.swiper-container');
+    document.getElementById("skeleton-event").remove();
   });
 
   //////////////Loads the users attending this school
