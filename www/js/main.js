@@ -52,14 +52,6 @@ var app = new Framework7({
       options: {
         animate: false,
       },
-      on: {
-        pageInit: function(e, page) {
-          // Create Popup with swipe to close
-          var swipeToClosePopup = app.popup.create({
-            el: '.popup-terms-and-conditions',
-          });
-        },
-      },
     },
     // login page
     {
@@ -422,7 +414,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
           '<div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >' +
           '<div class="item-title-row">' +
           '<div class="item-title">' + chatroomName + '</div>' +
-          '<div class="item-after">' + timeSinceShort(message.get("timestamp").toDate()) + '</div></div>' +
+          '<div class="item-after">' + formatTimeStamp(message.get("timestamp").toDate()) + '</div></div>' +
           '<div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div></div></a>';
         ls.appendChild(li);
 
@@ -430,13 +422,13 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
         listener = db.collection("school").doc(chatroomSchool + "").collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "asc")
           .onSnapshot(function(snapshot) {
             snapshot.docChanges().forEach(function(change) {
-              getUserData(change.get("uid"), function(user) {
+              getUserData(change.doc.get("uid"), function(user) {
                 if (change.type === "added") {
                   //console.log(change.doc.get("text"));
                   // TODO: change the text on the preveiw
                   var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
                   htmlToUpdate.innerHTML = '<div class="item-title-row"><div class="item-title">' + chatroomName +
-                    '</div><div class="item-after">' + timeSinceShort(message.get("timestamp").toDate()) + '</div></div><div class="item-text"><b>' +
+                    '</div><div class="item-after">' + formatTimeStamp(message.get("timestamp").toDate()) + '</div></div><div class="item-text"><b>' +
                     message.get("name") + ': </b>' + message.get("text") + '</div>';
                 }
               });
@@ -509,55 +501,53 @@ function timeSince(time) {
   return time;
 }
 
-function timeSinceShort(time) {
+function formatTimeStamp(time) {
 
-  switch (typeof time) {
-    case 'number':
-      break;
-    case 'string':
-      time = +new Date(time);
-      break;
-    case 'object':
-      if (time.constructor === Date) time = time.getTime();
-      break;
-    default:
-      time = +new Date();
-  }
-  var time_formats = [
-    [60, 'seconds', 1],
-    [120, '1 min', '1min from now'],
-    [3600, 'mins', 60],
-    [7200, '1 hr', '1hr from now'],
-    [86400, 'hrs', 3600],
-    [172800, '1 day', '1d ago'],
-    [604800, 'days', 86400],
-    [1209600, '1 wk', 'Next week'],
-    [2419200, 'wks', 604800],
-    [4838400, '1 mnth', 'Next month'],
-    [29030400, 'mnths', 2419200],
-    [58060800, '1 yr', 'Next year'],
-    [2903040000, 'yrs', 29030400],
-  ];
-  var seconds = (+new Date() - time) / 1000,
-    list_choice = 1;
+  //make sure a date object is passed in.
+  if (time.constructor != Date) return timeSince(time);
+  var today = new Date();
 
-  if (seconds == 0) {
-    return 'now'
+  var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var seconds = (today - time.getTime()) / 1000;
+
+  //0 to 59s
+  if (seconds < 60) {
+    return "now";
   }
-  if (seconds < 0) {
-    seconds = Math.abs(seconds);
-    list_choice = 2;
+
+  //15s to 60min
+  if (seconds < 3600) {
+    return Math.round(seconds / 60) + " min";
   }
-  var i = 0,
-    format;
-  while (format = time_formats[i++])
-    if (seconds < format[0]) {
-      if (typeof format[2] == 'string')
-        return format[list_choice];
-      else
-        return Math.floor(seconds / format[2]) + ' ' + format[1];
-    }
-  return time;
+
+  //1hr to today
+  if (time.getDate() === today.getDate() && time.getMonth() === today.getMonth() && time.getFullYear() === today.getFullYear()) {
+    var hours = time.getHours();
+    var minutes = time.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+
+  //1day to 6days
+  if (seconds < 518400) {
+    var last = "";
+    if (time.getDay() > today.getDay())
+      last = "Last ";
+    return last + days[time.getDay()];
+  }
+
+  //1week to this year
+  if (time.getFullYear() === today.getFullYear()) {
+    return months[time.getMonth()] + " " + time.getDate();
+  }
+
+  //if not this year
+  return time.getMonth() + "/" + time.getDate() + "/" + time.getFullYear();
 }
 
 function loadUserpage(uid) {
