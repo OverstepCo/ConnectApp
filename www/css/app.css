@@ -573,6 +573,26 @@ img {
   padding: 16px 32px;
 }
 
+/********** GENERAL CHAT **********/
+.messages-title {
+  width: 30vw;
+  margin: auto;
+  margin-top: 16px;
+}
+
+.messages-title::before, .messages-title::after {
+  content: "";
+  height: 1px;
+  background-color: #d1d1d1;
+  position: absolute;
+  width: 20vw;
+  transform: translate(-120%, 6px);
+}
+
+.messages-title::after {
+  transform: translate(20%, 6px);
+}
+
 /********** WELCOME **********/
 .welcome-swiper .slide-content {
   display: flex;

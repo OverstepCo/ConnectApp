@@ -6,49 +6,42 @@
           <i class="material-icons">close</i>
         </a>
       </div>
-      <div class="title">New Event</div>
-      <div class="right"><a href="#" onclick="createNewEvent()" class="link">CREATE</a></div>
     </div>
   </div>
   <div class="page-content">
+    <div class="block no-margin-top">
+      <h1>New Event</h1>
 
-    <div class="block">
-      <div class="row">
-        <div class="col-33">
-          <div id="event-image" class="event-image" style="background-image: url(media/stock/event_pattern.jpg)">
-            <a class="link"><i class="material-icons">edit</i></a>
-          </div>
+      <label>
+        <div id="profile-pic-preview" class="profile-pic-upload">
+          <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+          <i id="profile-pic-icon" class="material-icons">edit</i>
         </div>
-        <div class="col-66">
-          <div class="list no-hairlines no-margin">
-            <ul>
+      </label>
+      <div class="list no-hairlines no-margin-bottom">
+        <ul>
+          <li class="item-content item-input no-padding-left">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Event Name</div>
+              <div class="item-input-wrap">
+                <input id="event-name" type="text">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <div class="row">
+            <div class="col">
               <li class="item-content item-input no-padding-left">
                 <div class="item-inner">
-                  <div class="item-title item-floating-label">Event Name</div>
+                  <div class="item-title item-floating-label">Day & Time</div>
                   <div class="item-input-wrap">
-                    <input id="event-name" type="text">
+                    <input type="datetime-local">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
               </li>
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Day</div>
-                  <div class="item-input-wrap">
-                    <input id="event-day" type="text">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Time</div>
-                  <div class="item-input-wrap">
-                    <input id="event-time" type="text" placeholder="e.g. 9-11:30, 2nd period">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
+            </div>
+            <div class="col">
               <li class="item-content item-input no-padding-left">
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Location</div>
@@ -58,22 +51,13 @@
                   </div>
                 </div>
               </li>
-            </ul>
+            </div>
           </div>
-        </div>
-        <div class="list no-hairlines no-margin" style="width:100%">
-          <ul>
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Description</div>
-                <div class="item-input-wrap">
-                  <textarea id="event-description" class="resizable"></textarea>
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
+        </ul>
+      </div>
+
+      <div class="text-editor text-editor-init text-editor-resizable" data-placeholder="Description" data-mode="keyboard-toolbar">
+        <div class="text-editor-content" contenteditable></div>
       </div>
 
       <h2>Invite People</h2>
@@ -108,5 +92,8 @@
         <div class="block-inner">Nothing found</div>
       </div>
     </div>
+  </div>
+  <div style="background-color: rgba(0,0,0,0)" class="toolbar toolbar-bottom no-shadow">
+    <a onclick="createNewEvent()" class="button button-fill button-round">Create Event</a>
   </div>
 </div>

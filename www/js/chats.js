@@ -90,6 +90,16 @@
 
                 //Add each message in the snapshot to the message array
                 snapshot.forEach(function(change) {
+                  //add timestamps
+                  var timestamp = change.get("timestamp").toDate();
+                  //86400000ms = 1 day
+                  if (lastTimestamp != null && lastTimestamp - timestamp.getTime() > 86400000) {
+                    messagesArray.unshift({
+                      text: formatTimeStamp(lastTimestamp),
+                      isTitle: true,
+                    });
+                  }
+
                   var un = "null";
                   if (usersInChat.find(o => o.userid === change.get("userID")) != null) {
                     un = usersInChat.find(o => o.userid === change.get("userID")).username;
@@ -102,46 +112,8 @@
                     avatar: change.get("profilePicUrl"),
                   });
                   oldestTimestamp = change.get("timestamp");
+                  lastTimestamp = timestamp;
                 });
-
-                // TODO: move timestamps to its own function and run when adding messages
-                /*//Timestamps
-                var i = 0;
-                snapshot.docChanges().forEach(function(change) { //Dont know if this should be here. may cause problems
-                  if (lastTimestamp && (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime()) > 86400000) {
-                    var difference = (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime());
-                    var timestampString;
-                    i++;
-                    //if this week
-                    if ((lastTimestamp.getDay() - change.doc.get("timestamp").toDate().getDay()) >= 0) {
-                      var now = new Date();
-                      var today = now.getDay();
-
-                      //if today
-                      if (today == lastTimestamp.getDay()) {
-                        timestampString = "Today, ";
-
-                        //if another day this week
-                      } else {
-                        var daysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                        timestamp = daysArray[lastTimestamp.getDay()] + ", ";
-                      }
-                      //if not this week
-                    } else {
-                      var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                      timestampString = monthsArray[lastTimestamp.getMonth()] + " " + (lastTimestamp.getDate() + 1) + ", ";
-                    }
-                    var hour = lastTimestamp.getHours();
-                    timestampString += (hour < 12 || hour === 24) ? (hour + ":" + lastTimestamp.getMinutes() + " AM") : ((hour - 12) + ":" + lastTimestamp.getMinutes() + " PM");
-                    messagesArray.splice(i, 0, {
-                      text: timestampString,
-                      isTitle: true,
-                    });
-                  }
-
-                  console.log("Updated timestamps");
-                  lastTimestamp = change.doc.get("timestamp").toDate();
-                });*/
 
                 //initialize the message system with rules. Note to self: probably dont mess with it
                 messages = app.messages.create({ //Some rules and stuff
@@ -191,7 +163,6 @@
                       if (finishedLoadingMessages) { //only add mesages if we are not currently seting up the chat
                         snapshot.docChanges().forEach(function(change) { //Change + the new message anf the foreach loop runs for each new message
                           if (change.type === "added") {
-                            console.log("added new message");
                             messages.addMessage({
                               text: change.doc.get("text"),
                               isTitle: change.doc.get("isTitle"),
@@ -283,7 +254,21 @@
             // Remove preloader
             $$('.infinite-scroll-preloader').remove();
           }
+
+          var lastTimestamp;
+
           snapshot.forEach(function(doc) {
+
+            //add timestamps
+            var timestamp = doc.get("timestamp").toDate();
+            //86400000ms = 1 day
+            if (lastTimestamp != null && lastTimestamp - timestamp.getTime() > 86400000) {
+              messages.addMessage({
+                text: formatTimeStamp(lastTimestamp),
+                isTitle: true,
+              }, "prepend");
+            }
+
             oldestTimestamp = doc.get("timestamp");
             messages.addMessage({
               text: doc.get("text"),
@@ -293,6 +278,8 @@
               avatar: doc.get("profilePicUrl"),
             }, "prepend");
             loadingMessages = false;
+
+            lastTimestamp = timestamp;
           });
           //...
         });
