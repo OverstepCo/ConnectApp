@@ -9,88 +9,72 @@
     </div>
   </div>
   <div class="page-content">
-    <div class="block no-margin-top">
-      <h1>New Event</h1>
-
-      <label>
-        <div id="profile-pic-preview" class="profile-pic-upload">
-          <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
-          <i id="profile-pic-icon" class="material-icons">edit</i>
-        </div>
-      </label>
-      <div class="list no-hairlines no-margin-bottom">
-        <ul>
-          <li class="item-content item-input no-padding-left">
-            <div class="item-inner">
-              <div class="item-title item-floating-label">Event Name</div>
-              <div class="item-input-wrap">
-                <input id="event-name" type="text">
-                <span class="input-clear-button"></span>
-              </div>
-            </div>
-          </li>
-          <div class="row">
-            <div class="col">
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Day & Time</div>
-                  <div class="item-input-wrap">
-                    <input type="datetime-local">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-            </div>
-            <div class="col">
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Location</div>
-                  <div class="item-input-wrap">
-                    <input id="event-location" type="text" placeholder="e.g. cafeteria, art room">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-            </div>
-          </div>
-        </ul>
+    <h1 style="margin-left: 16px">New Event</h1>
+    <label>
+      <div id="profile-pic-preview" class="profile-pic-upload" style="border-radius: 15px; width: 80vw; height: 35vw">
+        <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+        <i id="profile-pic-icon" class="material-icons">add_photo_alternate</i>
       </div>
-
-      <div class="text-editor text-editor-init text-editor-resizable" data-placeholder="Description" data-mode="keyboard-toolbar">
-        <div class="text-editor-content" contenteditable></div>
-      </div>
-
-      <h2>Invite People</h2>
-      <div id="chips-div" class="block no-margin-top">
-        <!--
-        <div class="chip">
-          <div class="chip-media">
-            <div class="chip-pic" style="background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png')"></div>
-          </div>
-          <div class="chip-label">Jane Smith</div>
-        </div>
-        -->
-      </div>
-      <div class="search-block no-padding">
-        <form id="new-event-searchbar" class="searchbar searchbar-inline">
-          <div class="searchbar-inner">
-            <div class="searchbar-input-wrap">
-              <input type="search" placeholder="Search">
-              <i class="searchbar-icon"></i>
+    </label>
+    <div class="list no-hairlines no-margin-bottom">
+      <ul>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Event Name</div>
+            <div class="item-input-wrap">
+              <input id="event-name" type="text">
               <span class="input-clear-button"></span>
             </div>
-            <span class="searchbar-disable-button if-not-aurora">Cancel</span>
           </div>
-        </form>
-      </div>
-      <div id="new-event-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-        <ul>
-        </ul>
-      </div>
-      <!-- Nothing found message -->
-      <div class="block searchbar-not-found">
-        <div class="block-inner">Nothing found</div>
-      </div>
+        </li>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Date & Time</div>
+            <div class="item-input-wrap">
+              <input type="datetime-local">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Location</div>
+            <div class="item-input-wrap">
+              <input id="event-location" type="text" placeholder="e.g. cafeteria, art room">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="text-editor text-editor-init text-editor-resizable" data-placeholder="Description" data-mode="keyboard-toolbar">
+      <div class="text-editor-content" contenteditable></div>
+    </div>
+
+    <h1 style="margin-left: 16px">Invite People</h1>
+    <div id="chips-div" class="block no-margin-top">
+
+    </div>
+    <div class="search-block no-padding">
+      <form id="new-event-searchbar" class="searchbar searchbar-inline">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search">
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+        </div>
+      </form>
+    </div>
+    <div id="new-event-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+      <ul>
+      </ul>
+    </div>
+    <!-- Nothing found message -->
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
     </div>
   </div>
   <div style="background-color: rgba(0,0,0,0)" class="toolbar toolbar-bottom no-shadow">

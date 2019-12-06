@@ -170,7 +170,7 @@ var app = new Framework7({
                 console.log(user.username + "woooooo");
                 var l = document.createElement('div');
                 l.innerHTML = '<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="' + user.uid + '" data-checked="0" data-name="' + user.username + '"data-pic="' + user.picURL + '" data-checked="0">' +
-                  '<li class="item-content">' +
+                  '<li class="item-content" style="padding-right: 16px">' +
                   '<div class="item-media">' +
                   '<div class="li-profile-pic" style="background-image: url(' + user.picURL + ')"></div>' +
                   '</div>' +
@@ -211,7 +211,7 @@ var app = new Framework7({
                 console.log(user.username + "woooooo");
                 var l = document.createElement('div');
                 l.innerHTML = '<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="' + user.uid + '" data-checked="0" data-name="' + user.username + '"data-pic="' + user.picURL + '" data-checked="0">' +
-                  '<li class="item-content">' +
+                  '<li class="item-content" style="padding-right: 16px">' +
                   '<div class="item-media">' +
                   '<div class="li-profile-pic" style="background-image: url(' + user.picURL + ')"></div>' +
                   '</div>' +

@@ -6,66 +6,58 @@
           <i class="material-icons">close</i>
         </a>
       </div>
-      <div class="title">New Group Chat</div>
-      <div class="right"><a href="#" onclick="createChat()" class="link">CREATE</a></div>
     </div>
   </div>
   <div class="page-content">
-    <div class="block">
-      <div class="list no-hairlines no-margin">
-        <ul>
-          <li class="item-content item-input ">
-            <div class="item-inner">
-              <div class="item-title item-floating-label">Chat Name</div>
-              <div class="item-input-wrap">
-                <input id="chat-name" type="text">
-                <span class="input-clear-button"></span>
-              </div>
-            </div>
-          </li>
-          <li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-floating-label">Description</div>
-              <div class="item-input-wrap">
-                <textarea id="chat-description" class="resizable"></textarea>
-                <span class="input-clear-button"></span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <h2>Invite People</h2>
-      <div id="chips-div" class="block no-margin-top">
-        <!--
-        <div class="chip">
-          <div class="chip-media">
-            <div class="chip-pic" style="background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png')"></div>
-          </div>
-          <div class="chip-label">You</div>
-        </div>
-        -->
-      </div>
-
-      <div class="search-block no-padding">
-        <form id="new-chat-searchbar" class="searchbar searchbar-inline">
-          <div class="searchbar-inner">
-            <div class="searchbar-input-wrap">
-              <input type="search" placeholder="Search">
-              <i class="searchbar-icon"></i>
+    <h1 style="padding-left: 16px; margin-bottom: 0">New Chat</h1>
+    <div class="list no-hairlines no-margin">
+      <ul>
+        <li class="item-content item-input ">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Chat Name</div>
+            <div class="item-input-wrap">
+              <input id="chat-name" type="text">
               <span class="input-clear-button"></span>
             </div>
-            <span class="searchbar-disable-button if-not-aurora">Cancel</span>
           </div>
-        </form>
-      </div>
-      <div id="new-chat-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-        <ul>
-        </ul>
-      </div>
-      <!-- Nothing found message -->
-      <div class="block searchbar-not-found">
-        <div class="block-inner">Nothing found</div>
-      </div>
+        </li>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Description</div>
+            <div class="item-input-wrap">
+              <textarea id="chat-description" class="resizable"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
+    <h1 style="padding-left: 16px">Invite People</h1>
+    <div id="chips-div" class="block no-margin-top">
+    </div>
+
+    <div class="search-block no-padding">
+      <form id="new-chat-searchbar" class="searchbar searchbar-inline">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search">
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+        </div>
+      </form>
+    </div>
+    <div id="new-chat-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+      <ul>
+      </ul>
+    </div>
+    <!-- Nothing found message -->
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
+    </div>
+  </div>
+  <div style="background-color: rgba(0,0,0,0)" class="toolbar toolbar-bottom no-shadow">
+    <a onclick="createNewEvent()" class="button button-fill button-round">Create Chat</a>
   </div>
 </div>
