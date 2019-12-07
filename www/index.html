@@ -375,7 +375,6 @@
       } else { //User is signed out.
         console.log("nobody is signed in");
         self.app.views.main.router.navigate('/login-screen/', {
-          reloadCurrent: true,
           ignoreCache: true,
         });
       }

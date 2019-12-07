@@ -8,17 +8,6 @@ var tagline;
 var err;
 var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 
-//This advances the signUp process.... yeah thats as good of a description your going to get
-function signupNext() {
-  tagline = document.getElementById("tagline").value;
-  bio = document.getElementById("bio").value;
-  setUsersData(bio, tagline, null, null);
-  self.app.views.main.router.once('pageAfterIn', loadUserData())
-  self.app.views.main.router.navigate('/home/', {
-    reloadCurrent: true,
-  });
-
-}
 
 function signUp() { //signs up a new user
   app.progressbar.show(localStorage.getItem("themeColor"));
@@ -61,6 +50,8 @@ function signIn() { //Signs in a user
     err.innerHTML = "Oops! " + error.message;
   }).then(function() {
     app.progressbar.hide();
+    self.app.views.main.router.navigate('/home/');
+
   });
 }
 
@@ -108,17 +99,12 @@ function loadUserData() {
           }
           if (userData.get("school")) {
             loadMainPage();
-            self.app.views.main.router.once('pageAfterIn', loadMainPage());
-            self.app.views.main.router.navigate('/home/', {
-              reloadCurrent: true,
-              ignoreCache: true
-            });
+            //self.app.views.main.router.once('pageAfterIn', loadMainPage());
+            //self.app.views.main.router.navigate('/home/', {});
           } else {
             //Go to the school selection page
             console.log("the user needs to select a school");
-            self.app.views.main.router.navigate('/school-search-page/', {
-              reloadCurrent: true,
-            });
+            self.app.views.main.router.navigate('/school-search-page/', {});
           }
         });
       } else {
@@ -138,9 +124,7 @@ function loadUserData() {
           firstName: firstName,
           lastName: lastName,
         }).then(function() {
-          self.app.views.main.router.navigate('/home/', {
-            reloadCurrent: true,
-          });
+          self.app.views.main.router.navigate('/home/', {});
           //and then we should load them.
           loadUserData();
         });
@@ -177,7 +161,15 @@ function setUsersData(bio, tag, pic, password) {
   }
   //if the password is not emty set it there
   if (password) {
-
+    var user = firebase.auth().currentUser;
+    user.updatePassword(newPassword.value).then(function() {
+      // Update successful.
+      console.log("updated password");
+    }).catch(function(error) {
+      // An error happened.
+      app.progressbar.hide();
+      console.log("Failed to update password", error);
+    });
   }
 
 }
@@ -221,7 +213,7 @@ function editUserData() {
     app.progressbar.hide();
   });
 
-  var file = document.getElementById('profile-pic').files[0];
+  var file = document.getElementById('profile-pic-input').files[0];
   var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
   profilePictureRef.put(file).then(function(snapshot) {
     updatedUserPic = true;

@@ -167,7 +167,7 @@ var app = new Framework7({
             querySnapshot.forEach(function(doc) {
               //This loop runs once for every user in the current school
               getUserData(doc.id, function(user) {
-                console.log(user.username + "woooooo");
+                console.log("found user" + user.username + "in school");
                 var l = document.createElement('div');
                 l.innerHTML = '<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="' + user.uid + '" data-checked="0" data-name="' + user.username + '"data-pic="' + user.picURL + '" data-checked="0">' +
                   '<li class="item-content" style="padding-right: 16px">' +
@@ -201,7 +201,7 @@ var app = new Framework7({
             searchIn: '.item-inner',
           });
 
-          ///load the school members into the things
+          ///load the school members into list that selects users to invite
 
           db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
             var membersList = document.getElementById("new-chat-members-list");
@@ -294,101 +294,103 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
   //addFreind("waaa");
   console.log(User);
 
+  if (true) // run this after loading the user
+  {
 
-  document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic +
-    ')"></div>'
-  //This loop runs once for every chat room the current user is subscribed to
-  if (User.chats != null) {
-    for (var i = 0; i < User.chats.length; i++) {
-      var roomName = User.chats[i].split(",")[0];
-      var roomSchool = User.chats[i].split(",")[1];
-      loadSubscribedChat(roomName, roomSchool);
-    }
-  } else {
-    console.log("this user isnt subscribed to any chats");
-    // TODO: Display that the user isnt subscribed to any chats
-  }
-  var userChats = [];
-  if (User.chats != null) {
-    for (var i = 0; i < User.chats.length; i++) {
-      userChats.push(User.chats[i].split(",")[0]);
-    }
-  }
-  //Loads all the chats in the users current school/
-  db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
-        console.log("User is already subscribed to " + doc.id);
-      } else {
-        //this loop runs once for every chat room in the school
-        var ul = document.getElementById("school-group-chats");
-        var li = document.createElement('li')
-        li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
-          '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
-          '</div><div class="item-after">' + doc.get("numberOfMembers") +
-          ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
-        ul.appendChild(li);
-        //if any of these dont exist in the database they return null or undefined
+    document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic +
+      ')"></div>'
+    //This loop runs once for every chat room the current user is subscribed to
+    if (User.chats != null) {
+      for (var i = 0; i < User.chats.length; i++) {
+        var roomName = User.chats[i].split(",")[0];
+        var roomSchool = User.chats[i].split(",")[1];
+        loadSubscribedChat(roomName, roomSchool);
       }
-    });
-    var skeleton = document.getElementById('school-group-chats-skeleton');
-    skeleton.parentNode.removeChild(skeleton);
-  });
-
-  //////////Loads the events in the current school
-  db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-
-      var event = {
-        eventID: doc.id,
-        name: doc.get("name"),
-        image: doc.get("image"),
-        day: doc.get("day"),
-        time: doc.get("time"),
-        location: doc.get("location"),
-        description: doc.get("description"),
-        guests: doc.get("guests")
-      };
-      events.push(event);
-      var swiper = document.getElementById('event-swiper');
-      var newEvent = document.createElement('div');
-      newEvent.classList.add("swiper-slide");
-      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
-        '<h1>' + doc.get("name") + '</h1>' +
-        '<p>' + doc.get("day") + ', March 20</p>' +
-        '</div></div>';
-
-      swiper.appendChild(newEvent);
-      //this loop runs once for every event in the current school
-    });
-    app.swiper.create('.swiper-container');
-    document.getElementById("skeleton-event").remove();
-  });
-
-  //////////////Loads the users attending this school
-  db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
-    //  var membersList = document.getElementById("members-list");
-    querySnapshot.forEach(function(doc) {
-      //This loop runs once for every user in the current school
-      getUserData(doc.id, function(user) {
-        var membersList = document.getElementById("members-list");
-        //console.log("username: " + doc.get("name"));
-        var a = document.createElement('a');
-        a.classList.add("item-link");
-        a.classList.add("no-chevron");
-        a.onclick = function() {
-          loadUserpage(doc.id);
-        };
-        a.innerHTML = '<li class="item-content"><div class="item-media">' +
-          '<div class="profile-pic-icon" style="background-image: url(' + user.picURL +
-          ')"></div> </div>' +
-          '<div class="item-inner">' + user.username + '</div></li>';
-        membersList.appendChild(a);
+    } else {
+      console.log("this user isnt subscribed to any chats. this should be displayed on the main page");
+      // TODO: Display that the user isnt subscribed to any chats
+    }
+    var userChats = [];
+    if (User.chats != null) {
+      for (var i = 0; i < User.chats.length; i++) {
+        userChats.push(User.chats[i].split(",")[0]);
+      }
+    }
+    //Loads all the chats in the users current school/
+    db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
+          console.log("User is already subscribed to " + doc.id);
+        } else {
+          //this loop runs once for every chat room in the school
+          var ul = document.getElementById("school-group-chats");
+          var li = document.createElement('li')
+          li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
+            '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
+            '</div><div class="item-after">' + doc.get("numberOfMembers") +
+            ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
+          ul.appendChild(li);
+          //if any of these dont exist in the database they return null or undefined
+        }
       });
+      var skeleton = document.getElementById('school-group-chats-skeleton');
+      skeleton.parentNode.removeChild(skeleton);
     });
-    var skeleton = document.getElementById('members-list-skeleton');
-    skeleton.parentNode.removeChild(skeleton);
-  });
+
+    //////////Loads the events in the current school
+    db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        //this loop runs once for every event in the current school
+        var event = {
+          eventID: doc.id,
+          name: doc.get("name"),
+          image: doc.get("image"),
+          day: doc.get("day"),
+          time: doc.get("time"),
+          location: doc.get("location"),
+          description: doc.get("description"),
+          guests: doc.get("guests")
+        };
+        events.push(event);
+        var swiper = document.getElementById('event-swiper');
+        var newEvent = document.createElement('div');
+        newEvent.classList.add("swiper-slide");
+        newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+          '<h1>' + doc.get("name") + '</h1>' +
+          '<p>' + doc.get("day") + ', March 20</p>' +
+          '</div></div>';
+
+        swiper.appendChild(newEvent);
+      });
+      app.swiper.create('.swiper-container');
+      document.getElementById("skeleton-event").remove();
+    });
+
+    //////////////Loads the users attending this school
+    db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
+      //  var membersList = document.getElementById("members-list");
+      querySnapshot.forEach(function(doc) {
+        //This loop runs once for every user in the current school
+        getUserData(doc.id, function(user) {
+          var membersList = document.getElementById("members-list");
+          //console.log("username: " + doc.get("name"));
+          var a = document.createElement('a');
+          a.classList.add("item-link");
+          a.classList.add("no-chevron");
+          a.onclick = function() {
+            loadUserpage(doc.id);
+          };
+          a.innerHTML = '<li class="item-content"><div class="item-media">' +
+            '<div class="profile-pic-icon" style="background-image: url(' + user.picURL +
+            ')"></div> </div>' +
+            '<div class="item-inner">' + user.username + '</div></li>';
+          membersList.appendChild(a);
+        });
+      });
+      var skeleton = document.getElementById('members-list-skeleton');
+      skeleton.parentNode.removeChild(skeleton);
+    });
+  }
 
 }
 
