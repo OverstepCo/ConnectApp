@@ -306,7 +306,7 @@
   }
 
   //Subscribes a user to the specified chat
-  function subscribeToChat(uid, chatID) {
+  function subscribeToChat(uidToSub, chatID) {
     console.log("subscribing to chat: " + chatID);
     //Adds the user to the chat members
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
@@ -316,6 +316,7 @@
     db.collection("users").doc(User.uid).update({
       chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
     });
+    loadUserData();
   }
 
   //Unsubscribes the user from the specified chat.
@@ -323,6 +324,7 @@
 
     db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
       console.log("successfully unsubscribed from chat");
+      loadUserData();
     }).catch(function(error) {
       console.error("Error removing document: ", error);
     });

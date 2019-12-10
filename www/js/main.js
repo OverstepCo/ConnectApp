@@ -133,7 +133,15 @@ var app = new Framework7({
             app.dialog.password('For security stuff', 'Enter your password', function(password) {
               // TODO: validate user password
               app.dialog.close();
-              editUserData();
+              var picFile = document.getElementById('profile-pic-input').files[0];
+              var t = document.getElementById("tagline").value;
+              var b = document.getElementById("bio").value;
+              var p = null; // TODO: Put the password here
+              var nameF = document.getElementById("first-name").value;
+              var nameL = document.getElementById("last-name").value;
+              //Set the users data the order for the function is bio,tag,pic,password,firstName ,lastName
+              setUsersData(b, t, picFile, null, nameF, nameL);
+              //editUserData();
             });
           });
 
@@ -291,12 +299,15 @@ if (false) {
 
 function loadMainPage() { //Loads all the data on the main page//// TODO: make sure to cean all leftover data
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
-  //addFreind("waaa");
+  //addFreind("waaa
+  //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded
   console.log(User);
 
   if (true) // run this after loading the user
   {
 
+    console.log(document.getElementById("profile-icon") + " profile icon html");
+    document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
     //This loop runs once for every chat room the current user is subscribed to
     if (User.chats != null) {
       for (var i = 0; i < User.chats.length; i++) {
@@ -388,9 +399,8 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       var skeleton = document.getElementById('members-list-skeleton');
       skeleton.parentNode.removeChild(skeleton);
     });
-    //
-    console.log(document.getElementById("profile-icon") + " profile icon html");
-    document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
+
+
   }
 
 }

@@ -107,18 +107,19 @@ function loadUserData() {
           }
           if (userData.get("school")) {
             //If we are not alread at the home page then we should navigate there
-            //self.app.views.main.router.updateCurrentUrl("index.html");
-            //self.app.views.main.router.refreshPage()
-            console.log(self.app.views.main.router.currentRoute.url);
-            console.log(self.app.views.main.router.currentRoute.name);
-
             if (self.app.views.main.router.currentRoute.url != "/www/") {
+              self.app.once('pageInit', function(page) {
+                // do something on page init
+                console.log("IT woorked");
+                loadMainPage();
+              });
               self.app.views.main.router.navigate('/home/');
+
               console.log("we are not on the homepage");
             } else {
+              loadMainPage();
               console.log("we are already on the homepage");
             }
-            loadMainPage();
             //self.app.views.main.router.once('pageAfterIn', loadMainPage());
             //self.app.views.main.router.navigate('/home/', {});
           } else {
@@ -160,8 +161,7 @@ function loadUserData() {
 }
 
 //THis replaces editUserData as it is robust
-function setUsersData(bio, tag, pic, password) {
-
+function setUsersData(bio, tag, pic, password, firstName, lastName) {
   //If the bio is not emty set it here
   if (bio) {
     console.log("updating user bio");
@@ -171,15 +171,29 @@ function setUsersData(bio, tag, pic, password) {
   }
   //if the tagline is not empty set it here
   if (tag) {
+    console.log("updating user tag");
     db.collection("users").doc(uid).update({
       tagline: tag
     });
   }
-  //if the pic is not empty setit here
-  if (pic) {
-
+  //first and last name
+  if (firstName) {
+    db.collection("users").doc(uid).update({
+      firstName: firstName
+    });
   }
-  //if the password is not emty set it there
+  if (firstName) {
+    db.collection("users").doc(uid).update({
+      lastName: lastName
+    });
+  }
+  //if the pic is not empty set it here
+  if (pic) {
+    console.log("updating profile pic");
+    var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+    profilePictureRef.put(pic).then(function(snapshot) {});
+  }
+  //if the password is not empty set it there
   if (password) {
     var user = firebase.auth().currentUser;
     user.updatePassword(newPassword.value).then(function() {
@@ -191,6 +205,12 @@ function setUsersData(bio, tag, pic, password) {
       console.log("Failed to update password", error);
     });
   }
+
+  app.progressbar.hide();
+  app.toast.show({
+    text: 'User info sucessfully updated!',
+    closeTimeout: 2000,
+  });
   loadUserData();
 }
 
@@ -238,7 +258,6 @@ function editUserData() {
   profilePictureRef.put(file).then(function(snapshot) {
     updatedUserPic = true;
     if (updatedUserInfo) {
-
       if (pageName == "/welcome-page/") {
         self.app.views.main.router.navigate('/school-search-page/');
       }
