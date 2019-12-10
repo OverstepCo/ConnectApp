@@ -111,15 +111,14 @@ function loadUserData() {
             console.log("name: " + self.app.views.main.router.currentRoute.name);
             console.log("url: " + self.app.views.main.router.currentRoute.url);
             console.log("path: " + self.app.views.main.router.currentRoute.path);
-            if (self.app.views.main.router.currentRoute.url != "/www/") {
+            if (self.app.views.main.router.currentRoute.path != "/www/" && self.app.views.main.router.currentRoute.path != "ConnectApp/www/") {
+              console.log("we are not on the homepage");
               self.app.once('pageInit', function(page) {
                 // do something on page init
                 console.log("IT woorked");
                 loadMainPage();
               });
               self.app.views.main.router.navigate('/home/');
-
-              console.log("we are not on the homepage");
             } else {
               loadMainPage();
               console.log("we are already on the homepage");
