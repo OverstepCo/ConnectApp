@@ -108,8 +108,6 @@ function loadUserData() {
           }
           if (userData.get("school")) {
             //If we are not alread at the home page then we should navigate there
-            console.log("name: " + self.app.views.main.router.currentRoute.name);
-            console.log("url: " + self.app.views.main.router.currentRoute.url);
             console.log("path: " + self.app.views.main.router.currentRoute.path);
             if (self.app.views.main.router.currentRoute.path != "/www/" && self.app.views.main.router.currentRoute.path != "ConnectApp/www/") {
               console.log("we are not on the homepage");
