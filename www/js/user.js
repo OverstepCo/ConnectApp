@@ -11,8 +11,9 @@ var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 function welcomePageNext() {
   var b = document.getElementById("bio").value;
   var t = document.getElementById("tagline").value;
-  //sets the userdata the order for the function is bio,tag,profilePic,password
-  setUsersData(b, t, null, null);
+  var p = document.getElementById('profile-pic-input').files[0];
+  //sets the userdata the order for the function is bio,tag,profilePic,password,firstName,lastName
+  setUsersData(b, t, p, null, null, null);
 
   console.log(b);
 }
@@ -107,6 +108,9 @@ function loadUserData() {
           }
           if (userData.get("school")) {
             //If we are not alread at the home page then we should navigate there
+            console.log("name: " + self.app.views.main.router.currentRoute.name);
+            console.log("url: " + self.app.views.main.router.currentRoute.url);
+            console.log("path: " + self.app.views.main.router.currentRoute.path);
             if (self.app.views.main.router.currentRoute.url != "/www/") {
               self.app.once('pageInit', function(page) {
                 // do something on page init
