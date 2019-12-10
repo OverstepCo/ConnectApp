@@ -297,8 +297,6 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
   if (true) // run this after loading the user
   {
 
-    document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic +
-      ')"></div>'
     //This loop runs once for every chat room the current user is subscribed to
     if (User.chats != null) {
       for (var i = 0; i < User.chats.length; i++) {
@@ -390,6 +388,9 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       var skeleton = document.getElementById('members-list-skeleton');
       skeleton.parentNode.removeChild(skeleton);
     });
+    //
+    console.log(document.getElementById("profile-icon") + " profile icon html");
+    document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
   }
 
 }

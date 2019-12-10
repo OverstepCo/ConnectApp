@@ -25,6 +25,7 @@
 
 
   function loadChat(chatID, chatSchool) {
+
     console.log("chatID:" + chatID + " school:" + chatSchool);
     currentChat = chatID;
     currentChatSchool = chatSchool

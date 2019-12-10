@@ -3,11 +3,19 @@
 
 var firstName;
 var lastName;
-var bio;
-var tagline;
+
 var err;
 var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 
+//This is for setting user data from the welcome page
+function welcomePageNext() {
+  var b = document.getElementById("bio").value;
+  var t = document.getElementById("tagline").value;
+  //sets the userdata the order for the function is bio,tag,profilePic,password
+  setUsersData(b, t, null, null);
+
+  console.log(b);
+}
 
 function signUp() { //signs up a new user
   app.progressbar.show(localStorage.getItem("themeColor"));
@@ -50,7 +58,7 @@ function signIn() { //Signs in a user
     err.innerHTML = "Oops! " + error.message;
   }).then(function() {
     app.progressbar.hide();
-    self.app.views.main.router.navigate('/home/');
+    ///////self.app.views.main.router.navigate('/home/');
 
   });
 }
@@ -62,7 +70,7 @@ function signOut() { //Signs out the user
     console.log("Failed to sign out: " + error.message);
   });
 }
-
+//This function is oley for the signed in user. Thiss essetialy refreshes the app so the name could be changed to refresh app
 function loadUserData() {
   console.log("loading User data");
   db.collection("users").doc(uid).get().then(function(userData) {
@@ -98,6 +106,18 @@ function loadUserData() {
             profilePic: profilePic, //// TODO: Load that here
           }
           if (userData.get("school")) {
+            //If we are not alread at the home page then we should navigate there
+            //self.app.views.main.router.updateCurrentUrl("index.html");
+            //self.app.views.main.router.refreshPage()
+            console.log(self.app.views.main.router.currentRoute.url);
+            console.log(self.app.views.main.router.currentRoute.name);
+
+            if (self.app.views.main.router.currentRoute.url != "/www/") {
+              self.app.views.main.router.navigate('/home/');
+              console.log("we are not on the homepage");
+            } else {
+              console.log("we are already on the homepage");
+            }
             loadMainPage();
             //self.app.views.main.router.once('pageAfterIn', loadMainPage());
             //self.app.views.main.router.navigate('/home/', {});
@@ -124,7 +144,7 @@ function loadUserData() {
           firstName: firstName,
           lastName: lastName,
         }).then(function() {
-          self.app.views.main.router.navigate('/home/', {});
+          //self.app.views.main.router.navigate('/home/', {});
           //and then we should load them.
           loadUserData();
         });
@@ -171,7 +191,7 @@ function setUsersData(bio, tag, pic, password) {
       console.log("Failed to update password", error);
     });
   }
-
+  loadUserData();
 }
 
 //Edits the users profile data.
@@ -293,10 +313,7 @@ function changeSchool(newSchoolID) {
       if (oldSchool) {
         db.collection("school").doc(oldSchool).collection("users").doc(User.uid).delete().then(function() {
           console.log("Document successfully deleted! Document id: " + oldSchool);
-          self.app.views.main.router.navigate('/home/', {
-            reloadCurrent: true,
-            ignoreCache: true,
-          });
+
         }).catch(function(error) {
           console.error("Error removing document: ", error);
         });
