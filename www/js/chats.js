@@ -25,8 +25,6 @@
   function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
     db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
         userID: User.uid,
-        name: User.fullName(),
-        profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
         text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       })
@@ -128,20 +126,20 @@
   function setupChat() {
     console.log("setting up chat " + currentChatSchool + currentChat);
     document.getElementById("group-name").innerHTML = currentChat;
-
     var userList = document.getElementById("chat-members");
     oldestTimestamp = firebase.firestore.FieldValue.serverTimestamp();
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").get().then(function(users) {
-      var foo = 0;
+      var foo = 0; //this is for keeping track of how many users we have loaded
       users.forEach(function(u) {
-
+        //Get the user data using our async method then add them to an array to be used while this chat session is actvie
         getUserData(u.id, function(user) {
+          //Add the user to a local array so that we can accses it without an async method
           usersInChat.push({
             userid: user.uid,
             username: user.username,
             pic: user.picURL
           });
-          console.log(user);
+          //Add an icon for each user subscribed to this chat to the members section
           var a = document.createElement('a');
           a.classList.add("item-link");
           a.classList.add("no-chevron");
@@ -157,6 +155,7 @@
           userList.appendChild(a);
 
           foo++;
+
           if (foo >= users.size) {
             //console.log(usersInChat.find(o => o.userid === 'd2H6n7b80ee9vmRjemY0ZyFmuIv2').username);
             //Gets the last 20 messages from the chat room and adds them to the local messaging system
@@ -185,7 +184,6 @@
                     un = usersInChat.find(o => o.userid === change.get("userID")).username;
                     up = usersInChat.find(o => o.userid === change.get("userID")).pic;
                   }
-                  console.log('profilepic ' + up);
                   messagesArray.unshift({
                     text: change.get("text"),
                     isTitle: change.get("isTitle"),
