@@ -146,12 +146,13 @@
           a.classList.add("item-link");
           a.classList.add("no-chevron");
           a.onclick = function() {
-            loadUserpage(user.id);
+            loadUserpage(user.uid);
           };
           a.innerHTML =
-            '<li class="item-content">' +
-            '<div class="item-media"><i class="material-icons">person</i></div>' +
-            '<div class="item-inner">' + user.firstName + ' ' + user.lastName + '</div>' +
+            '<li class="item-content"><div class="item-media">' +
+            '<div class="profile-pic-icon" style="background-image: url(' + user.picURL + ')"></div>' +
+            '</div>' +
+            '<div class="item-inner">' + user.username + '</div>' +
             '</li>';
           userList.appendChild(a);
 
