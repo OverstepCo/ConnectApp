@@ -191,7 +191,7 @@ function setUsersData(bio, tag, pic, password, firstName, lastName) {
   //if the pic is not empty set it here
   if (pic) {
     console.log("updating profile pic");
-    var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+    var profilePictureRef = storageRef.child('profile-pictures').child(uid);
     profilePictureRef.put(pic).then(function(snapshot) {});
   }
   //if the password is not empty set it there

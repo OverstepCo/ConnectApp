@@ -22,10 +22,95 @@
   var messages = null;
 
 
+  function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
+    db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
+        userID: User.uid,
+        name: User.fullName(),
+        profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
+        text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(function(docRef) {
+        console.log("Sent message: ", docRef.id);
+      })
+      .catch(function(error) {
+        console.error("Error sending message : ", error);
+      });
+  }
 
+  //Subscribes a user to the specified chat
+  function subscribeToChat(uidToSub, chatID) {
+    console.log("subscribing to chat: " + chatID);
+    //Adds the user to the chat members
+    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
+      subscribed: true
+    });
+    //Adds the chatroom to the users chat list
+    db.collection("users").doc(User.uid).update({
+      chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
+    });
+    loadUserData();
+  }
+
+  //Unsubscribes the user from the specified chat.
+  function unsubscribeFromChat() {
+
+    db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
+      console.log("successfully unsubscribed from chat");
+      loadUserData();
+    }).catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
+    // TODO: Change this so that it works when users change names
+    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
+      subscribed: false
+    });
+    //Removes the chatroom from the users chat list
+    db.collection("users").doc(User.uid).update({
+      chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
+    });
+    console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
+  }
+
+  //NEW CHAT Room
+  function createChat() {
+    var chatName = document.getElementById("chat-name");
+    var chatDescription = document.getElementById("chat-description");
+    //chatMembers is an array
+    var chatMembers = document.querySelectorAll('[data-uid]');
+    console.log(chatMembers.length);
+    console.log("new chat");
+    //create chat on database
+    db.collection('school').doc(User.school).collection("chats").doc(chatName.value).set({
+        description: chatDescription.value,
+        name: chatName.value,
+        numberOfMembers: "" + chatMembers.length,
+      })
+      .then(function() {
+        console.log("Chat written with ID: ", chatName.value);
+        //  addMessage(User.school, chatName.value, User.firstName + " " + User.lastName + " created this room");
+
+        db.collection("school").doc(User.school).collection("chats").doc(chatName.value).collection("messages").add({
+          userID: User.uid,
+          name: User.fullName(),
+          isTitle: true,
+          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
+          text: "<b>" + User.firstName + " " + User.lastName + "</b> created this room", //document.getElementById("messagebar").value, //not sure if this is the best way to do this
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+      })
+      .catch(function(error) {
+        console.error("Error adding chat: ", error);
+      });
+
+    //subscribe added users to chat
+    for (var i = 0; i < chatMembers.length; i++) {
+      //// TODO: send a notification instead of just subscribing them to chat
+      subscribeToChat(chatMembers[i], User.school);
+    }
+  }
 
   function loadChat(chatID, chatSchool) {
-
     console.log("chatID:" + chatID + " school:" + chatSchool);
     currentChat = chatID;
     currentChatSchool = chatSchool
@@ -40,17 +125,6 @@
     self.app.views.main.router.navigate('/preview-chat-screen/');
   }
 
-  function loadUser(uid) {
-    var obj;
-    db.collection("users").doc(user.id).get().then(function(userData) {
-      obj = {
-        userid: user.id,
-        username: userData.get("firstName")
-      }
-    });
-    return obj;
-  }
-
   function setupChat() {
     console.log("setting up chat " + currentChatSchool + currentChat);
     document.getElementById("group-name").innerHTML = currentChat;
@@ -59,12 +133,15 @@
     oldestTimestamp = firebase.firestore.FieldValue.serverTimestamp();
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").get().then(function(users) {
       var foo = 0;
-      users.forEach(function(user) {
-        db.collection("users").doc(user.id).get().then(function(userData) {
+      users.forEach(function(u) {
+
+        getUserData(u.id, function(user) {
           usersInChat.push({
-            userid: user.id,
-            username: userData.get("firstName")
+            userid: user.uid,
+            username: user.username,
+            pic: user.picURL
           });
+          console.log(user);
           var a = document.createElement('a');
           a.classList.add("item-link");
           a.classList.add("no-chevron");
@@ -74,7 +151,7 @@
           a.innerHTML =
             '<li class="item-content">' +
             '<div class="item-media"><i class="material-icons">person</i></div>' +
-            '<div class="item-inner">' + userData.get("firstName") + ' ' + userData.get("lastName") + '</div>' +
+            '<div class="item-inner">' + user.firstName + ' ' + user.lastName + '</div>' +
             '</li>';
           userList.appendChild(a);
 
@@ -87,7 +164,6 @@
                 var lastTimestamp;
                 finishedLoadingMessages = false;
                 loadingMessages = true;
-
 
                 //Add each message in the snapshot to the message array
                 snapshot.forEach(function(change) {
@@ -102,15 +178,19 @@
                   }
 
                   var un = "null";
+                  var up = "https://www.keypointintelligence.com/img/anonymous.png";
+                  //this is just to make sure that the app doesnt break when there is no uid associated with the message
                   if (usersInChat.find(o => o.userid === change.get("userID")) != null) {
                     un = usersInChat.find(o => o.userid === change.get("userID")).username;
+                    up = usersInChat.find(o => o.userid === change.get("userID")).pic;
                   }
+                  console.log('profilepic ' + up);
                   messagesArray.unshift({
                     text: change.get("text"),
                     isTitle: change.get("isTitle"),
                     type: (change.get("userID") != User.uid) ? 'received' : 'sent',
                     name: un,
-                    avatar: change.get("profilePicUrl"),
+                    avatar: up,
                   });
                   oldestTimestamp = change.get("timestamp");
                   lastTimestamp = timestamp;
@@ -169,7 +249,7 @@
                               isTitle: change.doc.get("isTitle"),
                               type: (change.doc.get("userID") != User.uid) ? 'received' : 'sent',
                               name: usersInChat.find(o => o.userid === change.doc.get("userID")).username,
-                              avatar: change.doc.get("profilePicUrl"),
+                              avatar: usersInChat.find(o => o.userid === change.doc.get("userID")).pic,
                             });
                           }
                           var source = snapshot.metadata.fromCache ? "local cache" : "server";
@@ -286,94 +366,6 @@
         });
     } else {
       console.log("Not finished setting up chat room aborting");
-    }
-  }
-
-  function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
-    db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
-        userID: User.uid,
-        name: User.fullName(),
-        profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
-        text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then(function(docRef) {
-        console.log("Sent message: ", docRef.id);
-      })
-      .catch(function(error) {
-        console.error("Error sending message : ", error);
-      });
-  }
-
-  //Subscribes a user to the specified chat
-  function subscribeToChat(uidToSub, chatID) {
-    console.log("subscribing to chat: " + chatID);
-    //Adds the user to the chat members
-    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
-      subscribed: true
-    });
-    //Adds the chatroom to the users chat list
-    db.collection("users").doc(User.uid).update({
-      chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
-    });
-    loadUserData();
-  }
-
-  //Unsubscribes the user from the specified chat.
-  function unsubscribeFromChat() {
-
-    db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
-      console.log("successfully unsubscribed from chat");
-      loadUserData();
-    }).catch(function(error) {
-      console.error("Error removing document: ", error);
-    });
-    // TODO: Change this so that it works when users change names
-    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
-      subscribed: false
-    });
-    //Removes the chatroom from the users chat list
-    db.collection("users").doc(User.uid).update({
-      chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
-    });
-    console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
-  }
-
-  //NEW CHAT Room-----------------------------------------------------------------
-  function createChat() {
-    var chatName = document.getElementById("chat-name");
-    var chatDescription = document.getElementById("chat-description");
-    //chatMembers is an array
-    var chatMembers = document.querySelectorAll('[data-uid]');
-    console.log(chatMembers.length);
-    console.log("new chat");
-    //create chat on database
-    db.collection('school').doc(User.school).collection("chats").doc(chatName.value).set({
-        description: chatDescription.value,
-        name: chatName.value,
-        numberOfMembers: "" + chatMembers.length,
-      })
-      .then(function() {
-        console.log("Chat written with ID: ", chatName.value);
-        //  addMessage(User.school, chatName.value, User.firstName + " " + User.lastName + " created this room");
-
-        db.collection("school").doc(User.school).collection("chats").doc(chatName.value).collection("messages").add({
-          userID: User.uid,
-          name: User.fullName(),
-          isTitle: true,
-          profilePicUrl: "https://lh4.googleusercontent.com/-bDz3d4hCLzA/AAAAAAAAAAI/AAAAAAAAAEk/xwohCLOzw7c/photo.jpg", //TODO change this to the users profile pic
-          text: "<b>" + User.firstName + " " + User.lastName + "</b> created this room", //document.getElementById("messagebar").value, //not sure if this is the best way to do this
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-      })
-      .catch(function(error) {
-        console.error("Error adding chat: ", error);
-      });
-
-    //subscribe added users to chat
-    for (var i = 0; i < chatMembers.length; i++) {
-      //// TODO: send a notification instead of just subscribing them to chat
-      subscribeToChat(chatMembers[i], User.school);
     }
   }
 

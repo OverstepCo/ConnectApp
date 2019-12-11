@@ -299,15 +299,14 @@ if (false) {
 
 function loadMainPage() { //Loads all the data on the main page//// TODO: make sure to cean all leftover data
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
-  //addFreind("waaa
-  //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded
+  //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded. this may be fixed
   console.log(User);
 
   if (true) // run this after loading the user
   {
-
-    console.log(document.getElementById("profile-icon") + " profile icon html");
+    //SEt the users profile icon
     document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
+
     //This loop runs once for every chat room the current user is subscribed to
     if (User.chats != null) {
       for (var i = 0; i < User.chats.length; i++) {
@@ -676,6 +675,8 @@ function getUserData(userID, callback) {
         loadedUsers[userID] = {
           uid: userID,
           username: userData.get("firstName") + " " + userData.get("lastName"),
+          firstName: userData.get("firstName"),
+          lastName: userData.get("lastName"),
           tagline: userData.get("tagline"),
           bio: userData.get("bio"),
           picURL: profilePic,
