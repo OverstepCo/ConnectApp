@@ -140,58 +140,16 @@ function setupEventChat(eventID) {
   eventMessageBtn.setAttribute("onClick", "sendEventMessage('" + eventID + "')");
   var messagesArray = [];
   var lastTimestamp;
-  //Gets all the messages from the event chat and adds them to the local messaging system
-  db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").orderBy("timestamp", "desc").limit(20).get().then(function(snapshot) {
-    // snapshot.docChanges().forEach(function(change) {
-    //   if (lastTimestamp && (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime()) > 86400000) {
-    //     var difference = (lastTimestamp.getTime() - change.doc.get("timestamp").toDate().getTime());
-    //     var timestampString;
-    //
-    //     //if this week
-    //     if ((lastTimestamp.getDay() - change.doc.get("timestamp").toDate().getDay()) >= 0) {
-    //       var now = new Date();
-    //       var today = now.getDay();
-    //
-    //       //if today
-    //       if (today == lastTimestamp.getDay()) {
-    //         timestampString = "Today, ";
-    //
-    //         //if another day this week
-    //       } else {
-    //         var daysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    //         timestamp = daysArray[lastTimestamp.getDay()] + ", ";
-    //       }
-    //
-    //       //if not this week
-    //     } else {
-    //       var monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    //       timestampString = monthsArray[lastTimestamp.getMonth()] + " " + (lastTimestamp.getDate() + 1) + ", ";
-    //     }
-    //     var hour = lastTimestamp.getHours();
-    //     timestampString += (hour < 12 || hour === 24) ? (hour + ":" + lastTimestamp.getMinutes() + " AM") : ((hour - 12) + ":" + lastTimestamp.getMinutes() + " PM");
-    //     messagesArray.unshift({
-    //       text: timestampString,
-    //       isTitle: true,
-    //     });
-    //   }
-    //
-    //   lastTimestamp = change.doc.get("timestamp").toDate();
-    //
-    // });
-
-  }).then(function() {
-    console.log("add listener");
-    addListener(messagesArray, eventID);
-  });
-
+  //Adds a listener for the event chats this will load all the chat messages asnychronusly
+  addListener(eventID);
+  console.log("added listener for event chats");
 }
 
 function sendEventMessage(eventID) {
-  // Init Messagebar
+  // Init Messagebar////// TODO: do we need to init messagebare every time we send a
   var messagebar = app.messagebar.create({
     el: '.event-messagebar'
   });
-
   var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
   // return if empty message
   if (!text.length) return;
@@ -199,7 +157,6 @@ function sendEventMessage(eventID) {
   messagebar.clear();
   // Return focus to area
   messagebar.focus();
-
   //Add message to the server.
   db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").add({
     userID: User.uid,
@@ -212,33 +169,44 @@ function sendEventMessage(eventID) {
   });
 }
 
-function addListener(messagesArray, eventID) {
+var eventMessages = [];
+
+function addListener(eventID) {
 
   messages = app.messages.create({ //Some rules and stuff
     el: '.event-messages',
-    messages: messagesArray,
+    messages: [],
   });
 
   //Adds a listener for any new chat messages
   eventListener = db.collection("school").doc(User.school).collection("event").doc(eventID).collection("messages").orderBy("timestamp", "asc")
-    .onSnapshot(function(snapshot) { //Listens to the chat room for any new messages.
+    .onSnapshot({
+      // Listen for document metadata changes
+      includeMetadataChanges: true
+    }, function(snapshot) { //Listens to the chat room for any new messages.
       //if (finishedLoadingMessages) {
       console.log("listining");
+      //ForEach changed message in the document
       snapshot.docChanges().forEach(function(change) {
-        if (change.type == "added") {
+        //We chekh to see if it is added information or modified information then we check to make sure it is from the server with !snapshot.metadata.hasPendingWrites
+        if ((change.type == "added" || change.type === "modified") && !snapshot.metadata.hasPendingWrites) {
           console.log("added new message");
-          getUserData(change.doc.id, function(user) {
-            messages.addMessage({
+          //Load the user data of the message sender
+          getUserData(change.doc.get('userID'), function(user) {
+            messages.clear(); //clear framework7's message system
+            eventMessages.unshift({ //Add the massage to our array
               text: change.doc.get("text"),
               isTitle: change.doc.get("isTitle"),
               type: 'received',
-              avatar: "https: //proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.complex.com%2Fcomplex%2Fimage%2Fupload%2Fc_limit%2Cw_680%2Ffl_lossy%2Cpg_1%2Cq_auto%2Fe28brreh7mlxhbeegozo.jpg&f=1", //TODO get user picture
-              header: ("<b>" + user.username + "</b>  ") // + timeSince("" + change.doc.get("timestamp").toDate())),
+              avatar: user.picURL, //TODO get user picture
+              header: ("<b>" + user.username + "</b>  " + timeSince("" + change.doc.get("timestamp").toDate())),
+              timestamp: change.doc.get("timestamp").seconds
             });
+            eventMessages.sort((a, b) => a.timestamp - b.timestamp); //Sort our message array by timestamp
+            messages.messages = eventMessages.slice(); //Set framework7's messagesArray to a copy of our array
+            messages.renderMessages(); //Tell framework7 to render the messages
           });
         }
       });
-      //}
-      //finishedLoadingMessages = true;
     });
 }

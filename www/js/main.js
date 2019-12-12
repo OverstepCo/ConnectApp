@@ -1,5 +1,5 @@
 var $$ = Dom7;
-
+//Setup for framework7
 var app = new Framework7({
   root: '#app',
   name: 'My App',
@@ -261,7 +261,6 @@ var app = new Framework7({
   ],
 });
 
-
 var mainView = app.views.create('.view-main');
 
 var events = [];
@@ -400,6 +399,7 @@ var loadedUsers = {};
 
 function getUserData(userID, callback) {
   //If we have already loaded this users data then return it else load it from the database
+  console.log("loading " + userID);
   if (userID in loadedUsers) {
     console.log("found user in array");
     callback(loadedUsers[userID]);
