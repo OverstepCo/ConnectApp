@@ -21,6 +21,10 @@ var app = new Framework7({
     {
       path: '/home/',
       url: 'index.html',
+      pageAfterIn: function test(e, page) {
+        // TODO: //Check to see if the userData is valid if so loadMainPage() else loadUserData()
+
+      },
 
     },
     // profile page

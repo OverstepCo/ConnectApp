@@ -138,8 +138,7 @@ var eventMessageBtn = document.getElementById("event-send-link");
 
 function setupEventChat(eventID) {
   eventMessageBtn.setAttribute("onClick", "sendEventMessage('" + eventID + "')");
-  var messagesArray = [];
-  var lastTimestamp;
+  eventMessages = []; //Clear the event message array
   //Adds a listener for the event chats this will load all the chat messages asnychronusly
   addListener(eventID);
   console.log("added listener for event chats");
