@@ -433,7 +433,6 @@ function getUserData(userID, callback) {
         callback(loadedUsers[userID]);
       });
     });
-
   }
 }
 

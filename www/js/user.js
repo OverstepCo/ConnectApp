@@ -3,20 +3,11 @@
 
 var firstName;
 var lastName;
-
+var bio;
+var tagline;
 var err;
 var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 
-//This is for setting user data from the welcome page
-function welcomePageNext() {
-  var b = document.getElementById("bio").value;
-  var t = document.getElementById("tagline").value;
-  var p = document.getElementById('profile-pic-input').files[0];
-  //sets the userdata the order for the function is bio,tag,profilePic,password,firstName,lastName
-  setUsersData(b, t, p, null, null, null);
-
-  console.log(b);
-}
 
 function signUp() { //signs up a new user
   app.progressbar.show(localStorage.getItem("themeColor"));
@@ -59,7 +50,7 @@ function signIn() { //Signs in a user
     err.innerHTML = "Oops! " + error.message;
   }).then(function() {
     app.progressbar.hide();
-    ///////self.app.views.main.router.navigate('/home/');
+    self.app.views.main.router.navigate('/home/');
 
   });
 }
@@ -71,7 +62,7 @@ function signOut() { //Signs out the user
     console.log("Failed to sign out: " + error.message);
   });
 }
-//This function is oley for the signed in user. Thiss essetialy refreshes the app so the name could be changed to refresh app
+
 function loadUserData() {
   console.log("loading User data");
   db.collection("users").doc(uid).get().then(function(userData) {
@@ -105,22 +96,9 @@ function loadUserData() {
             bio: userData.get("bio"),
             chats: userData.get("chatrooms"),
             profilePic: profilePic, //// TODO: Load that here
-          }
+          };
           if (userData.get("school")) {
-            //If we are not alread at the home page then we should navigate there
-            console.log("path: " + self.app.views.main.router.currentRoute.path);
-            if (self.app.views.main.router.currentRoute.path != "/www/" && self.app.views.main.router.currentRoute.path != "/ConnectApp/www/") {
-              console.log("we are not on the homepage");
-              self.app.once('pageInit', function(page) {
-                // do something on page init
-                console.log("IT woorked");
-                loadMainPage();
-              });
-              self.app.views.main.router.navigate('/home/');
-            } else {
-              loadMainPage();
-              console.log("we are already on the homepage");
-            }
+            loadMainPage();
             //self.app.views.main.router.once('pageAfterIn', loadMainPage());
             //self.app.views.main.router.navigate('/home/', {});
           } else {
@@ -146,7 +124,7 @@ function loadUserData() {
           firstName: firstName,
           lastName: lastName,
         }).then(function() {
-          //self.app.views.main.router.navigate('/home/', {});
+          self.app.views.main.router.navigate('/home/', {});
           //and then we should load them.
           loadUserData();
         });
@@ -162,7 +140,8 @@ function loadUserData() {
 }
 
 //THis replaces editUserData as it is robust
-function setUsersData(bio, tag, pic, password, firstName, lastName) {
+function setUsersData(bio, tag, pic, password) {
+
   //If the bio is not emty set it here
   if (bio) {
     console.log("updating user bio");
@@ -172,29 +151,15 @@ function setUsersData(bio, tag, pic, password, firstName, lastName) {
   }
   //if the tagline is not empty set it here
   if (tag) {
-    console.log("updating user tag");
     db.collection("users").doc(uid).update({
       tagline: tag
     });
   }
-  //first and last name
-  if (firstName) {
-    db.collection("users").doc(uid).update({
-      firstName: firstName
-    });
-  }
-  if (firstName) {
-    db.collection("users").doc(uid).update({
-      lastName: lastName
-    });
-  }
-  //if the pic is not empty set it here
+  //if the pic is not empty setit here
   if (pic) {
-    console.log("updating profile pic");
-    var profilePictureRef = storageRef.child('profile-pictures').child(uid);
-    profilePictureRef.put(pic).then(function(snapshot) {});
+
   }
-  //if the password is not empty set it there
+  //if the password is not emty set it there
   if (password) {
     var user = firebase.auth().currentUser;
     user.updatePassword(newPassword.value).then(function() {
@@ -207,12 +172,6 @@ function setUsersData(bio, tag, pic, password, firstName, lastName) {
     });
   }
 
-  app.progressbar.hide();
-  app.toast.show({
-    text: 'User info sucessfully updated!',
-    closeTimeout: 2000,
-  });
-  loadUserData();
 }
 
 //Edits the users profile data.
@@ -259,6 +218,7 @@ function editUserData() {
   profilePictureRef.put(file).then(function(snapshot) {
     updatedUserPic = true;
     if (updatedUserInfo) {
+
       if (pageName == "/welcome-page/") {
         self.app.views.main.router.navigate('/school-search-page/');
       }
@@ -333,7 +293,10 @@ function changeSchool(newSchoolID) {
       if (oldSchool) {
         db.collection("school").doc(oldSchool).collection("users").doc(User.uid).delete().then(function() {
           console.log("Document successfully deleted! Document id: " + oldSchool);
-
+          self.app.views.main.router.navigate('/home/', {
+            reloadCurrent: true,
+            ignoreCache: true,
+          });
         }).catch(function(error) {
           console.error("Error removing document: ", error);
         });
