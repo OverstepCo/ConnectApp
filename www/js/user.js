@@ -27,7 +27,7 @@ function loadUserpage(uid) {
     getUserData(uid, function(user) {
       profilePreview.innerHTML = '<div id="profile-preview-card" class="profile-preview-card"><div class="profile-pic" style="background-image: url(' + user.picURL +
         ')"></div><h2>' + user.username + '</h2><h4>' + user.tagline + '</h4>' +
-        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="addFreind(\'' + uid + '\')">' + ((user.isFreind) ? "Remove Freind" : "Add Freind") + '</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
+        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="' + ((user.isFreind) ? removeFreind(uid) : addFreind(uid)) + '">' + ((user.isFreind) ? "Remove Freind" : "Add Freind") + '</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
     });
 
     document.body.appendChild(profilePreview);
@@ -46,7 +46,16 @@ function addFreind(uid) {
   }).then(function() {
     console.log("Added friend");
   });
+}
 
+//Removes the specified user to the freinds list // NOTE:  we may be able to merge this with addFreind
+function removeFreind(uid) {
+  //Updates the user freinds list // TODO: update the local data to reflect this
+  db.collection("users").doc(User.uid).update({
+    freinds: firebase.firestore.FieldValue.arrayRemove(uid) //Remove
+  }).then(function() {
+    console.log("Removed friend");
+  });
 }
 
 function loadUserData() {
