@@ -290,11 +290,9 @@ function editUserData() {
 
 }
 
-function previewPic(event) {
-  document.getElementById('profile-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
-  document.getElementById('profile-pic-icon').innerHTML = "edit";
-
-  console.log("url(" + URL.createObjectURL(event.target.files[0]) + ")");
+function previewPic(event, location) {
+  document.getElementById(location + '-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
+  document.getElementById(location + '-pic-icon').innerHTML = "edit";
 };
 
 

@@ -256,6 +256,9 @@ var app = new Framework7({
       path: '/welcome-page/',
       url: 'pages/welcome.html',
       on: {
+        pageAfterIn: function test(e, page) {
+          app.progressbar.hide();
+        },
         pageBeforeRemove: function(e, page) {
           app.progressbar.hide();
         },
@@ -341,8 +344,6 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         var event = {
           eventID: doc.id,
           name: doc.get("name"),
-          image: doc.get("image"),
-          day: doc.get("day"),
           time: doc.get("time"),
           location: doc.get("location"),
           description: doc.get("description"),
@@ -351,10 +352,11 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         events.push(event);
         var swiper = document.getElementById('event-swiper');
         var newEvent = document.createElement('div');
+        var date = new Date(doc.get("time"));
         newEvent.classList.add("swiper-slide");
-        newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+        newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + "test" + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
           '<h1>' + doc.get("name") + '</h1>' +
-          '<p>' + doc.get("day") + ', March 20</p>' +
+          '<p>' + date.toString() + '</p>' +
           '</div></div>';
 
         swiper.appendChild(newEvent);

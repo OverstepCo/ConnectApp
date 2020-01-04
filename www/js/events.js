@@ -15,29 +15,36 @@ function addNewEvent() { //Gets the data we need from the ui and posts it to the
 }
 
 function createNewEvent() {
+  app.progressbar.show(localStorage.getItem("themeColor"));
+
   var name = document.getElementById("event-name").value;
-  var day = document.getElementById("event-day").value;
   var time = document.getElementById("event-time").value;
   var location = document.getElementById("event-location").value;
-  var description = document.getElementById("event-description").value;
-  var image = document.getElementById("event-image"),
-    style = image.currentStyle || window.getComputedStyle(image, false),
-    bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-  addSchoolEvent(name, bi, day, time, location, description, '');
+  var description = document.getElementById("event-description").innerHTML;
+  addSchoolEvent(name, time, location, description, '');
 }
 
-function addSchoolEvent(name, image, day, time, location, description, guests) { //Adds a event to the school database with the provided data
+function addSchoolEvent(name, time, location, description, guests) { //Adds a event to the school database with the provided data
   db.collection("school").doc(User.school).collection("event").add({
     name: name,
-    image,
-    day,
     time,
     location,
     description,
     guests,
     owner: User.uid
-  }).then(function() {
-    console.log("Added a new event to the server");
+  }).catch(function(error) {
+    showError(error);
+  }).then(function(doc) {
+    var pic = document.getElementById('event-pic').files[0];
+    storageRef.child('event-pictures').child(doc.id).put(pic).then(function(snapshot) {
+      app.progressbar.hide();
+      loadUserData();
+      var toastBottom = app.toast.create({
+        text: 'Your event was created!',
+        closeTimeout: 2000,
+      });
+      toastBottom.open();
+    });
   });
 }
 
@@ -208,4 +215,12 @@ function addListener(eventID) {
         }
       });
     });
+}
+
+function showToast(msg) {
+  app.progressbar.hide();
+  app.toast.show({
+    text: msg,
+    closeTimeout: 2000,
+  });
 }
