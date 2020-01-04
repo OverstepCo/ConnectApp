@@ -7,30 +7,97 @@ var bio;
 var tagline;
 var err;
 var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
+//The object to return if the user is invalid
+var invalidUser = {
+  uid: 'invalid',
+  username: 'Invalid User',
+  firstName: 'Invalid',
+  lastName: 'Invalid',
+  tagline: 'Invalid',
+  bio: 'Invalid',
+  picURL: "https://www.keypointintelligence.com/img/anonymous.png",
+};
 
+
+var loadedUsers = {};
+//Gets the data for the user specified by userID
+function getUserData(userID, callback) {
+  //Check to see if the user id is valid
+  if (userID && userID != '') {
+    //If we have already loaded this users data then return it else load it from the database
+    if (userID in loadedUsers) {
+      //console.log("Found user in array");
+      callback(loadedUsers[userID]);
+    } else {
+      var profilePic = "";
+      // Create a reference to the profile picture file we want to download
+      var profilePictureRef = storageRef.child('profile-pictures').child(userID);
+      // Get the download URL
+      profilePictureRef.getDownloadURL().then(function(url) {
+        profilePic = url;
+      }).catch(function(error) {
+        profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+      }).then(function() {
+        db.collection("users").doc(userID).get().catch(function(error) {
+          //There has been a error so log the message and return the invalid user object
+          console.log(error.message);
+          callback(invalidUser);
+        }).then(function(userData) {
+          loadedUsers[userID] = {
+            uid: userID,
+            username: userData.get("firstName") + " " + userData.get("lastName"),
+            firstName: userData.get("firstName"),
+            lastName: userData.get("lastName"),
+            tagline: userData.get("tagline"),
+            bio: userData.get("bio"),
+            picURL: profilePic,
+            isFreind: (User.freinds.includes(userID)),
+          };
+          callback(loadedUsers[userID]);
+        });
+      });
+    }
+  } else {
+    //The user id is invalid so return the invalid user object
+    callback(invalidUser);
+  }
+}
 
 //This loads the user page for this uid
-function loadUserpage(uid) {
+function loadUserpage(userID) {
   //if the uid is the same as the Users id then load the local users page
-  if (uid == User.uid) {
+  if (userID == User.uid) {
     app.panel.close();
     self.app.views.main.router.navigate('/profile-screen/');
   } else {
-    //Load the preveiw page of the user with uid
-    var profilePreview = document.createElement('div');
-    profilePreview.classList.add("profile-preview");
-    profilePreview.id = "profile-preview";
-    profilePreview.addEventListener("click", function() {
-      //closePreview();
-    });
+
     //Get the users data
-    getUserData(uid, function(user) {
+    getUserData(userID, function(user) {
+      //Setup the profile prevew
+      var profilePreview = document.createElement('div');
+      profilePreview.classList.add("profile-preview");
+      profilePreview.id = "profile-preview";
+      profilePreview.addEventListener("click", function() {
+        //closePreview();
+      });
       profilePreview.innerHTML = '<div id="profile-preview-card" class="profile-preview-card"><div class="profile-pic" style="background-image: url(' + user.picURL +
         ')"></div><h2>' + user.username + '</h2><h4>' + user.tagline + '</h4>' +
-        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="' + ((user.isFreind) ? removeFreind(uid) : addFreind(uid)) + '">' + ((user.isFreind) ? "Remove Freind" : "Add Freind") + '</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
+        '<p>' + user.bio + '</p> <div class="row"> <a id="freind-' + userID + '" class="button button-round" >' + ((user.isFreind) ? "Remove Freind" : "Add Freind") + '</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
+
+      $$('body').append(profilePreview);
+
+      //setup the add/remove freind button
+      $$('#freind-' + userID).click(function() {
+        if (user.isFreind) {
+          removeFreind(userID);
+        } else {
+          addFreind(userID);
+        }
+      });
+
     });
 
-    document.body.appendChild(profilePreview);
+    //document.body.appendChild(profilePreview);
   }
 }
 
@@ -38,23 +105,38 @@ function loadUserpage(uid) {
 
 
 //Add the specified user to the freinds list
-function addFreind(uid) {
+function addFreind(userID) {
   //Updates the user freinds list // TODO: update the local data to reflect this
   db.collection("users").doc(User.uid).update({
-    freinds: firebase.firestore.FieldValue.arrayUnion(uid),
+    freinds: firebase.firestore.FieldValue.arrayUnion(userID),
     //freinds: firebase.firestore.FieldValue.arrayRemove(uid)//Remove
   }).then(function() {
     console.log("Added friend");
+    //Update the local user object
+    loadedUsers[userID].isFreind = true;
+    //Add this freind to the local User freinds list
+    User.freinds.unshift(userID);
+    //Change the add/remove freind button to the correct state
+    $$('#freind-' + userID).html('Remove Freind');
   });
 }
 
 //Removes the specified user to the freinds list // NOTE:  we may be able to merge this with addFreind
-function removeFreind(uid) {
+function removeFreind(userID) {
   //Updates the user freinds list // TODO: update the local data to reflect this
   db.collection("users").doc(User.uid).update({
-    freinds: firebase.firestore.FieldValue.arrayRemove(uid) //Remove
+    freinds: firebase.firestore.FieldValue.arrayRemove(userID) //Remove
   }).then(function() {
     console.log("Removed friend");
+    //Update the local user object
+    loadedUsers[userID].isFreind = false;
+    //Remove this freind from the local User freinds list
+    const index = User.freinds.indexOf(userID);
+    if (index > -1) {
+      User.freinds.splice(index, 1);
+    }
+    //Change the add/remove freind button to the correct state
+    $$('#freind-' + userID).html('Add Freind');
   });
 }
 

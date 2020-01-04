@@ -395,60 +395,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
 
 
 
-var loadedUsers = {};
-//Gets the data for the user specified by userID
-function getUserData(userID, callback) {
-  //The object to return if the user is invalid
-  var invalidUser = {
-    uid: 'invalid',
-    username: 'Invalid User',
-    firstName: 'Invalid',
-    lastName: 'Invalid',
-    tagline: 'Invalid',
-    bio: 'Invalid',
-    picURL: "https://www.keypointintelligence.com/img/anonymous.png",
-  };
-  //Check to see if the user id is valid
-  if (userID && userID != '') {
-    //If we have already loaded this users data then return it else load it from the database
-    if (userID in loadedUsers) {
-      console.log("found user in array");
-      callback(loadedUsers[userID]);
-    } else {
-      var profilePic = "";
-      // Create a reference to the profile picture file we want to download
-      var profilePictureRef = storageRef.child('profile-pictures').child(userID);
-      // Get the download URL
-      profilePictureRef.getDownloadURL().then(function(url) {
-        profilePic = url;
-      }).catch(function(error) {
-        profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
-      }).then(function() {
-        db.collection("users").doc(userID).get().catch(function(error) {
-          //There has been a error so log the message and return the invalid user object
-          console.log(error.message);
-          callback(invalidUser);
-        }).then(function(userData) {
-          loadedUsers[userID] = {
-            uid: userID,
-            username: userData.get("firstName") + " " + userData.get("lastName"),
-            firstName: userData.get("firstName"),
-            lastName: userData.get("lastName"),
-            tagline: userData.get("tagline"),
-            bio: userData.get("bio"),
-            picURL: profilePic,
-            isFreind: (User.freinds.includes(userID)),
-          };
-          console.log(loadedUsers[userID]);
-          callback(loadedUsers[userID]);
-        });
-      });
-    }
-  } else {
-    //The user id is invalid so return the invalid user object
-    callback(invalidUser);
-  }
-}
+
 
 // TODO: turn this into an async function
 function getProfilePicUrl(uid) {
@@ -517,49 +464,26 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
 
 var freindsList;
 
+//Loads the current users feinds
 function loadFriends() {
-  //////////////Loads the current users feinds
-  db.collection("users").doc(User.uid).collection("friends").get().then(function(querySnapshot) {
-    freindsList = document.getElementById('friends');
-    //Remove all children
-    while (freindsList.firstChild) {
-      freindsList.removeChild(freindsList.firstChild);
-    }
-    querySnapshot.forEach(function(doc) {
-      //This loop runs once for every  freind of the user
-      console.log("username: " + doc.get("name"));
-
-      getUserData(doc.id, function(user) {
-        var a = document.createElement('a');
-        a.classList.add("item-link");
-        a.classList.add("no-chevron");
-        a.onclick = function() {
-          loadUserpage(doc.id);
-        }
-        console.log(user);
-        a.innerHTML =
-          '<li class="item-content">' +
-          '<div class="item-media"><div class="profile-pic-icon" style="background-image: url(' + user.picURL +
-          ')"></div></div>' +
-          '<div class="item-inner">' + user.username + '</div>' +
-          '</li>';
-
-        freindsList.appendChild(a);
-      });
-      /*
-         var a = document.createElement('a');
-         a.classList.add("item-link");
-         a.classList.add("no-chevron");
-         a.onclick = function() {
-           loadUserpage(doc.id);
-         }
-         a.innerHTML =
-           '<li class="item-content">' +
-           '<div class="item-media"><i class="material-icons">person</i></div>' +
-           '<div class="item-inner">' + doc.get("name") + '</div>' +
-           '</li>';
-
-         freindsList.appendChild(a);*/
+  freindsList = document.getElementById('friends');
+  freindsList.innerHTML = '';
+  //forEach freind load their DATA THEN ADD THEM TO THE HTML  
+  User.freinds.forEach(function(freind) {
+    getUserData(freind, function(user) {
+      var a = document.createElement('a');
+      a.classList.add("item-link");
+      a.classList.add("no-chevron");
+      a.onclick = function() {
+        loadUserpage(doc.id);
+      }
+      a.innerHTML =
+        '<li class="item-content">' +
+        '<div class="item-media"><div class="profile-pic-icon" style="background-image: url(' + user.picURL +
+        ')"></div></div>' +
+        '<div class="item-inner">' + user.username + '</div>' +
+        '</li>';
+      freindsList.appendChild(a);
     });
   });
 }
