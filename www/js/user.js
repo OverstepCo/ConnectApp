@@ -9,58 +9,44 @@ var err;
 var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
 
 
-function signUp() { //signs up a new user
-  app.progressbar.show(localStorage.getItem("themeColor"));
-  console.log("signing up a new user");
+//This loads the user page for this uid
+function loadUserpage(uid) {
+  //if the uid is the same as the Users id then load the local users page
+  if (uid == User.uid) {
+    app.panel.close();
+    self.app.views.main.router.navigate('/profile-screen/');
+  } else {
+    //Load the preveiw page of the user with uid
+    var profilePreview = document.createElement('div');
+    profilePreview.classList.add("profile-preview");
+    profilePreview.id = "profile-preview";
+    profilePreview.addEventListener("click", function() {
+      //closePreview();
+    });
+    //Get the users data
+    getUserData(uid, function(user) {
+      profilePreview.innerHTML = '<div id="profile-preview-card" class="profile-preview-card"><div class="profile-pic" style="background-image: url(' + user.picURL +
+        ')"></div><h2>' + user.username + '</h2><h4>' + user.tagline + '</h4>' +
+        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="addFreind(\'' + uid + '\')">' + ((user.isFreind) ? "Remove Freind" : "Add Freind") + '</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
+    });
 
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("newpword").value;
-  firstName = document.getElementById("firstName").value;
-  lastName = document.getElementById("lastName").value;
-  err = document.getElementById("newerrmsg");
-  err.innerHTML = "";
-  if (document.getElementById("age").value < 13) {
-    err.innerHTML = "Oops! You must be 13 years of age or older to sign up.";
-    app.progressbar.hide();
-    return;
+    document.body.appendChild(profilePreview);
   }
-  console.log(firstName);
-
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-    app.progressbar.hide();
-    err.innerHTML = "Oops! " + error.message;
-    return;
-  }).then(function() {
-    madeNewUser = true;
-  });
 }
 
-function signIn() { //Signs in a user
-  app.progressbar.show(localStorage.getItem("themeColor"));
-  var username = document.getElementById("uname").value;
-  var password = document.getElementById("pword").value;
-  var err = document.getElementById("errmsg");
-  err.innerHTML = "";
-  firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
-    app.progressbar.hide();
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log("Failed to login: " + error.message);
-    err.innerHTML = "Oops! " + error.message;
+/////////////////////Local User stuff\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+//Add the specified user to the freinds list
+function addFreind(uid) {
+  //Updates the user freinds list // TODO: update the local data to reflect this
+  db.collection("users").doc(User.uid).update({
+    freinds: firebase.firestore.FieldValue.arrayUnion(uid),
+    //freinds: firebase.firestore.FieldValue.arrayRemove(uid)//Remove
   }).then(function() {
-    app.progressbar.hide();
-    self.app.views.main.router.navigate('/home/');
-
+    console.log("Added friend");
   });
-}
 
-function signOut() { //Signs out the user
-  firebase.auth().signOut().then(function() {
-    // Sign-out successful.
-  }).catch(function(error) {
-    console.log("Failed to sign out: " + error.message);
-  });
 }
 
 function loadUserData() {
@@ -68,7 +54,7 @@ function loadUserData() {
   db.collection("users").doc(uid).get().then(function(userData) {
     //If the user data exists load the user data
     if (userData.exists) {
-      //CHeck to see if they have a bio and if not direct them to the welcome page
+      //Check to see if they have a bio and if not direct them to the welcome page
       if (userData.get("bio") && userData.get("tagline")) {
         console.log("the user has a bio and a tagline");
         //check to see if the user has selected a valid school
@@ -95,6 +81,7 @@ function loadUserData() {
             tagline: userData.get("tagline"),
             bio: userData.get("bio"),
             chats: userData.get("chatrooms"),
+            freinds: userData.get("freinds"),
             profilePic: profilePic, //// TODO: Load that here
           };
           if (userData.get("school")) {
@@ -114,8 +101,8 @@ function loadUserData() {
           reloadCurrent: true,
         });
       }
-    } //if the user has no data they were just made or an error happened when setting there data//// TODO: this is an edge case and it should redirect the user to sign up page
-    else {
+    } else {
+      //if the user has no data they were just made or an error happened when setting there data//// TODO: this is an edge case and it should redirect the user to sign up page
       console.log("this user has no data");
       //If we just made this user then we should...
       if (madeNewUser) {
@@ -250,6 +237,60 @@ function editUserData() {
 
 }
 
+function signUp() { //signs up a new user
+  app.progressbar.show(localStorage.getItem("themeColor"));
+  console.log("signing up a new user");
+
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("newpword").value;
+  firstName = document.getElementById("firstName").value;
+  lastName = document.getElementById("lastName").value;
+  err = document.getElementById("newerrmsg");
+  err.innerHTML = "";
+  if (document.getElementById("age").value < 13) {
+    err.innerHTML = "Oops! You must be 13 years of age or older to sign up.";
+    app.progressbar.hide();
+    return;
+  }
+  console.log(firstName);
+
+  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    app.progressbar.hide();
+    err.innerHTML = "Oops! " + error.message;
+    return;
+  }).then(function() {
+    madeNewUser = true;
+  });
+}
+
+function signIn() { //Signs in a user
+  app.progressbar.show(localStorage.getItem("themeColor"));
+  var username = document.getElementById("uname").value;
+  var password = document.getElementById("pword").value;
+  var err = document.getElementById("errmsg");
+  err.innerHTML = "";
+  firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
+    app.progressbar.hide();
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log("Failed to login: " + error.message);
+    err.innerHTML = "Oops! " + error.message;
+  }).then(function() {
+    app.progressbar.hide();
+    self.app.views.main.router.navigate('/home/');
+
+  });
+}
+
+function signOut() { //Signs out the user
+  firebase.auth().signOut().then(function() {
+    // Sign-out successful.
+  }).catch(function(error) {
+    console.log("Failed to sign out: " + error.message);
+  });
+}
+
 function previewPic(event) {
   document.getElementById('profile-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
   document.getElementById('profile-pic-icon').innerHTML = "edit";
@@ -258,26 +299,7 @@ function previewPic(event) {
 };
 
 
-var progressbarPercent = 0;
 
-function setProgressbar(percent) {
-
-  if (progressbarPercent == 0) app.progressbar.show(0, localStorage.getItem("themeColor"));
-
-  progressbarPercent += percent;
-
-  console.log("progress: " + progressbarPercent + "%");
-
-  if (progressbarPercent >= 100) {
-    app.progressbar.hide();
-    progressbarPercent = 0;
-    console.log("Progressbar Complete!");
-    return;
-  }
-
-  app.progressbar.show(progressbarPercent, localStorage.getItem("themeColor"));
-
-}
 
 function changeSchool(newSchoolID) {
   console.log(User);
@@ -383,4 +405,25 @@ function createNewSchool() {
     console.error("Error adding school: ", error);
     document.getElementById("newerrmsg").innerHTML = "Oops! " + error;
   });
+}
+
+var progressbarPercent = 0;
+
+function setProgressbar(percent) {
+
+  if (progressbarPercent == 0) app.progressbar.show(0, localStorage.getItem("themeColor"));
+
+  progressbarPercent += percent;
+
+  console.log("progress: " + progressbarPercent + "%");
+
+  if (progressbarPercent >= 100) {
+    app.progressbar.hide();
+    progressbarPercent = 0;
+    console.log("Progressbar Complete!");
+    return;
+  }
+
+  app.progressbar.show(progressbarPercent, localStorage.getItem("themeColor"));
+
 }

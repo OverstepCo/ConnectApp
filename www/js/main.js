@@ -21,11 +21,15 @@ var app = new Framework7({
     {
       path: '/home/',
       url: 'index.html',
-      pageAfterIn: function test(e, page) {
-        // TODO: //Check to see if the userData is valid if so loadMainPage() else loadUserData()
+      on: {
+        pageInit: function(e, page) {
+          // do something when page initialized
+          loadMainPage();
+        },
+        pageBeforeRemove: function(e, page) {
 
+        },
       },
-
     },
     // profile page
     {
@@ -291,11 +295,11 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
   //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded.////this may be fixed
   console.log(User);
 
-  if (true) // run this after loading the user //Not neededmostlikly
+  if (User && User != '') //Only run this if we have loaded the user
   {
+    console.log("loading main page");
     //Set the users profile icon
     document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
-
     //This loop runs once for every chat room the current user is subscribed to
     if (User.chats != null) {
       for (var i = 0; i < User.chats.length; i++) {
@@ -386,53 +390,63 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       var skeleton = document.getElementById('members-list-skeleton');
       skeleton.parentNode.removeChild(skeleton);
     });
-
   }
-
 }
 
-function addFreind(uid) {
-  db.collection("users").doc(User.uid).collection("friends").doc(uid).set({
-    name: "this will not be needed later on"
-  }).then(function() {
-    console.log("Added friend");
-  });
 
-}
+
 var loadedUsers = {};
-
+//Gets the data for the user specified by userID
 function getUserData(userID, callback) {
-  //If we have already loaded this users data then return it else load it from the database
-  console.log("loading " + userID);
-  if (userID in loadedUsers) {
-    console.log("found user in array");
-    callback(loadedUsers[userID]);
-  } else {
-    var profilePic = "";
-
-    // Create a reference to the file we want to download
-    var profilePictureRef = storageRef.child('profile-pictures').child(userID);
-
-    // Get the download URL
-    profilePictureRef.getDownloadURL().then(function(url) {
-      profilePic = url;
-    }).catch(function(error) {
-      profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
-    }).then(function() {
-      db.collection("users").doc(userID).get().then(function(userData) {
-        loadedUsers[userID] = {
-          uid: userID,
-          username: userData.get("firstName") + " " + userData.get("lastName"),
-          firstName: userData.get("firstName"),
-          lastName: userData.get("lastName"),
-          tagline: userData.get("tagline"),
-          bio: userData.get("bio"),
-          picURL: profilePic,
-        };
-        //console.log("loaded user: " + userID);
-        callback(loadedUsers[userID]);
+  //The object to return if the user is invalid
+  var invalidUser = {
+    uid: 'invalid',
+    username: 'Invalid User',
+    firstName: 'Invalid',
+    lastName: 'Invalid',
+    tagline: 'Invalid',
+    bio: 'Invalid',
+    picURL: "https://www.keypointintelligence.com/img/anonymous.png",
+  };
+  //Check to see if the user id is valid
+  if (userID && userID != '') {
+    //If we have already loaded this users data then return it else load it from the database
+    if (userID in loadedUsers) {
+      console.log("found user in array");
+      callback(loadedUsers[userID]);
+    } else {
+      var profilePic = "";
+      // Create a reference to the profile picture file we want to download
+      var profilePictureRef = storageRef.child('profile-pictures').child(userID);
+      // Get the download URL
+      profilePictureRef.getDownloadURL().then(function(url) {
+        profilePic = url;
+      }).catch(function(error) {
+        profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+      }).then(function() {
+        db.collection("users").doc(userID).get().catch(function(error) {
+          //There has been a error so log the message and return the invalid user object
+          console.log(error.message);
+          callback(invalidUser);
+        }).then(function(userData) {
+          loadedUsers[userID] = {
+            uid: userID,
+            username: userData.get("firstName") + " " + userData.get("lastName"),
+            firstName: userData.get("firstName"),
+            lastName: userData.get("lastName"),
+            tagline: userData.get("tagline"),
+            bio: userData.get("bio"),
+            picURL: profilePic,
+            isFreind: (User.freinds.includes(userID)),
+          };
+          console.log(loadedUsers[userID]);
+          callback(loadedUsers[userID]);
+        });
       });
-    });
+    }
+  } else {
+    //The user id is invalid so return the invalid user object
+    callback(invalidUser);
   }
 }
 
@@ -450,30 +464,7 @@ function getProfilePicUrl(uid) {
   });
 }
 
-function loadUserpage(uid) {
-  //if the uid is the same as the Users id then load the users page else load the preveiw page of the user with uid
-  if (uid == User.uid) {
-    app.panel.close();
-    self.app.views.main.router.navigate('/profile-screen/');
-  } else {
-    var profilePreview = document.createElement('div');
 
-    profilePreview.classList.add("profile-preview");
-    profilePreview.id = "profile-preview";
-
-    profilePreview.addEventListener("click", function() {
-      //closePreview();
-    });
-
-    getUserData(uid, function(user) {
-      profilePreview.innerHTML = '<div id="profile-preview-card" class="profile-preview-card"><div class="profile-pic" style="background-image: url(' + user.picURL +
-        ')"></div><h2>' + user.username + '</h2><h4>' + user.tagline + '</h4>' +
-        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="addFreind(\'' + uid + '\')">Add Friend</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
-    });
-
-    document.body.appendChild(profilePreview);
-  }
-}
 
 function closePreview() {
   var el = document.getElementById("profile-preview");
