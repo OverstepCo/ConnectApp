@@ -35,22 +35,15 @@
   }
 
 
-  function unsubscribeFromChat(chatID) { //Unsubscribes the user from the specified chat.
-    console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
+  function leaveChat(chatID, chatSchool) { //Unsubscribes the user from the specified chat.
+    console.log("unsubscribing from: " + chatID + "," + chatSchool);
 
-    db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
-      console.log("successfully unsubscribed from chat");
-      loadUserData();
-    }).catch(function(error) {
-      console.error("Error removing document: ", error);
-    });
-
-    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
+    db.collection("school").doc(chatSchool).collection("chats").doc(chatID).collection("users").doc(User.uid).set({
       subscribed: false
     });
 
     db.collection("users").doc(User.uid).update({ //Removes the chatroom from the users chat list
-      chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
+      chatrooms: firebase.firestore.FieldValue.arrayRemove(chatID + "," + chatSchool),
     });
   }
 
@@ -102,6 +95,9 @@
         pageInit: function() { //On page init setup the chat
           console.log('chat page init');
           setupChat(chatID, chatSchool);
+          $$("#leave-chat").click(function() {
+            leaveChat(chatID, chatSchool);
+          });
         },
         pageBeforeRemove: function(e, page) { //Before we leave this chatroom
           console.log('page before remove');
@@ -122,7 +118,10 @@
         pageInit: function() { //On page init setup the chat
           console.log('chat page init');
           setupChat(chatID, chatSchool);
-          $$("#join-chat").click(joinChat(chatID, chatSchool));
+          $$("#join-chat").click(function() {
+            console.log("clicked join");
+            joinChat(chatID, chatSchool);
+          });
         },
         pageBeforeRemove: function(e, page) { //Before we leave this chatroom
           console.log('page before remove');
@@ -138,6 +137,33 @@
     oldestTimestamp = '';
     newestTimestamp = '';
     messagesArray = [];
+
+    document.getElementById("chat-name").innerHTML = chatID; //Set the chat name
+    var userList = document.getElementById("chat-members");
+    db.collection("school").doc(chatSchool).collection("chats").doc(chatID).collection("users").get().then(function(users) {
+      users.forEach(function(u) {
+        console.log();
+        if (u.get("subscribed")) {
+          getUserData(u.id, function(user) {
+            //Add an icon for each user subscribed to this chat to the members section
+            var a = document.createElement('a');
+            a.classList.add("item-link");
+            a.classList.add("no-chevron");
+            a.onclick = function() {
+              loadUserpage(user.uid);
+            };
+            a.innerHTML =
+              '<li class="item-content"><div class="item-media">' +
+              '<div class="profile-pic-icon" style="background-image: url(' + user.picURL + ')"></div>' +
+              '</div>' +
+              '<div class="item-inner">' + user.username + '</div>' +
+              '</li>';
+            userList.appendChild(a);
+          });
+        }
+      });
+    });
+
 
     //Initialize framework7s message system with rules. Note to self: probably dont mess with it
     messages = app.messages.create({ //Some rules and stuff
