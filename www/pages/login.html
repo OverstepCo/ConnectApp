@@ -33,6 +33,8 @@
             </ul>
           </div>
           <a class="button button-fill button-round" onclick="signIn()">Sign In</a>
+          <p class="text-align-center">Forgot your password? <a href="#" class="link link no-ripple popup-open" data-popup=".forgot-password-popup">Click here.</a></p>
+
           <p id="errmsg" style="color: red; text-align: center;"></p>
         </form>
       </div>
@@ -44,6 +46,26 @@
           <p>New user? <a href="/signup-screen/" class="link">Sign Up</a></p>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="popup forgot-password-popup">
+    <a class="link popup-close" style="margin: 16px" href="#"><i class="material-icons">close</i></a>
+    <div class="block text-align-center no-margin-top">
+      <h2>Find Your Account</h2>
+      <p>Please enter the email linked to your account.</p>
+      <div class="list no-hairlines">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-input-wrap">
+                <input id="email-reset" type="email" placeholder="Your email">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <a class="button button-fill button-round" onclick="forgotPassword()">Submit</a>
     </div>
   </div>
 </div>

@@ -7,7 +7,7 @@
   var messages = null; //Referance to framework7 messages
 
 
-  function addMessage(school, chatID, message) { //Adds a message to the specified chatroom.
+  function addMessage(chatID, school, message) { //Adds a message to the specified chatroom.
     db.collection("school").doc(school).collection("chats").doc(chatID).collection("messages").add({
         userID: User.uid,
         text: message, //document.getElementById("messagebar").value, //not sure if this is the best way to do this
@@ -171,7 +171,8 @@
     listener = db.collection("school").doc(chatSchool).collection("chats").doc(chatID).collection("messages").orderBy("timestamp", "desc").limit(20).onSnapshot({ //Adds a listener for chat messages
       includeMetadataChanges: true
     }, function(snapshot) {
-      snapshot.docChanges().forEach(function(change) { //ForEach changed in the snapshot
+      snapshot.docChanges().forEach(function(change) { //ForEach change in the snapshot
+        console.log("ch-ch-ch-ch-changes");
         if ((change.type == "added" || change.type === "modified") && !snapshot.metadata.hasPendingWrites) { //We check to see if it is added information or modified information then we check to make sure it is from the server with !snapshot.metadata.hasPendingWrites
           addMessageTochatUI(change.doc.get("text"), change.doc.get("isTitle"), change.doc.get('userID'), change.doc.get("timestamp")); //Add the message to the chat ui
         }
@@ -210,7 +211,7 @@
       if (!text.length) return; //Return if the message is empty
       messagebar.clear(); //Clear area
       messagebar.focus(); //Return focus to area
-      addMessage(currentChatSchool, currentChat, text); //Add message to the server.
+      addMessage(chatID, chatSchool, text); //Add message to the server.
     });
 
   }

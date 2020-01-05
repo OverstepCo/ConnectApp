@@ -1,4 +1,3 @@
-var $$ = Dom7;
 //Setup for framework7
 var app = new Framework7({
   root: '#app',
@@ -222,9 +221,7 @@ var app = new Framework7({
                   '</a>';
                 membersList.appendChild(l);
               });
-
-              //var skeleton = document.getElementById('members-list-skeleton');
-              //  skeleton.parentNode.removeChild(skeleton);
+              $$('#members-list-skeleton').hide();
             });
           });
 
@@ -246,6 +243,9 @@ var app = new Framework7({
       path: '/welcome-page/',
       url: 'pages/welcome.html',
       on: {
+        pageAfterIn: function test(e, page) {
+          app.progressbar.hide();
+        },
         pageBeforeRemove: function(e, page) {
           app.progressbar.hide();
         },
@@ -256,7 +256,7 @@ var app = new Framework7({
 });
 
 var mainView = app.views.create('.view-main');
-
+var $$ = Dom7;
 var events = [];
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -320,8 +320,8 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           //if any of these dont exist in the database they return null or undefined
         }
       });
-      var skeleton = document.getElementById('school-group-chats-skeleton');
-      skeleton.parentNode.removeChild(skeleton);
+
+      $$('#school-group-chats-skeleton').hide();
     });
 
     //////////Loads the events in the current school
@@ -331,8 +331,6 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         var event = {
           eventID: doc.id,
           name: doc.get("name"),
-          image: doc.get("image"),
-          day: doc.get("day"),
           time: doc.get("time"),
           location: doc.get("location"),
           description: doc.get("description"),
@@ -341,16 +339,17 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         events.push(event);
         var swiper = document.getElementById('event-swiper');
         var newEvent = document.createElement('div');
+        var date = new Date(doc.get("time"));
         newEvent.classList.add("swiper-slide");
-        newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+        newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + "test" + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
           '<h1>' + doc.get("name") + '</h1>' +
-          '<p>' + doc.get("day") + ', March 20</p>' +
+          '<p>' + date.toString() + '</p>' +
           '</div></div>';
 
         swiper.appendChild(newEvent);
       });
       app.swiper.create('.swiper-container');
-      document.getElementById("skeleton-event").remove();
+      $$('#skeleton-event').hide();
     });
 
     //////////////Loads the users attending this school
@@ -373,8 +372,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           membersList.appendChild(a);
         });
       });
-      var skeleton = document.getElementById('members-list-skeleton');
-      skeleton.parentNode.removeChild(skeleton);
+      $$('#members-list-skeleton').hide();
     });
   }
 }
@@ -428,9 +426,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
       });
     });
   }).then(function() {
-    var skeleton = document.getElementById('subscribed-chats-skeleton');
-    if (skeleton)
-      skeleton.parentNode.removeChild(skeleton);
+    $$('#subscribed-chats-skeleton').hide();
   });
 }
 

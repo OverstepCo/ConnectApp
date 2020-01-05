@@ -11,9 +11,9 @@
   <div class="page-content">
     <h1 style="margin-left: 16px">New Event</h1>
     <label>
-      <div id="profile-pic-preview" class="profile-pic-upload" style="border-radius: 15px; width: 80vw; height: 35vw">
-        <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
-        <i id="profile-pic-icon" class="material-icons">add_photo_alternate</i>
+      <div id="event-pic-preview" class="profile-pic-upload" style="border-radius: 15px; width: 80vw; height: 35vw">
+        <input id="event-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event, 'event')" />
+        <i id="event-pic-icon" class="material-icons">add_photo_alternate</i>
       </div>
     </label>
     <div class="list no-hairlines no-margin-bottom">
@@ -31,7 +31,7 @@
           <div class="item-inner">
             <div class="item-title item-floating-label">Date & Time</div>
             <div class="item-input-wrap">
-              <input type="datetime-local">
+              <input id="event-time" type="datetime-local">
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -49,7 +49,7 @@
     </div>
 
     <div class="text-editor text-editor-init text-editor-resizable" data-placeholder="Description" data-mode="keyboard-toolbar">
-      <div class="text-editor-content" contenteditable></div>
+      <div id="event-description" class="text-editor-content" contenteditable></div>
     </div>
 
     <h1 style="margin-left: 16px">Invite People</h1>

@@ -352,6 +352,14 @@ function editUserData() {
 
 }
 
+function previewPic(event, location) {
+  document.getElementById(location + '-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
+  document.getElementById(location + '-pic-icon').innerHTML = "edit";
+};
+
+
+
+
 function signUp() { //signs up a new user
   app.progressbar.show(localStorage.getItem("themeColor"));
   console.log("signing up a new user");
@@ -520,6 +528,25 @@ function createNewSchool() {
   });
 }
 
+function forgotPassword() {
+  var email = $$('#email-reset').val();
+  app.preloader.show();
+  firebase.auth().sendPasswordResetEmail(email).then(function() {
+    app.preloader.hide();
+    app.toast.show({
+      text: 'A password reset email was sent to your address.',
+      closeTimeout: 10000,
+    });
+  }).catch(function(error) {
+    app.preloader.hide();
+    console.error(error.message);
+    app.toast.show({
+      text: error.message,
+      closeTimeout: 10000,
+    });
+  });
+}
+
 var progressbarPercent = 0;
 
 function setProgressbar(percent) {
@@ -527,6 +554,7 @@ function setProgressbar(percent) {
   if (progressbarPercent == 0) app.progressbar.show(0, localStorage.getItem("themeColor"));
 
   progressbarPercent += percent;
+
 
   console.log("progress: " + progressbarPercent + "%");
 
