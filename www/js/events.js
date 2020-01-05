@@ -60,7 +60,6 @@ function openCard(eventIndex) {
   cardName.innerHTML = events[eventIndex].name;
   cardMedia.style.backgroundImage = "url(" + events[eventIndex].image + ")";
   cardDescription.innerHTML = events[eventIndex].description;
-  card.style.display = "inherit";
   console.log("waa");
   button.setAttribute("onclick", "rsvp(" + eventIndex + ")");
 
@@ -71,35 +70,38 @@ function openCard(eventIndex) {
     while (membersList.firstChild) {
       membersList.removeChild(membersList.firstChild);
     }
+    document.getElementById("rsvp").innerHTML = "rsvp";
+    rsvpd = false;
+
     //ForEach user in the event
     querySnapshot.forEach(function(doc) {
       //check to see if the id matches the current user. Thes set the state of the rsvp button accordingly
-      if (!rsvpd) {
-        if (doc.id == User.uid) {
-          console.log("user is rsvpd");
-          rsvpd = true;
-          document.getElementById("rsvp").innerHTML = "un-rsvp";
-        } else {
-          document.getElementById("rsvp").innerHTML = "rsvp";
-          console.log("user is not rsvpd");
-          rsvpd = false;
-        }
+      if (doc.id == User.uid) {
+        console.log("user is rsvpd");
+        rsvpd = true;
+        document.getElementById("rsvp").innerHTML = "un-rsvp";
+        $$('#attendees').append('<div id="you" class="attendee"><p class="pic" style="background-image: url(' + User.profilePic + ')"></p><p>' + User.fullName() + '</p></div>')
+      } else { //Then create a icon for the user attending the event
+        getUserData(doc.id, function(user) {
+          var a = document.createElement('div');
+          a.classList.add("attendee");
+          a.onclick = function() {
+            loadUserpage(user.uid);
+          };
+          a.innerHTML =
+            '<p class="pic" style="background-image: url(' + user.picURL + ')" ></p>' +
+            '<p>' + user.username + '</p>';
+          membersList.appendChild(a);
+        });
       }
-      //Then create a icon for the user attending the event
-      getUserData(doc.id, function(user) {
-        var a = document.createElement('div');
-        a.classList.add("attendee");
-        a.onclick = function() {
-          loadUserpage(user.uid);
-        };
-        a.innerHTML =
-          '<p class="profile-pic-icon" style="background-image: url(' + user.picURL + ')" ></p>' +
-          '<p>' + user.username + '</p>';
-        membersList.appendChild(a);
-      });
     });
+  }).then(function() {
+    card.style.display = "inherit";
+    setTimeout(function() {
+      cardMedia.classList.remove("card-media-closed")
+      cardContent.classList.remove("card-content-closed")
+    }, 5);
   });
-  setTimeout(showCard, 5);
 }
 
 function closeCard() {
@@ -109,16 +111,9 @@ function closeCard() {
   eventListener(); //This is for closing the unfinished event chat real time update
   cardContent.classList.add("card-content-closed")
   cardMedia.classList.add("card-media-closed")
-  setTimeout(hideCard, 500)
-}
-
-function showCard() {
-  cardMedia.classList.remove("card-media-closed")
-  cardContent.classList.remove("card-content-closed")
-}
-
-function hideCard() {
-  card.style.display = "none";
+  setTimeout(function() {
+    card.style.display = "none";
+  }, 500)
 }
 
 function rsvp(eventID) {
@@ -130,12 +125,14 @@ function rsvp(eventID) {
     }).then(function() {
       console.log("rsvpd");
       document.getElementById("rsvp").innerHTML = "un-rsvp";
+      $$('#attendees').append('<div id="you" class="attendee"><p class="pic" style="background-image: url(' + User.profilePic + ')"></p><p>' + User.fullName() + '</p></div>')
     });
     rsvpd = true;
   } else {
     db.collection("school").doc(User.school).collection("event").doc(events[eventID].eventID).collection("users").doc(User.uid).delete().then(function() {
       console.log("un-rsvpd");
       document.getElementById("rsvp").innerHTML = "rsvp";
+      $$('#you').remove();
       rsvpd = false;
     });
   }

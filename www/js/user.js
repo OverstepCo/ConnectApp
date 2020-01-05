@@ -382,3 +382,23 @@ function createNewSchool() {
     document.getElementById("newerrmsg").innerHTML = "Oops! " + error;
   });
 }
+
+function forgotPassword() {
+  var email = $$('#email-reset').val();
+  app.preloader.show();
+  firebase.auth().sendPasswordResetEmail(email).then(function() {
+    app.preloader.hide();
+    app.toast.show({
+      text: 'A password reset email was sent to your address.',
+      closeTimeout: 10000,
+    });
+  }).catch(function(error) {
+    app.preloader.hide();
+    console.error(error.message);
+    app.toast.show({
+      text: error.message,
+      closeTimeout: 10000,
+    });
+  });
+
+}

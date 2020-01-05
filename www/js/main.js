@@ -1,4 +1,3 @@
-var $$ = Dom7;
 //Setup for framework7
 var app = new Framework7({
   root: '#app',
@@ -232,9 +231,7 @@ var app = new Framework7({
                   '</a>';
                 membersList.appendChild(l);
               });
-
-              //var skeleton = document.getElementById('members-list-skeleton');
-              //  skeleton.parentNode.removeChild(skeleton);
+              $$('#members-list-skeleton').hide();
             });
           });
 
@@ -269,7 +266,7 @@ var app = new Framework7({
 });
 
 var mainView = app.views.create('.view-main');
-
+var $$ = Dom7;
 var events = [];
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -333,8 +330,8 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           //if any of these dont exist in the database they return null or undefined
         }
       });
-      var skeleton = document.getElementById('school-group-chats-skeleton');
-      skeleton.parentNode.removeChild(skeleton);
+
+      $$('#school-group-chats-skeleton').hide();
     });
 
     //////////Loads the events in the current school
@@ -362,7 +359,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         swiper.appendChild(newEvent);
       });
       app.swiper.create('.swiper-container');
-      document.getElementById("skeleton-event").remove();
+      $$('#skeleton-event').hide();
     });
 
     //////////////Loads the users attending this school
@@ -385,8 +382,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           membersList.appendChild(a);
         });
       });
-      var skeleton = document.getElementById('members-list-skeleton');
-      skeleton.parentNode.removeChild(skeleton);
+      $$('#members-list-skeleton').hide();
     });
 
   }
@@ -520,9 +516,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
       });
     });
   }).then(function() {
-    var skeleton = document.getElementById('subscribed-chats-skeleton');
-    if (skeleton)
-      skeleton.parentNode.removeChild(skeleton);
+    $$('#subscribed-chats-skeleton').hide();
   });
 }
 

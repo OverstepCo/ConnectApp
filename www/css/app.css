@@ -342,7 +342,7 @@ img {
   left: 30px;
   width: calc(100% - 60px);
   top: 86px;
-  height: 232px;
+  height: calc(30vh - 76px);
   border-radius: 15px;
 }
 
@@ -389,6 +389,10 @@ img {
 
 .event-description {
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.expanded-card .messages-content {
+  padding-bottom: 0 !important;
 }
 
 /********** HOME **********/
