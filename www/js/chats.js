@@ -1,23 +1,17 @@
   //////Chats/////
 
-
   var currentChat;
   var currentChatSchool;
   var finishedLoadingMessages = false;
   var loadingMessages = false;
   var totalMessages = 0;
-  var oldestTimestamp;
   var usersInChat = [];
 
-  // Max items to load
-  var maxItems = 2000;
+  var maxItems = 2000; //Max items to load
 
-  //How many messages to load at at time. Probably should be no less than 50
-  var messagesPerLoad = 50;
+  var messagesPerLoad = 50; //How many messages to load at at time. Probably should be no less than 50
 
-  //This is here so we can stop the listener when the page is destroyed
-  var listener;
-
+  var listener; //A referance to the database listener so we can destroy it when needed
 
   var messages = null;
 
@@ -36,22 +30,22 @@
       });
   }
 
-  //Subscribes a user to the specified chat
-  function subscribeToChat(uidToSub, chatID) {
-    console.log("subscribing to chat: " + chatID);
-    //Adds the user to the chat members
-    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
+  function subscribeToChat(chatID) { //Subscribes a user to the specified chat
+    console.log("subscribing User to chat: " + chatID);
+    db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({ //Adds the user to the chat members
       subscribed: true
     });
-    //Adds the chatroom to the users chat list
-    db.collection("users").doc(User.uid).update({
+
+    db.collection("users").doc(User.uid).update({ //Adds the chatroom to the users chat list
       chatrooms: firebase.firestore.FieldValue.arrayUnion(currentChat + "," + currentChatSchool),
     });
-    loadUserData();
+
+    loadUserData(); //Reload the user data so the app reflects the changes in the chats
   }
 
-  //Unsubscribes the user from the specified chat.
-  function unsubscribeFromChat() {
+
+  function unsubscribeFromChat() { //Unsubscribes the user from the specified chat.
+    console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
 
     db.collection("users").doc(User.uid).collection("chats").doc(currentChat).delete().then(function() {
       console.log("successfully unsubscribed from chat");
@@ -59,15 +53,14 @@
     }).catch(function(error) {
       console.error("Error removing document: ", error);
     });
-    // TODO: Change this so that it works when users change names
+
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").doc(User.uid).set({
       subscribed: false
     });
-    //Removes the chatroom from the users chat list
-    db.collection("users").doc(User.uid).update({
+
+    db.collection("users").doc(User.uid).update({ //Removes the chatroom from the users chat list
       chatrooms: firebase.firestore.FieldValue.arrayRemove(currentChat + "," + currentChatSchool),
     });
-    console.log("unsubscribing from: " + currentChat + "," + currentChatSchool);
   }
 
   //NEW CHAT Room
@@ -108,11 +101,148 @@
     }
   }
 
+  var messagesArray = [];
+  var oldestTimestamp = '';
+  var newestTimestamp = '';
+
+  async function addMessageTochatUI(text, isTitle, senderID, timestamp) {
+    getUserData(senderID, function(user) { //Load the user data of the message sender so we can get their picture and name
+      var message = {
+        text: text,
+        isTitle: false, //change.doc.get("isTitle"),
+        type: ((user.uid == User.uid) ? 'sent' : 'received'),
+        name: user.username,
+        avatar: user.picURL,
+        timestamp: timestamp.seconds
+      };
+      messagesArray.unshift(message); //Add the massage to our array
+      messagesArray.sort((a, b) => a.timestamp - b.timestamp); //Sort our message array by timestamp
+
+      if (newestTimestamp == '' || timestamp > newestTimestamp) { //This message is newer than our other messages so append it to the message system
+        newestTimestamp = timestamp;
+        messages.addMessage(message, "append");
+        console.log("newer message");
+      } else if (oldestTimestamp == '' || timestamp < oldestTimestamp) { //This message is older than our other messages so prepend it to the message system
+        oldestTimestamp = timestamp;
+        messages.addMessage(message, "prepend");
+        console.log("older message");
+      } else { //This message is in between our messages so add it to the array and recalculate the messages
+        console.log("message is weird: ");
+        console.log(message);
+        //messages.clear(); //clear framework7's message system
+        messages.messages = messagesArray.slice(); //Set framework7's messagesArray to a copy of our array
+        messages.renderMessages(); //Tell framework7 to render the messages html
+        messages.layout(); //This tells framewoork 7 to touch up the html. Needed for images and usernames
+      }
+      return 1;
+      //console.log("message");
+    });
+  }
+
+
   function loadChat(chatID, chatSchool) {
     console.log("chatID:" + chatID + " school:" + chatSchool);
     currentChat = chatID;
     currentChatSchool = chatSchool
-    self.app.views.main.router.navigate('/chat-screen/');
+    self.app.views.main.router.navigate('/chat-screen/', {
+      on: {
+        pageAfterIn: function test(e, page) {
+          // do something after page gets into the view
+          //setupChat();
+          messages.scroll(1, 10000); //Scroll to the bottom of the messages
+
+        },
+        pageInit: function() { //On page init setup the chat
+          console.log('chat page init');
+
+          oldestTimestamp = '';
+          newestTimestamp = '';
+          messagesArray = [];
+
+          //Initialize framework7s message system with rules. Note to self: probably dont mess with it
+          messages = app.messages.create({ //Some rules and stuff
+            el: '.chatroom-messages',
+            scrollMessages: true,
+            messages: [],
+            // First message rule
+            firstMessageRule: function(message, previousMessage, nextMessage) {
+              // Skip if title
+              if (!message || message.isTitle) return false;
+
+              if (!previousMessage || previousMessage.type !== message.type || previousMessage.name !== message.name) return true;
+              return false;
+            },
+            // Last message rule
+            lastMessageRule: function(message, previousMessage, nextMessage) {
+              // Skip if title
+              if (!message || message.isTitle) return false;
+              if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
+              return false;
+            },
+            // Last message rule
+            tailMessageRule: function(message, previousMessage, nextMessage) {
+              // Skip if title
+              if (!message || message.isTitle) return false;
+              if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
+              return false;
+            }
+          });
+
+          listener = db.collection("school").doc(chatSchool).collection("chats").doc(chatID).collection("messages").orderBy("timestamp", "desc").limit(20).onSnapshot({ //Adds a listener for chat messages
+            includeMetadataChanges: true
+          }, function(snapshot) {
+            snapshot.docChanges().forEach(function(change) { //ForEach changed in the snapshot
+              if ((change.type == "added" || change.type === "modified") && !snapshot.metadata.hasPendingWrites) { //We check to see if it is added information or modified information then we check to make sure it is from the server with !snapshot.metadata.hasPendingWrites
+                addMessageTochatUI(change.doc.get("text"), change.doc.get("isTitle"), change.doc.get('userID'), change.doc.get("timestamp")); //Add the message to the chat ui
+              }
+            });
+          });
+
+          $$('.infinite-scroll-content').on('infinite', function() { //Setup the infinite scroll for messages
+            if (!loadingMessages) { //If we are not currently loading messages
+              loadingMessages = true;
+              db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").where('timestamp', '<', oldestTimestamp).orderBy("timestamp", "desc").limit(messagesPerLoad)
+                .get().then(function(snapshot) {
+                  if (snapshot.size < 1) {
+                    console.log("There are no more messages in this chatroom.");
+                    app.infiniteScroll.destroy('.infinite-scroll-content'); // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+                    $$('.infinite-scroll-preloader').remove(); // Remove preloader
+                  }
+                  snapshot.forEach(function(doc) {
+                    // console.log("start add " + doc.get("text"));
+
+                    addMessageTochatUI(doc.get("text"), doc.get("isTitle"), doc.get('userID'), doc.get("timestamp")); //Add the message to the chat ui
+
+                  });
+                  loadingMessages = false;
+
+                });
+            } else {
+              console.log("already loading Messages");
+            }
+
+          });
+
+          var messagebar = app.messagebar.create({ //Init Messagebar
+            el: '.chat-messagebar'
+          });
+
+          $$('.chat-send-link').on('click', function() { //Send Message button
+            var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
+            if (!text.length) return; //Return if the message is empty
+            messagebar.clear(); //Clear area
+            messagebar.focus(); //Return focus to area
+            addMessage(currentChatSchool, currentChat, text); //Add message to the server.
+          });
+
+        },
+        pageBeforeRemove: function(e, page) { //Before we leave this chatroom
+          console.log('page before remove');
+          listener();
+          app.messages.destroy('.messages');
+        },
+      }
+    });
     console.log(app.views.main.router.url);
   }
 
@@ -123,11 +253,61 @@
     self.app.views.main.router.navigate('/preview-chat-screen/');
   }
 
+  function loadChatMessages() {
+    console.log("loading more chat messages");
+    if (finishedLoadingMessages) {
+      totalMessages += messagesPerLoad;
+
+      db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").where('timestamp', '<', oldestTimestamp).orderBy("timestamp", "desc").limit(totalMessages)
+        .get().then(function(snapshot) {
+          if (snapshot.size < 1) {
+            console.log("There are no more messages in this chatroom.");
+            // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+            app.infiniteScroll.destroy('.infinite-scroll-content');
+            // Remove preloader
+            $$('.infinite-scroll-preloader').remove();
+          }
+
+          var lastTimestamp;
+
+          snapshot.forEach(function(doc) {
+
+            //add timestamps
+            var timestamp = doc.get("timestamp").toDate();
+            //86400000ms = 1 day
+            if (lastTimestamp != null && lastTimestamp - timestamp.getTime() > 86400000) {
+              messages.addMessage({
+                text: formatTimeStamp(lastTimestamp),
+                isTitle: true,
+              }, "prepend");
+            }
+
+            oldestTimestamp = doc.get("timestamp");
+            messages.addMessage({
+              text: doc.get("text"),
+              isTitle: doc.get("isTitle"),
+              type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
+              name: usersInChat.find(o => o.userid === doc.get("userID")).username,
+              avatar: doc.get("profilePicUrl"),
+            }, "prepend");
+            loadingMessages = false;
+
+            lastTimestamp = timestamp;
+          });
+          //...
+        });
+    } else {
+      console.log("Not finished setting up chat room aborting");
+    }
+  }
+
   function setupChat() {
     console.log("setting up chat " + currentChatSchool + currentChat);
     document.getElementById("group-name").innerHTML = currentChat;
     var userList = document.getElementById("chat-members");
     oldestTimestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+
     db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("users").get().then(function(users) {
       var foo = 0; //this is for keeping track of how many users we have loaded
       users.forEach(function(u) {
@@ -320,53 +500,7 @@
 
   }
 
-  function loadChatMessages() {
-    console.log("loading more chat messages");
-    if (finishedLoadingMessages) {
-      totalMessages += messagesPerLoad;
 
-      db.collection("school").doc(currentChatSchool).collection("chats").doc(currentChat).collection("messages").where('timestamp', '<', oldestTimestamp).orderBy("timestamp", "desc").limit(totalMessages)
-        .get().then(function(snapshot) {
-          if (snapshot.size < 1) {
-            console.log("There are no more messages in this chatroom.");
-            // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-            app.infiniteScroll.destroy('.infinite-scroll-content');
-            // Remove preloader
-            $$('.infinite-scroll-preloader').remove();
-          }
-
-          var lastTimestamp;
-
-          snapshot.forEach(function(doc) {
-
-            //add timestamps
-            var timestamp = doc.get("timestamp").toDate();
-            //86400000ms = 1 day
-            if (lastTimestamp != null && lastTimestamp - timestamp.getTime() > 86400000) {
-              messages.addMessage({
-                text: formatTimeStamp(lastTimestamp),
-                isTitle: true,
-              }, "prepend");
-            }
-
-            oldestTimestamp = doc.get("timestamp");
-            messages.addMessage({
-              text: doc.get("text"),
-              isTitle: doc.get("isTitle"),
-              type: (doc.get("userID") != User.uid) ? 'received' : 'sent',
-              name: usersInChat.find(o => o.userid === doc.get("userID")).username,
-              avatar: doc.get("profilePicUrl"),
-            }, "prepend");
-            loadingMessages = false;
-
-            lastTimestamp = timestamp;
-          });
-          //...
-        });
-    } else {
-      console.log("Not finished setting up chat room aborting");
-    }
-  }
 
   function addChip(li) {
     //if the user isn't already added

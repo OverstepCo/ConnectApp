@@ -7,6 +7,7 @@ var bio;
 var tagline;
 var err;
 var madeNewUser = false; // lets us know wether weve made a new user.(signed UP)
+var anonymousProfilePic = "https://www.keypointintelligence.com/img/anonymous.png"; //This is the profile picture we set if we cant set anythihng else
 //The object to return if the user is invalid
 var invalidUser = {
   uid: 'invalid',
@@ -15,7 +16,7 @@ var invalidUser = {
   lastName: 'Invalid',
   tagline: 'Invalid',
   bio: 'Invalid',
-  picURL: "https://www.keypointintelligence.com/img/anonymous.png",
+  picURL: anonymousProfilePic,
 };
 
 
@@ -36,7 +37,7 @@ function getUserData(userID, callback) {
       profilePictureRef.getDownloadURL().then(function(url) {
         profilePic = url;
       }).catch(function(error) {
-        profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+        profilePic = anonymousProfilePic;
       }).then(function() {
         db.collection("users").doc(userID).get().catch(function(error) {
           //There has been a error so log the message and return the invalid user object
@@ -103,64 +104,83 @@ function loadUserpage(userID) {
 
 /////////////////////Local User stuff\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+var freindsList;
 
-//Add the specified user to the freinds list
-function addFreind(userID) {
-  //Updates the user freinds list // TODO: update the local data to reflect this
-  db.collection("users").doc(User.uid).update({
-    freinds: firebase.firestore.FieldValue.arrayUnion(userID),
-    //freinds: firebase.firestore.FieldValue.arrayRemove(uid)//Remove
-  }).then(function() {
-    console.log("Added friend");
-    //Update the local user object
-    loadedUsers[userID].isFreind = true;
-    //Add this freind to the local User freinds list
-    User.freinds.unshift(userID);
-    //Change the add/remove freind button to the correct state
-    $$('#freind-' + userID).html('Remove Freind');
+function loadFriends() { //Loads the current users freinds
+  freindsList = document.getElementById('friends');
+  freindsList.innerHTML = '';
+  //forEach freind load their DATA THEN ADD THEM TO THE HTML
+  User.freinds.forEach(function(freind) {
+    getUserData(freind, function(user) {
+      var a = document.createElement('a');
+      a.classList.add("item-link");
+      a.classList.add("no-chevron");
+      a.onclick = function() {
+        loadUserpage(freind);
+      }
+      a.innerHTML =
+        '<li class="item-content">' +
+        '<div class="item-media"><div class="profile-pic-icon" style="background-image: url(' + user.picURL +
+        ')"></div></div>' +
+        '<div class="item-inner">' + user.username + '</div>' +
+        '</li>';
+      freindsList.appendChild(a);
+    });
   });
 }
 
-//Removes the specified user to the freinds list // NOTE:  we may be able to merge this with addFreind
-function removeFreind(userID) {
-  //Updates the user freinds list // TODO: update the local data to reflect this
-  db.collection("users").doc(User.uid).update({
+function addFreind(userID) { //Add the specified user to the freinds list
+  db.collection("users").doc(User.uid).update({ //Updates the user freinds list
+    freinds: firebase.firestore.FieldValue.arrayUnion(userID),
+  }).then(function() { //After we sucessfully update the sever we update the local data
+    console.log("Added friend");
+    loadedUsers[userID].isFreind = true; //Update the local user object
+    User.freinds.unshift(userID); //Add this freind to the local User freinds list
+    $$('#freind-' + userID).html('Remove Freind'); //Change the add/remove freind button to the correct state
+  });
+}
+
+function removeFreind(userID) { //Removes the specified user to the freinds list // NOTE:  we may be able to merge this with addFreind
+  db.collection("users").doc(User.uid).update({ //Updates the user freinds list
     freinds: firebase.firestore.FieldValue.arrayRemove(userID) //Remove
-  }).then(function() {
+  }).then(function() { //After we sucessfully update the sever we update the local dat
     console.log("Removed friend");
-    //Update the local user object
-    loadedUsers[userID].isFreind = false;
-    //Remove this freind from the local User freinds list
+    loadedUsers[userID].isFreind = false; //Update the local user object
     const index = User.freinds.indexOf(userID);
     if (index > -1) {
-      User.freinds.splice(index, 1);
+      User.freinds.splice(index, 1); //Remove this freind from the local User freinds list
     }
-    //Change the add/remove freind button to the correct state
-    $$('#freind-' + userID).html('Add Freind');
+    $$('#freind-' + userID).html('Add Freind'); //Change the add/remove freind button to the correct state
   });
 }
+
+function closePreview() { //This closes the profile preveiw card
+  var el = document.getElementById("profile-preview");
+  document.getElementById("profile-preview-card").classList.add("hidden");
+  setTimeout(function() {
+    el.parentNode.removeChild(el);
+  }, 400);
+}
+
 
 function loadUserData() {
   console.log("loading User data");
   db.collection("users").doc(uid).get().then(function(userData) {
     //If the user data exists load the user data
     if (userData.exists) {
-      //Check to see if they have a bio and if not direct them to the welcome page
+      //Check to see if they have a bio and tagline, if not direct them to the welcome page
       if (userData.get("bio") && userData.get("tagline")) {
         console.log("the user has a bio and a tagline");
-        //check to see if the user has selected a valid school
-
-        //store the user data in an object
+        //Get the users profile picture
         var profilePic = "";
         var profilePictureRef = storageRef.child('profile-pictures').child(uid);
-
-        // Get the download URL for profile pic//// TODO: Put this in userData
         profilePictureRef.getDownloadURL().then(function(url) {
           profilePic = url;
         }).catch(function(error) {
-          profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
+          //Iff there is a error l;oading the picture the set it to the anonymous profile picture
+          profilePic = anonymousProfilePic;
         }).then(function() {
-
+          //Store the user data in the User Object
           User = {
             uid: uid,
             firstName: userData.get("firstName"),
@@ -173,14 +193,15 @@ function loadUserData() {
             bio: userData.get("bio"),
             chats: userData.get("chatrooms"),
             freinds: userData.get("freinds"),
-            profilePic: profilePic, //// TODO: Load that here
+            profilePic: profilePic,
+            picURL: profilePic,
           };
+
+          //If the user has selected a valid school
           if (userData.get("school")) {
             loadMainPage();
-            //self.app.views.main.router.once('pageAfterIn', loadMainPage());
-            //self.app.views.main.router.navigate('/home/', {});
           } else {
-            //Go to the school selection page
+            //The users school is invalid so go to the school selection page
             console.log("the user needs to select a school");
             self.app.views.main.router.navigate('/school-search-page/', {});
           }
@@ -217,27 +238,31 @@ function loadUserData() {
   app.preloader.hide();
 }
 
-//THis replaces editUserData as it is robust
+//This replaces editUserData as it is robust
 function setUsersData(bio, tag, pic, password) {
-
-  //If the bio is not emty set it here
+  console.log('setting the users data');
+  app.progressbar.show(localStorage.getItem("themeColor"));
+  //If the data is not empty set it here
   if (bio) {
     console.log("updating user bio");
     db.collection("users").doc(uid).update({
-      bio: bio
-    });
-  }
-  //if the tagline is not empty set it here
-  if (tag) {
-    db.collection("users").doc(uid).update({
+      bio: bio,
       tagline: tag
     });
   }
-  //if the pic is not empty setit here
+  //If the pic is not empty set it here
   if (pic) {
-
+    var file = pic;
+    var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
+    profilePictureRef.put(file).then(function(snapshot) {
+      //Updated the picture successfully
+      app.progressbar.hide();
+    }).catch(function(error) {
+      app.progressbar.hide();
+      errorMessage += "Oops! " + error;
+    });
   }
-  //if the password is not emty set it there
+  //If the password is not empty set it there
   if (password) {
     var user = firebase.auth().currentUser;
     user.updatePassword(newPassword.value).then(function() {
@@ -251,7 +276,6 @@ function setUsersData(bio, tag, pic, password) {
   }
 
 }
-
 //Edits the users profile data.
 function editUserData() {
 
@@ -389,9 +413,7 @@ function previewPic(event) {
   console.log("url(" + URL.createObjectURL(event.target.files[0]) + ")");
 };
 
-
-
-
+//Changes the users school //Maybe merge this with setUserData?
 function changeSchool(newSchoolID) {
   console.log(User);
   var oldSchool;

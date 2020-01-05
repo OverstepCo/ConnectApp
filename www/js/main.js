@@ -74,21 +74,7 @@ var app = new Framework7({
     {
       path: '/chat-screen/',
       url: 'pages/chat.html',
-      on: {
-        pageAfterIn: function test(e, page) {
-          // do something after page gets into the view
-        },
-        pageInit: function(e, page) {
-          // do something when page initialized
-          setupChat();
 
-        },
-        pageBeforeRemove: function(e, page) {
-          console.log('page before remove');
-          listener();
-          app.messages.destroy('.messages');
-        },
-      }
     },
     // preview chat page
     {
@@ -393,10 +379,6 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
   }
 }
 
-
-
-
-
 // TODO: turn this into an async function
 function getProfilePicUrl(uid) {
 
@@ -409,16 +391,6 @@ function getProfilePicUrl(uid) {
   }).catch(function(error) {
     return "";
   });
-}
-
-
-
-function closePreview() {
-  var el = document.getElementById("profile-preview");
-  document.getElementById("profile-preview-card").classList.add("hidden");
-  setTimeout(function() {
-    el.parentNode.removeChild(el);
-  }, 400);
 }
 
 function loadSubscribedChat(chatroomName, chatroomSchool) {
@@ -459,32 +431,6 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
     var skeleton = document.getElementById('subscribed-chats-skeleton');
     if (skeleton)
       skeleton.parentNode.removeChild(skeleton);
-  });
-}
-
-var freindsList;
-
-//Loads the current users feinds
-function loadFriends() {
-  freindsList = document.getElementById('friends');
-  freindsList.innerHTML = '';
-  //forEach freind load their DATA THEN ADD THEM TO THE HTML  
-  User.freinds.forEach(function(freind) {
-    getUserData(freind, function(user) {
-      var a = document.createElement('a');
-      a.classList.add("item-link");
-      a.classList.add("no-chevron");
-      a.onclick = function() {
-        loadUserpage(doc.id);
-      }
-      a.innerHTML =
-        '<li class="item-content">' +
-        '<div class="item-media"><div class="profile-pic-icon" style="background-image: url(' + user.picURL +
-        ')"></div></div>' +
-        '<div class="item-inner">' + user.username + '</div>' +
-        '</li>';
-      freindsList.appendChild(a);
-    });
   });
 }
 
