@@ -19,11 +19,11 @@ var app = new Framework7({
     // Index page
     {
       path: '/home/',
-      url: 'index.html',
+      url: 'pages/home.html',
       on: {
         pageInit: function(e, page) {
           // do something when page initialized
-          loadMainPage();
+          //loadMainPage();
         },
         pageBeforeRemove: function(e, page) {
 
@@ -260,8 +260,10 @@ var app = new Framework7({
   ],
 });
 
-var mainView = app.views.create('.view-main');
 var $$ = Dom7;
+var mainView = app.views.create('.view-main', {
+  url: '/home/',
+});
 var events = [];
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -288,107 +290,118 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
 
   if (User && User != '') //Only run this if we have loaded the user
   {
-    console.log("loading main page");
-    //Set the users profile icon
-    document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
-    //This loop runs once for every chat room the current user is subscribed to
-    if (User.chats.length > 0) {
-      for (var i = 0; i < User.chats.length; i++) {
-        var roomName = User.chats[i].split(",")[0];
-        var roomSchool = User.chats[i].split(",")[1];
-        loadSubscribedChat(roomName, roomSchool);
-      }
+    console.log("wooo");
+    console.log(mainView.router);
+    if (mainView.router.currentRoute.path != "/home/") { //Disabled for now//If we are not on the main page Navigate to the main page then load the data. // NOTE: Beware infinte loops
+      console.log("not on main page");
+      mainView.once("pageBeforeIn", function(event, page) {
+        loadMainPage();
+      });
+      mainView.router.navigate('/home/', {
+        clearPreviousHistory: true, // Makes sure we cant go back to previous pages
+      });
+
     } else {
-      console.log("this user isnt subscribed to any chats. this should be displayed on the main page");
-      // TODO: Display that the user isnt subscribed to any chats
-      $$('#subscribed-chats-skeleton').hide();
-      $$('#subscribed-chats').html('<div class="block-title text-align-center">You aren\'t subscribed to any chats.</div>');
-    }
-    var userChats = [];
-    if (User.chats.length > 0) {
-      for (var i = 0; i < User.chats.length; i++) {
-        userChats.push(User.chats[i].split(",")[0]);
-      }
-    }
-    //Loads all the chats in the users current school that they are not subscribed to
-    db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
-          console.log("User is already subscribed to " + doc.id);
-        } else {
-          //this loop runs once for every chat room in the school
-          var ul = document.getElementById("school-group-chats");
-          var li = document.createElement('li')
-          li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
-            '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
-            '</div><div class="item-after">' + doc.get("numberOfMembers") +
-            ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
-          ul.appendChild(li);
-          //if any of these dont exist in the database they return null or undefined
+      console.log("loading main page");
+      //Set the users profile icon
+      document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
+      //This loop runs once for every chat room the current user is subscribed to
+      if (User.chats.length > 0) {
+        for (var i = 0; i < User.chats.length; i++) {
+          var roomName = User.chats[i].split(",")[0];
+          var roomSchool = User.chats[i].split(",")[1];
+          loadSubscribedChat(roomName, roomSchool);
         }
-      });
-
-      $$('#school-group-chats-skeleton').hide();
-    });
-
-    //////////Loads the events in the current school
-    db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
-
-      //date format
-      var options = {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-      };
-      querySnapshot.forEach(function(doc) {
-        //this loop runs once for every event in the current school
-        var event = {
-          eventID: doc.id,
-          name: doc.get("name"),
-          time: doc.get("time"),
-          location: doc.get("location"),
-          description: doc.get("description"),
-          guests: doc.get("guests")
-        };
-        events.push(event);
-        var swiper = document.getElementById('event-swiper');
-        var newEvent = document.createElement('div');
-        var date = new Date(doc.get("time"));
-        newEvent.classList.add("swiper-slide");
-        newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + "test" + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
-          '<h1>' + doc.get("name") + '</h1>' +
-          '<p>' + date.toLocaleString('en-us', options) + '</p>' +
-          '</div></div>';
-
-        swiper.appendChild(newEvent);
-      });
-      app.swiper.create('.swiper-container');
-      $$('#skeleton-event').hide();
-    });
-
-    //////////////Loads the users attending this school
-    db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
-      //  var membersList = document.getElementById("members-list");
-      querySnapshot.forEach(function(doc) {
-        //This loop runs once for every user in the current school
-        getUserData(doc.id, function(user) {
-          var membersList = document.getElementById("members-list");
-          var a = document.createElement('a');
-          a.classList.add("item-link");
-          a.classList.add("no-chevron");
-          a.onclick = function() {
-            loadUserpage(doc.id);
-          };
-          a.innerHTML = '<li class="item-content"><div class="item-media">' +
-            '<div class="profile-pic-icon" style="background-image: url(' + user.picURL +
-            ')"></div> </div>' +
-            '<div class="item-inner">' + user.username + '</div></li>';
-          membersList.appendChild(a);
+      } else {
+        console.log("this user isnt subscribed to any chats. this should be displayed on the main page");
+        // TODO: Display that the user isnt subscribed to any chats
+      }
+      var userChats = [];
+      if (User.chats.length > 0) {
+        for (var i = 0; i < User.chats.length; i++) {
+          userChats.push(User.chats[i].split(",")[0]);
+        }
+      }
+      //Loads all the chats in the users current school that they are not subscribed to
+      db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
+            console.log("User is already subscribed to " + doc.id);
+          } else {
+            //this loop runs once for every chat room in the school
+            var ul = document.getElementById("school-group-chats");
+            var li = document.createElement('li')
+            li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
+              '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
+              '</div><div class="item-after">' + doc.get("numberOfMembers") +
+              ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
+            ul.appendChild(li);
+            //if any of these dont exist in the database they return null or undefined
+          }
         });
+
+        $$('#school-group-chats-skeleton').hide();
       });
-      $$('#members-list-skeleton').hide();
-    });
+
+      //////////Loads the events in the current school
+      db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
+        //date format
+        var options = {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+        };
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every event in the current school
+          var event = {
+            eventID: doc.id,
+            name: doc.get("name"),
+            time: doc.get("time"),
+            location: doc.get("location"),
+            description: doc.get("description"),
+            guests: doc.get("guests")
+          };
+          events.push(event);
+          var swiper = document.getElementById('event-swiper');
+          var newEvent = document.createElement('div');
+          var date = new Date(doc.get("time"));
+          newEvent.classList.add("swiper-slide");
+          newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + "test" + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+            '<h1>' + doc.get("name") + '</h1>' +
+            '<p>' + date.toLocaleString('en-us', options) + '</p>' +
+            '</div></div>';
+
+          swiper.appendChild(newEvent);
+        });
+        app.swiper.create('.swiper-container');
+        $$('#skeleton-event').hide();
+      });
+
+      //////////////Loads the users attending this school
+      db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
+        //  var membersList = document.getElementById("members-list");
+        querySnapshot.forEach(function(doc) {
+          //This loop runs once for every user in the current school
+          getUserData(doc.id, function(user) {
+            var membersList = document.getElementById("members-list");
+            var a = document.createElement('a');
+            a.classList.add("item-link");
+            a.classList.add("no-chevron");
+            a.onclick = function() {
+              loadUserpage(doc.id);
+            };
+            a.innerHTML = '<li class="item-content"><div class="item-media">' +
+              '<div class="profile-pic-icon" style="background-image: url(' + user.picURL +
+              ')"></div> </div>' +
+              '<div class="item-inner">' + user.username + '</div></li>';
+            membersList.appendChild(a);
+          });
+        });
+        $$('#members-list-skeleton').hide();
+      });
+    }
+
   }
 }
 
