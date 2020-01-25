@@ -29,6 +29,7 @@ var app = new Framework7({
 
         },
       },
+      keepAlive: true,
     },
     // profile page
     {
