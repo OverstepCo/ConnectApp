@@ -191,8 +191,8 @@ function loadUserData() {
             },
             tagline: userData.get("tagline"),
             bio: userData.get("bio"),
-            chats: userData.get("chatrooms"),
-            freinds: userData.get("freinds"),
+            chats: userData.get("chatrooms") ? userData.get("chatrooms") : [],
+            freinds: userData.get("freinds") ? userData.get("freinds") : [],
             profilePic: profilePic,
             picURL: profilePic,
           };
@@ -239,22 +239,37 @@ function loadUserData() {
 }
 
 //This replaces editUserData as it is robust
-function setUsersData(bio, tag, pic, password) {
+function setUserData(data, callback) {
   console.log('setting the users data');
   app.progressbar.show(localStorage.getItem("themeColor"));
   //If the data is not empty set it here
-  if (bio) {
+  if (data.bio && data.tagline) {
     console.log("updating user bio");
     db.collection("users").doc(uid).update({
-      bio: bio,
-      tagline: tag
+      bio: data.bio,
+      tagline: data.tagline
+    }).then(function() {
+      app.progressbar.hide();
+      if (callback)
+        callback();
+    });
+  }
+
+  //update names
+  if (data.firstName && data.lastName) {
+    db.collection("users").doc(uid).update({
+      firstName: data.firstName,
+      lastName: data.lastName
+    }).then(function() {
+      app.progressbar.hide();
+      if (callback)
+        callback();
     });
   }
   //If the pic is not empty set it here
-  if (pic) {
-    var file = pic;
+  if (data.profilePic && User) {
     var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
-    profilePictureRef.put(file).then(function(snapshot) {
+    profilePictureRef.put(data.profilePic).then(function(snapshot) {
       //Updated the picture successfully
       app.progressbar.hide();
     }).catch(function(error) {
@@ -263,7 +278,7 @@ function setUsersData(bio, tag, pic, password) {
     });
   }
   //If the password is not empty set it there
-  if (password) {
+  if (data.password) {
     var user = firebase.auth().currentUser;
     user.updatePassword(newPassword.value).then(function() {
       // Update successful.
