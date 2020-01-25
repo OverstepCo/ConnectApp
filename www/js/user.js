@@ -191,8 +191,8 @@ function loadUserData() {
             },
             tagline: userData.get("tagline"),
             bio: userData.get("bio"),
-            chats: userData.get("chatrooms"),
-            freinds: userData.get("freinds"),
+            chats: (userData.get("chatrooms")) ? userData.get("chatrooms") : [],
+            freinds: (userData.get("freinds")) ? userData.get("freinds") : [],
             profilePic: profilePic,
             picURL: profilePic,
           };
