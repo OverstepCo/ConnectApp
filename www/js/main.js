@@ -123,21 +123,17 @@ var app = new Framework7({
       url: 'pages/edit_profile.html',
       on: {
         pageInit: function(e, page) {
-          document.getElementById("update-user-info").addEventListener('click', function() {
-            app.dialog.password('For security stuff', 'Enter your password', function(password) {
-              // TODO: validate user password
-              app.dialog.close();
-              var picFile = document.getElementById('profile-pic-input').files[0];
-              var t = document.getElementById("tagline").value;
-              var b = document.getElementById("bio").value;
-              var p = null; // TODO: Put the password here
-              var nameF = document.getElementById("first-name").value;
-              var nameL = document.getElementById("last-name").value;
-              //Set the users data the order for the function is bio,tag,pic,password,firstName ,lastName
-              setUsersData(b, t, picFile, null, nameF, nameL);
-              //editUserData();
+
+          $$("#update-user-info").click(function() {
+            //Set the users data the order for the function is bio,tag,pic,password,firstName ,lastName
+            setUserData({
+              bio: $$('#bio').val(),
+              tagline: $$('#tagline').val(),
+              firstName: $$('#first-name').val(),
+              lastName: $$('#last-name').val(),
+              profilePic: $$('#profile-pic-input')[0].files[0],
             });
-          });
+          })
 
           // do something when page initialized
           document.getElementById('profile-pic-preview').style.backgroundImage = "url('" + User.profilePic + "')";
@@ -246,6 +242,15 @@ var app = new Framework7({
       on: {
         pageAfterIn: function test(e, page) {
           app.progressbar.hide();
+
+          $$('#welcome-button').click(function() {
+            setUserData({
+                bio: $$('#bio').val(),
+                tagline: $$('#tagline').val(),
+                profilePic: $$('#profile-pic-input')[0].files[0],
+              },
+              loadMainPage());
+          });
         },
         pageBeforeRemove: function(e, page) {
           app.progressbar.hide();
@@ -302,7 +307,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       //Set the users profile icon
       document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
       //This loop runs once for every chat room the current user is subscribed to
-      if (User.chats != null) {
+      if (User.chats.length > 0) {
         for (var i = 0; i < User.chats.length; i++) {
           var roomName = User.chats[i].split(",")[0];
           var roomSchool = User.chats[i].split(",")[1];
@@ -313,7 +318,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         // TODO: Display that the user isnt subscribed to any chats
       }
       var userChats = [];
-      if (User.chats != null) {
+      if (User.chats.length > 0) {
         for (var i = 0; i < User.chats.length; i++) {
           userChats.push(User.chats[i].split(",")[0]);
         }
@@ -341,6 +346,13 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
 
       //////////Loads the events in the current school
       db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
+        //date format
+        var options = {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+        };
         querySnapshot.forEach(function(doc) {
           //this loop runs once for every event in the current school
           var event = {
@@ -358,7 +370,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           newEvent.classList.add("swiper-slide");
           newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + "test" + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
             '<h1>' + doc.get("name") + '</h1>' +
-            '<p>' + date.toString() + '</p>' +
+            '<p>' + date.toLocaleString('en-us', options) + '</p>' +
             '</div></div>';
 
           swiper.appendChild(newEvent);
