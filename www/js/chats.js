@@ -29,6 +29,8 @@
 
     db.collection("users").doc(User.uid).update({ //Adds the chatroom to the users chat list
       chatrooms: firebase.firestore.FieldValue.arrayUnion(chatID + "," + chatSchool),
+    }).then(function() {
+      loadMainPage();
     });
 
     loadUserData(); //Reload the user data so the app reflects the changes in the chats
@@ -44,6 +46,8 @@
 
     db.collection("users").doc(User.uid).update({ //Removes the chatroom from the users chat list
       chatrooms: firebase.firestore.FieldValue.arrayRemove(chatID + "," + chatSchool),
+    }).then(function() {
+      loadMainPage();
     });
   }
 

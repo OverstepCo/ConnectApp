@@ -367,12 +367,19 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           var newEvent = document.createElement('div');
           var date = new Date(doc.get("time"));
           newEvent.classList.add("swiper-slide");
-          newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + "test" + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+          newEvent.innerHTML = '<div class="slide-content event-pic-' + doc.id + '" onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
             '<h1>' + doc.get("name") + '</h1>' +
             '<p>' + date.toLocaleString('en-us', options) + '</p>' +
             '</div></div>';
 
           swiper.appendChild(newEvent);
+
+          // Create a reference to the file we want to download
+          storageRef.child('event-pictures').child(doc.id).getDownloadURL().then(function(url) {
+            $$(".event-pic-" + doc.id).css("background-image", ("url(" + url + ")"));
+          }).catch(function(error) {
+            console.error(error.message);
+          });
         });
         app.swiper.create('.swiper-container');
         $$('#skeleton-event').hide();

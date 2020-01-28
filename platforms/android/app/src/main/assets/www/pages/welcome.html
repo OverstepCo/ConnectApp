@@ -5,7 +5,7 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <div class="slide-content">
-            <img src="media/welcome_screen_1.jpg" width="100%" style="border-radius: 15px" />
+            <img src="media/welcome_screen_1.png" width="100%" style="border-radius: 15px" />
           </div>
           <div class="slide-description">
             <h2>Our Vision</h2>
@@ -15,7 +15,7 @@
         </div>
         <div class="swiper-slide">
           <div class="slide-content">
-            <img src="media/welcome_screen_2.jpg" width="100%" style="border-radius: 15px" />
+            <img src="media/welcome_screen_2.png" width="100%" style="border-radius: 15px" />
           </div>
           <div class="slide-description">
             <h2>Our Mission</h2>
@@ -28,7 +28,7 @@
             <div style="width: 100%">
               <label>
                 <div id="profile-pic-preview" class="profile-pic-upload">
-                  <input id="profile-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event)" />
+                  <input id="profile-pic-input" type="file" accept="image/jpeg, image/png" onchange="previewPic(event, 'profile')" />
                   <i id="profile-pic-icon" class="material-icons">add_photo_alternate</i>
                 </div>
               </label>
@@ -53,7 +53,7 @@
                   </li>
                 </ul>
               </div>
-              <button class="button button-fill button-round" onclick="signUp()">NEXT</button>
+              <button id="welcome-button" class="button button-fill button-round">NEXT</button>
               <p id="error-message" style="color: red; text-align: center; padding-top: 8px;"></p>
             </div>
           </div>
