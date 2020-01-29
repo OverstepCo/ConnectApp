@@ -6,107 +6,78 @@
           <i class="material-icons">close</i>
         </a>
       </div>
-      <div class="title">New Event</div>
-      <div class="right"><a href="#" onclick="createNewEvent()" class="link">CREATE</a></div>
     </div>
   </div>
   <div class="page-content">
-
-    <div class="block">
-      <div class="row">
-        <div class="col-33">
-          <div id="event-image" class="event-image" style="background-image: url(media/stock/event_pattern.jpg)">
-            <a class="link"><i class="material-icons">edit</i></a>
-          </div>
-        </div>
-        <div class="col-66">
-          <div class="list no-hairlines no-margin">
-            <ul>
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Event Name</div>
-                  <div class="item-input-wrap">
-                    <input id="event-name" type="text">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Day</div>
-                  <div class="item-input-wrap">
-                    <input id="event-day" type="text">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Time</div>
-                  <div class="item-input-wrap">
-                    <input id="event-time" type="text" placeholder="e.g. 9-11:30, 2nd period">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input no-padding-left">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Location</div>
-                  <div class="item-input-wrap">
-                    <input id="event-location" type="text" placeholder="e.g. cafeteria, art room">
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="list no-hairlines no-margin" style="width:100%">
-          <ul>
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Description</div>
-                <div class="item-input-wrap">
-                  <textarea id="event-description" class="resizable"></textarea>
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
+    <h1 style="margin-left: 16px">New Event</h1>
+    <label>
+      <div id="event-pic-preview" class="profile-pic-upload" style="border-radius: 15px; width: 80vw; height: 35vw">
+        <input id="event-pic" type="file" accept="image/jpeg, image/png" onchange="previewPic(event, 'event')" />
+        <i id="event-pic-icon" class="material-icons">add_photo_alternate</i>
       </div>
-
-      <h2>Invite People</h2>
-      <div id="chips-div" class="block no-margin-top">
-        <!--
-        <div class="chip">
-          <div class="chip-media">
-            <div class="chip-pic" style="background-image: url('https://media.golfdigest.com/photos/5a0c8a63d14646526333dbe2/master/w_768,c_limit/Screen%2520Shot%25202017-11-15%2520at%25201.41.19%2520PM.png')"></div>
-          </div>
-          <div class="chip-label">Jane Smith</div>
-        </div>
-        -->
-      </div>
-      <div class="search-block no-padding">
-        <form id="new-event-searchbar" class="searchbar searchbar-inline">
-          <div class="searchbar-inner">
-            <div class="searchbar-input-wrap">
-              <input type="search" placeholder="Search">
-              <i class="searchbar-icon"></i>
+    </label>
+    <div class="list no-hairlines no-margin-bottom">
+      <ul>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Event Name</div>
+            <div class="item-input-wrap">
+              <input id="event-name" type="text">
               <span class="input-clear-button"></span>
             </div>
-            <span class="searchbar-disable-button if-not-aurora">Cancel</span>
           </div>
-        </form>
-      </div>
-      <div id="new-event-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-        <ul>
-        </ul>
-      </div>
-      <!-- Nothing found message -->
-      <div class="block searchbar-not-found">
-        <div class="block-inner">Nothing found</div>
-      </div>
+        </li>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Date & Time</div>
+            <div class="item-input-wrap">
+              <input id="event-time" type="datetime-local">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Location</div>
+            <div class="item-input-wrap">
+              <input id="event-location" type="text" placeholder="e.g. cafeteria, art room">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
+
+    <div class="text-editor text-editor-init text-editor-resizable" data-placeholder="Description" data-mode="keyboard-toolbar">
+      <div id="event-description" class="text-editor-content" contenteditable></div>
+    </div>
+
+    <h1 style="margin-left: 16px">Invite People</h1>
+    <div id="chips-div" class="block no-margin-top">
+
+    </div>
+    <div class="search-block no-padding">
+      <form id="new-event-searchbar" class="searchbar searchbar-inline">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search">
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+        </div>
+      </form>
+    </div>
+    <div id="new-event-members-list" class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
+      <ul>
+      </ul>
+    </div>
+    <!-- Nothing found message -->
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
+    </div>
+  </div>
+  <div style="background-color: rgba(0,0,0,0)" class="toolbar toolbar-bottom no-shadow">
+    <a onclick="createNewEvent()" class="button button-fill button-round">Create Event</a>
   </div>
 </div>

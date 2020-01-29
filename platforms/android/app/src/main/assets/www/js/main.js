@@ -1,5 +1,4 @@
-var $$ = Dom7;
-
+//Setup for framework7
 var app = new Framework7({
   root: '#app',
   name: 'My App',
@@ -20,7 +19,16 @@ var app = new Framework7({
     // Index page
     {
       path: '/home/',
-      url: 'index.html',
+      url: 'pages/home.html',
+      on: {
+        pageInit: function(e, page) {
+          // do something when page initialized
+          //loadMainPage();
+        },
+        pageBeforeRemove: function(e, page) {
+
+        },
+      },
     },
     // profile page
     {
@@ -65,21 +73,7 @@ var app = new Framework7({
     {
       path: '/chat-screen/',
       url: 'pages/chat.html',
-      on: {
-        pageAfterIn: function test(e, page) {
-          // do something after page gets into the view
-        },
-        pageInit: function(e, page) {
-          // do something when page initialized
-          setupChat();
 
-        },
-        pageBeforeRemove: function(e, page) {
-          console.log('page before remove');
-          listener();
-          app.messages.destroy('.messages');
-        },
-      }
     },
     // preview chat page
     {
@@ -128,13 +122,17 @@ var app = new Framework7({
       url: 'pages/edit_profile.html',
       on: {
         pageInit: function(e, page) {
-          document.getElementById("update-user-info").addEventListener('click', function() {
-            app.dialog.password('For security stuff', 'Enter your password', function(password) {
-              // TODO: validate user password
-              app.dialog.close();
-              editUserData();
+
+          $$("#update-user-info").click(function() {
+            //Set the users data the order for the function is bio,tag,pic,password,firstName ,lastName
+            setUserData({
+              bio: $$('#bio').val(),
+              tagline: $$('#tagline').val(),
+              firstName: $$('#first-name').val(),
+              lastName: $$('#last-name').val(),
+              profilePic: $$('#profile-pic-input')[0].files[0],
             });
-          });
+          })
 
           // do something when page initialized
           document.getElementById('profile-pic-preview').style.backgroundImage = "url('" + User.profilePic + "')";
@@ -166,10 +164,10 @@ var app = new Framework7({
             querySnapshot.forEach(function(doc) {
               //This loop runs once for every user in the current school
               getUserData(doc.id, function(user) {
-                console.log(user.username + "woooooo");
+                console.log("found user" + user.username + "in school");
                 var l = document.createElement('div');
                 l.innerHTML = '<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="' + user.uid + '" data-checked="0" data-name="' + user.username + '"data-pic="' + user.picURL + '" data-checked="0">' +
-                  '<li class="item-content">' +
+                  '<li class="item-content" style="padding-right: 16px">' +
                   '<div class="item-media">' +
                   '<div class="li-profile-pic" style="background-image: url(' + user.picURL + ')"></div>' +
                   '</div>' +
@@ -200,8 +198,7 @@ var app = new Framework7({
             searchIn: '.item-inner',
           });
 
-          ///load the school members into the things
-
+          ///load the school members into list that selects users to invite
           db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
             var membersList = document.getElementById("new-chat-members-list");
             querySnapshot.forEach(function(doc) {
@@ -210,7 +207,7 @@ var app = new Framework7({
                 console.log(user.username + "woooooo");
                 var l = document.createElement('div');
                 l.innerHTML = '<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="' + user.uid + '" data-checked="0" data-name="' + user.username + '"data-pic="' + user.picURL + '" data-checked="0">' +
-                  '<li class="item-content">' +
+                  '<li class="item-content" style="padding-right: 16px">' +
                   '<div class="item-media">' +
                   '<div class="li-profile-pic" style="background-image: url(' + user.picURL + ')"></div>' +
                   '</div>' +
@@ -220,24 +217,9 @@ var app = new Framework7({
                   '</a>';
                 membersList.appendChild(l);
               });
-
-              //var skeleton = document.getElementById('members-list-skeleton');
-              //  skeleton.parentNode.removeChild(skeleton);
+              $$('#members-list-skeleton').hide();
             });
           });
-
-
-
-          /*<a href="#" onclick="addChip(this)" class="item-link no-chevron" data-uid="test" data-checked="0" data-name="Krombopulos Mike"
-            data-pic="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dd/dd09204def1578ac0edc13b5ffc1df4b6730f4bd_full.jpg" data-checked="0">
-            <li class="item-content">
-              <div class="item-media">
-                <div class="li-profile-pic" style="background-image: url('https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/dd/dd09204def1578ac0edc13b5ffc1df4b6730f4bd_full.jpg')"></div>
-              </div>
-              <div class="item-inner">Krombopulos Mike</div>
-              <div id="right" class="right"></div>
-            </li>
-          </a>*/
 
         },
         pageBeforeRemove: function(e, page) {},
@@ -257,6 +239,18 @@ var app = new Framework7({
       path: '/welcome-page/',
       url: 'pages/welcome.html',
       on: {
+        pageAfterIn: function test(e, page) {
+          app.progressbar.hide();
+
+          $$('#welcome-button').click(function() {
+            setUserData({
+                bio: $$('#bio').val(),
+                tagline: $$('#tagline').val(),
+                profilePic: $$('#profile-pic-input')[0].files[0],
+              },
+              loadMainPage());
+          });
+        },
         pageBeforeRemove: function(e, page) {
           app.progressbar.hide();
         },
@@ -266,9 +260,10 @@ var app = new Framework7({
   ],
 });
 
-
-var mainView = app.views.create('.view-main');
-
+var $$ = Dom7;
+var mainView = app.views.create('.view-main', {
+  url: '/home/',
+});
 var events = [];
 // create searchbar
 var searchbar = app.searchbar.create({
@@ -277,156 +272,187 @@ var searchbar = app.searchbar.create({
   searchIn: '.item-inner',
 });
 
+// TODO: check for premium user
+if (false) {
+  //set theme color
+  var storedThemeColor = localStorage.getItem("themeColor");
+  var color = storedThemeColor != null ? storedThemeColor : 'red';
+  document.documentElement.classList.add('color-theme-' + color);
 
-//set theme color
-var storedThemeColor = localStorage.getItem("themeColor");
-var color = storedThemeColor != null ? storedThemeColor : 'red';
-document.documentElement.classList.add('color-theme-' + color);
+  var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
+  toggleDarkMode(toggle);
+}
 
-var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
-toggleDarkMode(toggle);
-
-function loadMainPage() { //Loads all the data on the main page
+function loadMainPage() { //Loads all the data on the main page//// TODO: make sure to cean all leftover data
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
-  //addFreind("waaa");
+  //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded.////this may be fixed
   console.log(User);
 
-
-  document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic +
-    ')"></div>'
-  //This loop runs once for every chat room the current user is subscribed to
-  if (User.chats != null) {
-    for (var i = 0; i < User.chats.length; i++) {
-      var roomName = User.chats[i].split(",")[0];
-      var roomSchool = User.chats[i].split(",")[1];
-      loadSubscribedChat(roomName, roomSchool);
-    }
-  } else {
-    console.log("this user isnt subscribed to any chats");
-    // TODO: Display that the user isnt subscribed to any chats
-  }
-  var userChats = [];
-  if (User.chats != null) {
-    for (var i = 0; i < User.chats.length; i++) {
-      userChats.push(User.chats[i].split(",")[0]);
-    }
-  }
-  //Loads all the chats in the users current school/
-  db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
-        console.log("User is already subscribed to " + doc.id);
-      } else {
-        //this loop runs once for every chat room in the school
-        var ul = document.getElementById("school-group-chats");
-        var li = document.createElement('li')
-        li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
-          '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
-          '</div><div class="item-after">' + doc.get("numberOfMembers") +
-          ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
-        ul.appendChild(li);
-        //if any of these dont exist in the database they return null or undefined
-      }
-    });
-    var skeleton = document.getElementById('school-group-chats-skeleton');
-    skeleton.parentNode.removeChild(skeleton);
-  });
-
-  //////////Loads the events in the current school
-  db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-
-      var event = {
-        eventID: doc.id,
-        name: doc.get("name"),
-        image: doc.get("image"),
-        day: doc.get("day"),
-        time: doc.get("time"),
-        location: doc.get("location"),
-        description: doc.get("description"),
-        guests: doc.get("guests")
-      };
-      events.push(event);
-      var swiper = document.getElementById('event-swiper');
-      var newEvent = document.createElement('div');
-      newEvent.classList.add("swiper-slide");
-      newEvent.innerHTML = '<div class="slide-content"  style="background-image: url(' + doc.get("image") + ')"  onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
-        '<h1>' + doc.get("name") + '</h1>' +
-        '<p>' + doc.get("day") + ', March 20</p>' +
-        '</div></div>';
-
-      swiper.appendChild(newEvent);
-      //this loop runs once for every event in the current school
-    });
-    app.swiper.create('.swiper-container');
-  });
-
-  //////////////Loads the users attending this school
-  db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
-    //  var membersList = document.getElementById("members-list");
-    querySnapshot.forEach(function(doc) {
-      //This loop runs once for every user in the current school
-      getUserData(doc.id, function(user) {
-        var membersList = document.getElementById("members-list");
-        //console.log("username: " + doc.get("name"));
-        var a = document.createElement('a');
-        a.classList.add("item-link");
-        a.classList.add("no-chevron");
-        a.onclick = function() {
-          loadUserpage(doc.id);
-        };
-        a.innerHTML = '<li class="item-content"><div class="item-media">' +
-          '<div class="profile-pic-icon" style="background-image: url(' + user.picURL +
-          ')"></div> </div>' +
-          '<div class="item-inner">' + user.username + '</div></li>';
-        membersList.appendChild(a);
+  if (User && User != '') //Only run this if we have loaded the user
+  {
+    console.log("wooo");
+    console.log(mainView.router);
+    if (mainView.router.currentRoute.path != "/home/") { //Disabled for now//If we are not on the main page Navigate to the main page then load the data. // NOTE: Beware infinte loops
+      console.log("not on main page");
+      mainView.once("pageBeforeIn", function(event, page) {
+        loadMainPage();
       });
-    });
-    var skeleton = document.getElementById('members-list-skeleton');
-    skeleton.parentNode.removeChild(skeleton);
+      mainView.router.navigate('/home/', {
+        clearPreviousHistory: true, // Makes sure we cant go back to previous pages
+      });
+
+    } else {
+      console.log("loading main page");
+      //Set the users profile icon
+      document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
+      //This loop runs once for every chat room the current user is subscribed to
+      if (User.chats.length > 0) {
+        for (var i = 0; i < User.chats.length; i++) {
+          var roomName = User.chats[i].split(",")[0];
+          var roomSchool = User.chats[i].split(",")[1];
+          loadSubscribedChat(roomName, roomSchool);
+        }
+      } else {
+        console.log("this user isnt subscribed to any chats. this should be displayed on the main page");
+        // TODO: Display that the user isnt subscribed to any chats
+      }
+      var userChats = [];
+      if (User.chats.length > 0) {
+        for (var i = 0; i < User.chats.length; i++) {
+          userChats.push(User.chats[i].split(",")[0]);
+        }
+      }
+      //Loads all the chats in the users current school that they are not subscribed to
+      db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
+            console.log("User is already subscribed to " + doc.id);
+          } else {
+            //this loop runs once for every chat room in the school
+            var ul = document.getElementById("school-group-chats");
+            var li = document.createElement('li')
+            li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
+              '<div class="item-inner"><div class="item-title-row"><div class="item-title">' + doc.get("name") +
+              '</div><div class="item-after">' + doc.get("numberOfMembers") +
+              ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
+            ul.appendChild(li);
+            //if any of these dont exist in the database they return null or undefined
+          }
+        });
+
+        $$('#school-group-chats-skeleton').hide();
+      });
+
+      //////////Loads the events in the current school
+      db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
+        //date format
+        var options = {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+        };
+        querySnapshot.forEach(function(doc) {
+          //this loop runs once for every event in the current school
+          var event = {
+            eventID: doc.id,
+            name: doc.get("name"),
+            time: doc.get("time"),
+            location: doc.get("location"),
+            description: doc.get("description"),
+            guests: doc.get("guests")
+          };
+          events.push(event);
+          var swiper = document.getElementById('event-swiper');
+          var newEvent = document.createElement('div');
+          var date = new Date(doc.get("time"));
+          newEvent.classList.add("swiper-slide");
+          newEvent.innerHTML = '<div class="slide-content event-pic-' + doc.id + '" onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
+            '<h1>' + doc.get("name") + '</h1>' +
+            '<p>' + date.toLocaleString('en-us', options) + '</p>' +
+            '</div></div>';
+
+          swiper.appendChild(newEvent);
+
+          // Create a reference to the file we want to download
+          storageRef.child('event-pictures').child(doc.id).getDownloadURL().then(function(url) {
+            $$(".event-pic-" + doc.id).css("background-image", ("url(" + url + ")"));
+          }).catch(function(error) {
+            console.error(error.message);
+          });
+        });
+        app.swiper.create('.swiper-container');
+        $$('#skeleton-event').hide();
+      });
+
+      //////////////Loads the users attending this school
+      db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
+        //  var membersList = document.getElementById("members-list");
+        querySnapshot.forEach(function(doc) {
+          //This loop runs once for every user in the current school
+          getUserData(doc.id, function(user) {
+            var membersList = document.getElementById("members-list");
+            var a = document.createElement('a');
+            a.classList.add("item-link");
+            a.classList.add("no-chevron");
+            a.onclick = function() {
+              loadUserpage(doc.id);
+            };
+            a.innerHTML = '<li class="item-content"><div class="item-media">' +
+              '<div class="profile-pic-icon" style="background-image: url(' + user.picURL +
+              ')"></div> </div>' +
+              '<div class="item-inner">' + user.username + '</div></li>';
+            membersList.appendChild(a);
+          });
+        });
+        $$('#members-list-skeleton').hide();
+      });
+    }
+
+  }
+}
+
+// TODO: turn this into an async function
+function getProfilePicUrl(uid) {
+
+  // Create a reference to the file we want to download
+  var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+
+  // Get the download URL
+  profilePictureRef.getDownloadURL().then(function(url) {
+    return url;
+  }).catch(function(error) {
+    return "";
   });
-
 }
-
-//android back button navigation
-document.addEventListener("deviceready", onDeviceReady, false);
-
-function onDeviceReady() {
-  document.addEventListener("backbutton", onBackKeyDown, false);
-}
-
 
 function loadSubscribedChat(chatroomName, chatroomSchool) {
   //console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
-
   db.collection("school").doc(chatroomSchool).collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
     messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
       console.log(message.data());
       getUserData(message.get("userID"), function(user) {
         var ls = document.getElementById("subscribed-chats");
         var li = document.createElement('li');
-        li.innerHTML = '<a onclick="(loadChat(\'' + chatroomName + '\',\'' + chatroomSchool + '\'))" class="item-link item-content no-chevron">\
-               <div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >\
-                 <div class="item-title-row">\
-                   <div class="item-title">' + chatroomName + '</div>\
-                   <div class="item-after">' + '12:14' + '</div>\
-                 </div>\
-                 <div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div>\
-               </div>\
-             </a>';
+        li.innerHTML = '<a onclick="(loadChat(\'' + chatroomName + '\',\'' + chatroomSchool + '\'))" class="item-link item-content no-chevron">' +
+          '<div class="item-inner" id=\'' + chatroomName + chatroomSchool + '\' >' +
+          '<div class="item-title-row">' +
+          '<div class="item-title">' + chatroomName + '</div>' +
+          '<div class="item-after">' + formatTimeStamp(message.get("timestamp").toDate()) + '</div></div>' +
+          '<div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div></div></a>';
         ls.appendChild(li);
 
         //Listens to the chat room for any new messages.
         listener = db.collection("school").doc(chatroomSchool + "").collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "asc")
           .onSnapshot(function(snapshot) {
             snapshot.docChanges().forEach(function(change) {
-              getUserData(change.get("uid"), function(user) {
+              getUserData(change.doc.get("uid"), function(user) {
                 if (change.type === "added") {
                   //console.log(change.doc.get("text"));
                   // TODO: change the text on the preveiw
                   var htmlToUpdate = document.getElementById(chatroomName + chatroomSchool + "");
                   htmlToUpdate.innerHTML = '<div class="item-title-row"><div class="item-title">' + chatroomName +
-                    '</div><div class="item-after">' + '12:14' + '</div></div><div class="item-text"><b>' +
+                    '</div><div class="item-after">' + formatTimeStamp(message.get("timestamp").toDate()) + '</div></div><div class="item-text"><b>' +
                     message.get("name") + ': </b>' + message.get("text") + '</div>';
                 }
               });
@@ -435,9 +461,15 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
       });
     });
   }).then(function() {
-    var skeleton = document.getElementById('subscribed-chats-skeleton');
-    skeleton.parentNode.removeChild(skeleton);
+    $$('#subscribed-chats-skeleton').hide();
   });
+}
+
+//android back button navigation
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+  document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
 function onBackKeyDown() {
@@ -498,143 +530,53 @@ function timeSince(time) {
   return time;
 }
 
-function loadUserpage(uid) {
-  //if the uid is the same as the Users id then load the users page else load the preveiw page of the user with uid
-  if (uid == User.uid) {
-    app.panel.close();
-    self.app.views.main.router.navigate('/profile-screen/');
-  } else {
-    var profilePreview = document.createElement('div');
+function formatTimeStamp(time) {
 
-    profilePreview.classList.add("profile-preview");
-    profilePreview.id = "profile-preview";
+  //make sure a date object is passed in.
+  if (time.constructor != Date) return timeSince(time);
+  var today = new Date();
 
-    profilePreview.addEventListener("click", function() {
-      //closePreview();
-    });
+  var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var seconds = (today - time.getTime()) / 1000;
 
-    getUserData(uid, function(user) {
-      profilePreview.innerHTML = '<div id="profile-preview-card" class="profile-preview-card"><div class="profile-pic" style="background-image: url(' + user.picURL +
-        ')"></div><h2>' + user.username + '</h2><h4>' + user.tagline + '</h4>' +
-        '<p>' + user.bio + '</p> <div class="row"> <a class="button button-round" onclick="addFreind(\'' + uid + '\')">Add Friend</a><a class="button button-round" onclick="closePreview()">Close</a></div></div>';
-    });
-
-    document.body.appendChild(profilePreview);
+  //0 to 59s
+  if (seconds < 60) {
+    return "now";
   }
-}
 
-function closePreview() {
-  var el = document.getElementById("profile-preview");
-  document.getElementById("profile-preview-card").classList.add("hidden");
-  setTimeout(function() {
-    el.parentNode.removeChild(el);
-  }, 400);
-}
-
-var freindsList;
-
-function loadFriends() {
-  //////////////Loads the current users feinds
-  db.collection("users").doc(User.uid).collection("friends").get().then(function(querySnapshot) {
-    freindsList = document.getElementById('friends');
-    //Remove all children
-    while (freindsList.firstChild) {
-      freindsList.removeChild(freindsList.firstChild);
-    }
-    querySnapshot.forEach(function(doc) {
-      //This loop runs once for every  freind of the user
-      console.log("username: " + doc.get("name"));
-
-      getUserData(doc.id, function(user) {
-        var a = document.createElement('a');
-        a.classList.add("item-link");
-        a.classList.add("no-chevron");
-        a.onclick = function() {
-          loadUserpage(doc.id);
-        }
-        console.log(user);
-        a.innerHTML =
-          '<li class="item-content">' +
-          '<div class="item-media"><div class="profile-pic-icon" style="background-image: url(' + user.picURL +
-          ')"></div></div>' +
-          '<div class="item-inner">' + user.username + '</div>' +
-          '</li>';
-
-        freindsList.appendChild(a);
-      });
-      /*
-         var a = document.createElement('a');
-         a.classList.add("item-link");
-         a.classList.add("no-chevron");
-         a.onclick = function() {
-           loadUserpage(doc.id);
-         }
-         a.innerHTML =
-           '<li class="item-content">' +
-           '<div class="item-media"><i class="material-icons">person</i></div>' +
-           '<div class="item-inner">' + doc.get("name") + '</div>' +
-           '</li>';
-
-         freindsList.appendChild(a);*/
-    });
-  });
-}
-
-function addFreind(uid) {
-  db.collection("users").doc(User.uid).collection("friends").doc(uid).set({
-    name: "this will not be needed later on"
-  }).then(function() {
-    console.log("Added friend");
-  });
-
-}
-var loadedUsers = {};
-
-function getUserData(userID, callback) {
-  //If we have already loaded this users data then return it else load it from the database
-  if (userID in loadedUsers) {
-    console.log("found user in array");
-    callback(loadedUsers[userID]);
-  } else {
-    var profilePic = "";
-
-    // Create a reference to the file we want to download
-    var profilePictureRef = storageRef.child('profile-pictures').child(userID);
-
-    // Get the download URL
-    profilePictureRef.getDownloadURL().then(function(url) {
-      profilePic = url;
-    }).catch(function(error) {
-      profilePic = "https://www.keypointintelligence.com/img/anonymous.png";
-    }).then(function() {
-      db.collection("users").doc(userID).get().then(function(userData) {
-        loadedUsers[userID] = {
-          uid: userID,
-          username: userData.get("firstName") + " " + userData.get("lastName"),
-          tagline: userData.get("tagline"),
-          bio: userData.get("bio"),
-          picURL: profilePic,
-        };
-        //console.log("loaded user: " + userID);
-        callback(loadedUsers[userID]);
-      });
-    });
-
+  //15s to 60min
+  if (seconds < 3600) {
+    return Math.round(seconds / 60) + " min";
   }
-}
 
-// TODO: turn this into an async function
-function getProfilePicUrl(uid) {
+  //1hr to today
+  if (time.getDate() === today.getDate() && time.getMonth() === today.getMonth() && time.getFullYear() === today.getFullYear()) {
+    var hours = time.getHours();
+    var minutes = time.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 
-  // Create a reference to the file we want to download
-  var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+  //1day to 6days
+  if (seconds < 518400) {
+    var last = "";
+    if (time.getDay() > today.getDay())
+      last = "Last ";
+    return last + days[time.getDay()];
+  }
 
-  // Get the download URL
-  profilePictureRef.getDownloadURL().then(function(url) {
-    return url;
-  }).catch(function(error) {
-    return "";
-  });
+  //1week to this year
+  if (time.getFullYear() === today.getFullYear()) {
+    return months[time.getMonth()] + " " + time.getDate();
+  }
+
+  //if not this year
+  return time.getMonth() + "/" + time.getDate() + "/" + time.getFullYear();
 }
 
 function setThemeColor(color) {
@@ -655,7 +597,6 @@ function toggleDarkMode(toggle) {
 }
 
 function setDarkMode() {
-
   var toggle = document.getElementById("toggle-darkmode").checked;
 
   if (toggle) {
@@ -665,4 +606,12 @@ function setDarkMode() {
     document.documentElement.classList.remove('theme-dark');
     localStorage.setItem("darkMode", "false");
   }
+}
+
+function comingSoon() {
+  var toastBottom = app.toast.create({
+    text: 'This feature is coming soon!',
+    closeTimeout: 2000,
+  });
+  toastBottom.open();
 }

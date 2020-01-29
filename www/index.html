@@ -13,6 +13,52 @@
 <body>
   <div id="app">
     <div class="view view-main">
+      <div id="expandable-card" class="expanded-card">
+        <div id="expandable-card-media" class="card-media card-media-closed">
+          <a id="card-close" onclick="closeCard()" href="#" class="link"><i class="material-icons white">close</i></a>
+        </div>
+        <div class="scrollable">
+          <div style="height: 33.33%"></div>
+          <div id="expandable-card-content" class="card-content card-content-closed">
+            <div style="padding: 32px 32px 0 32px ">
+              <div class="row align-items-center">
+                <div class="col-60">
+                  <h1 id="expandable-card-name" class="no-margin">Event Name that is really long.</h1>
+                </div>
+                <div class="col-40">
+                  <button id="rsvp" class="button button-round button-fill" style="width: 100%">RSVP</button>
+                </div>
+              </div>
+              <p id="expandable-card-description"> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
+            </div>
+            <div class="block-title">Who's Going</div>
+            <div id="attendees" class="row justify-content-space-around">
+
+              <div class="attendee">
+                <div class="pic"></div>
+                <p>Bob Rosspool</p>
+
+              </div>
+            </div>
+
+            <div class="block-title">Comments</div>
+
+            <div class="page-content messages-content">
+              <div class="messages event-messages">
+
+              </div>
+            </div>
+            <div class="toolbar messagebar event-messagebar">
+              <div class="toolbar-inner">
+                <div class="messagebar-area">
+                  <textarea class="resizable" placeholder="Message"></textarea>
+                </div><a id="event-send-link" class="link send-link" href="#">Send</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
       <!-- This is where the pages for the app are loaded -->
     </div>
   </div>

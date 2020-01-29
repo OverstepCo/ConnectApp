@@ -5,307 +5,65 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Connect App</title>
+  <title>sit with us</title>
   <link rel="stylesheet" href="css/framework7.bundle.min.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
   <div id="app">
-    <div class="panel panel-left panel-reveal panel-resizable">
-      <h2>Connect App Logo</h2>
-      <div class="list no-hairlines" style="margin-top: 10px;">
-        <ul>
-          <a href="/profile-screen/" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons">person</i></div>
-              <div class="item-inner">My Profile</div>
-            </li>
-          </a>
-          <a href="/school-search-page/" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons">school</i></div>
-              <div class="item-inner">Change School</div>
-            </li>
-          </a>
-          <a href="/settings-screen/" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons">settings</i></div>
-              <div class="item-inner">Settings</div>
-            </li>
-          </a>
-          <a href="/about-screen/" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons">info</i></div>
-              <div class="item-inner">About</div>
-            </li>
-          </a>
-          <a href="#" onclick="signOut()" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons">cloud_off</i></div>
-              <div class="item-inner">Sign Out</div>
-            </li>
-          </a>
-
-
-
-          <a href="/welcome-page/" class="panel-close item-link no-chevron">
-            <li class="item-content">
-              <div class="item-media"><i class="material-icons">add</i></div>
-              <div class="item-inner">Welcome Screen</div>
-            </li>
-          </a>
-
-        </ul>
-      </div>
-    </div>
-
-    <div class="view view-main" data-url="/">
-      <div data-page="index" class="page">
-
-
-        <div id="expandable-card" class="expanded-card">
-          <div id="expandable-card-media" class="card-media card-media-closed">
-            <a id="card-close" onclick="closeCard()" href="#" class="link"><i class="material-icons white">close</i></a>
-          </div>
-          <div class="scrollable">
-            <div style="height: 33.33%"></div>
-            <div id="expandable-card-content" class="card-content card-content-closed">
-              <div style="padding: 32px 32px 0 32px ">
-                <div class="row align-items-center">
-                  <div class="col-75">
-                    <h1 id="expandable-card-name" class="no-margin">Event Name that is really long.</h1>
-                  </div>
-                  <div class="col-25">
-                    <button id="rsvp" class="button button-round button-fill" style="width: 100%">RSVP</button>
-                  </div>
-                </div>
-                <p id="expandable-card-description"> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
-              </div>
-              <div class="block-title">Who's Going</div>
-              <div id="attendees" class="row justify-content-space-around">
-
-                <div class="attendee">
-                  <div class="pic"></div>
-                  <p>Bob Rosspool</p>
-
-                </div>
-              </div>
-
-              <div class="block-title">Comments</div>
-
-              <div class="page-content messages-content">
-                <div class="messages event-messages">
-
-                </div>
-              </div>
-              <div class="toolbar messagebar event-messagebar">
-                <div class="toolbar-inner">
-                  <div class="messagebar-area">
-                    <textarea class="resizable" placeholder="Message"></textarea>
-                  </div><a id="event-send-link" class="link send-link" href="#">Send</a>
-                </div>
-              </div>
-
-            </div>
-          </div>
+    <div class="view view-main">
+      <div id="expandable-card" class="expanded-card">
+        <div id="expandable-card-media" class="card-media card-media-closed">
+          <a id="card-close" onclick="closeCard()" href="#" class="link"><i class="material-icons white">close</i></a>
         </div>
-
-        <div class="navbar no-shadow no-harline navbar-home">
-          <div id="navbar" class="navbar-inner school-header">
-            <div class="left">
-              <a class="panel-open link icon-only">
-                <i class="material-icons icon">menu</i>
-              </a>
-            </div>
-            <div class="right">
-              <a id="profile-icon" href="/profile-screen/" class="link">
-                <i class="material-icons icon">person</i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Floating Action Button -->
-        <div class="fab fab-right-bottom">
-          <a href="#">
-            <i class="icon material-icons text-color-white">add</i>
-            <i class="icon material-icons text-color-white">close</i>
-          </a>
-          <!-- FAB speed dial actions with labels -->
-          <div class="fab-buttons fab-buttons-top fab-morf" data-morph-to=".card-block">
-            <a href="/new-chat-screen/" class="fab-label-button fab-close">
-              <i class="icon material-icons text-color-white" style="font-size: 15pt">message</i>
-              <span class="fab-label">New Chat</span>
-            </a>
-            <a href="/new-event-screen/" class="fab-label-button fab-close">
-              <i class="icon material-icons text-color-white">event_note</i>
-              <span class="fab-label">New Event</span>
-            </a>
-          </div>
-        </div>
-
-
-
-        <div class="page-content">
-          <div style="min-height: 30%">
-            <div id="event-swiper-wrapper" class="swiper-container event-swiper" data-space-between="0" data-slides-per-view="2">
-              <div id="event-swiper" class="swiper-wrapper">
-              </div>
-            </div>
-          </div>
-          <div class="toolbar toolbar-home">
-            <a href="#tab-1" class="tab-link tab-link-active">Subscribed</a>
-            <a href="#tab-2" class="tab-link">Unsubscribed</a>
-            <a href="#tab-3" class="tab-link">Members</a>
-          </div>
-          <div class="tabs-swipeable-wrap" style="height: 50%">
-            <div class="tabs">
-              <div id="tab-1" class="page-content tab tab-active no-padding-top">
-                <div class="block no-margin-top">
-                  <div id="subscribed-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
-                    <ul>
-                      <li class="item-content skeleton-effect-pulse">
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">This is Title</div>
-                          </div>
-                          <div class="item-text">
-                            Placeholder text line 1 Text line 2
-                          </div>
-                        </div>
-                      </li>
-                      <li class="item-content skeleton-effect-pulse delay-1ds">
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">This is Title because why not</div>
-                          </div>
-                          <div class="item-text">
-                            Placeholder text
-                          </div>
-                        </div>
-                      </li>
-                      <li class="item-content skeleton-effect-pulse delay-2ds">
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">This is a longer Title</div>
-                          </div>
-                          <div class="item-text">
-                            Placeholder text line 1 Text becuz im cool
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="list media-list no-margin-bottom no-hairlines no-hairlines-between no-margin-top">
-                    <ul id="subscribed-chats">
-                    </ul>
-                  </div>
+        <div class="scrollable">
+          <div style="height: 33.33%"></div>
+          <div id="expandable-card-content" class="card-content card-content-closed">
+            <div style="padding: 32px 32px 0 32px ">
+              <div class="row align-items-center">
+                <div class="col-60">
+                  <h1 id="expandable-card-name" class="no-margin">Event Name that is really long.</h1>
+                </div>
+                <div class="col-40">
+                  <button id="rsvp" class="button button-round button-fill" style="width: 100%">RSVP</button>
                 </div>
               </div>
-              <div id="tab-2" class="page-content tab no-padding-top">
-                <div class="block no-margin-top">
-                  <div id="school-group-chats-skeleton" class="list media-list skeleton-text no-hairlines no-hairlines-between no-margin">
-                    <ul>
-                      <li class="item-content skeleton-effect-pulse">
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">This is Title</div>
-                          </div>
-                          <div class="item-text">
-                            Placeholder text line 1 Text line 2
-                          </div>
-                        </div>
-                      </li>
-                      <li class="item-content skeleton-effect-pulse delay-1ds">
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">This is Title because why not</div>
-                          </div>
-                          <div class="item-text">
-                            Placeholder text
-                          </div>
-                        </div>
-                      </li>
-                      <li class="item-content skeleton-effect-pulse delay-2ds">
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">This is a longer Title</div>
-                          </div>
-                          <div class="item-text">
-                            Placeholder text line 1 Text becuz im
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="list media-list no-chevron no-margin-bottom no-margin-top no-hairlines no-hairlines-between">
-                    <ul class="school-group-chats" id="school-group-chats">
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div id="tab-3" class="page-content tab no-padding-top">
-                <div class="block no-margin-top">
-                  <div class="search-block no-padding">
-                    <form id="school-searchbar" class="searchbar searchbar-inline">
-                      <div class="searchbar-inner">
-                        <div class="searchbar-input-wrap">
-                          <input type="search" placeholder="Search">
-                          <i class="searchbar-icon"></i>
-                          <span class="input-clear-button"></span>
-                        </div>
-                        <span class="searchbar-disable-button if-not-aurora">Cancel</span>
-                      </div>
-                    </form>
-                  </div>
-                  <div id="members-list-skeleton" class="list media-list no-hairlines no-hairlines-between no-margin-top skeleton-text">
-                    <ul>
-                      <li class="item-content skeleton-effect-pulse">
-                        <div class="item-media">
-                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
-                        </div>
-                        <div class="item-inner">
-                          <div>Title Long</div>
-                        </div>
-                      </li>
-                      <li class="item-content skeleton-effect-pulse delay-1ds">
-                        <div class="item-media">
-                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
-                        </div>
-                        <div class="item-inner">
-                          <div>Title Even Longer</div>
-                        </div>
-                      </li>
-                      <li class="item-content skeleton-effect-pulse delay-2ds">
-                        <div class="item-media">
-                          <div class="skeleton-block" style="width: 40px; height: 40px; border-radius: 50%"></div>
-                        </div>
-                        <div class="item-inner">
-                          <div>Title Longerr</div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="list members-list searchbar-found no-hairlines no-hairlines-between no-margin-top">
-                    <ul id="members-list">
-                    </ul>
-                  </div>
-                  <!-- Nothing found message -->
-                  <div class="block searchbar-not-found">
-                    <div class="block-inner">Nothing found</div>
-                  </div>
-                </div>
+              <p id="expandable-card-description"> Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur. Lorum ipsum dolor sit amet concetur.</p>
+            </div>
+            <div class="block-title">Who's Going</div>
+            <div id="attendees" class="row justify-content-space-around">
+
+              <div class="attendee">
+                <div class="pic"></div>
+                <p>Bob Rosspool</p>
+
               </div>
             </div>
-          </div>
 
+            <div class="block-title">Comments</div>
+
+            <div class="page-content messages-content">
+              <div class="messages event-messages">
+
+              </div>
+            </div>
+            <div class="toolbar messagebar event-messagebar">
+              <div class="toolbar-inner">
+                <div class="messagebar-area">
+                  <textarea class="resizable" placeholder="Message"></textarea>
+                </div><a id="event-send-link" class="link send-link" href="#">Send</a>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
+      <!-- This is where the pages for the app are loaded -->
     </div>
   </div>
 
-
+  <!-- Import Scripts -->
   <script type="text/javascript" src="js/cordova.js"></script>
   <script type="text/javascript" src="js/framework7.bundle.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
@@ -313,11 +71,6 @@
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/events.js"></script>
   <script type="text/javascript" src="js/messaging.js"></script>
-
-
-
-
-
   <!-- Firebase stuff-->
   <script src="js/firebase/firebase-app.js"></script>
   <script src="js/firebase/firebase-auth.js"></script>
@@ -325,7 +78,6 @@
   <script src="js/firebase/firebase-firestore.js"></script>
   <script src="js/firebase/firebase-storage.js"></script>
   <script src="js/firebase/firebase-messaging.js"></script>
-
 
   <script>
     var firebaseConfig = {
@@ -360,19 +112,18 @@
     var PPRef = storageRef.child('profile-pictures');
 
     var User; //An objects that contins the user data if the currently signed in user
-    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later
+    var uid; //the id of the user this is the same as User.uid // TODO: Remove this later maybe
 
     /////////authentication section
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
+
       if (user) { // User is signed in
         uid = user.uid;
         //TODO if user has no school redirict to school selection page//this should actuall be done on sign up. (so just cover as an edge case)
         loadUserData();
-
       } else { //User is signed out.
         console.log("nobody is signed in");
         self.app.views.main.router.navigate('/login-screen/', {
-          reloadCurrent: true,
           ignoreCache: true,
         });
       }

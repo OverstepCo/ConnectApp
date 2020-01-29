@@ -58,7 +58,7 @@ var button = document.getElementById("rsvp");
 function openCard(eventIndex) {
   setupEventChat(events[eventIndex].eventID);
   cardName.innerHTML = events[eventIndex].name;
-  cardMedia.style.backgroundImage = "url(" + events[eventIndex].image + ")";
+  cardMedia.style.backgroundImage = $$('.event-pic-' + events[eventIndex].eventID).css("background-image");
   cardDescription.innerHTML = events[eventIndex].description;
   console.log("waa");
   button.setAttribute("onclick", "rsvp(" + eventIndex + ")");
