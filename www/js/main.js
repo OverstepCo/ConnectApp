@@ -286,52 +286,10 @@ if (false) {
 
 let fcmToken;
 // Init
-function onDeviceReady() {
-  FirebasePlugin = window.FirebasePlugin;
-
-  //Register handlers
-  FirebasePlugin.onMessageReceived(function(message) {
-    try {
-      console.console.log("onMessageReceived");
-      console.dir(message);
-
-    } catch (e) {
-      console.log("Exception in onMessageReceived callback: " + e.message);
-    }
-
-  }, function(error) {
-    console.log("Failed receiving FirebasePlugin message", error);
-  });
-
-  FirebasePlugin.onTokenRefresh(function(token) {
-    console.log("Token refreshed: " + token);
-    FirebasePlugin.subscribe("my_topic", function() {
-      log("Subscribed to topic");
-    }, function(error) {
-      logError("Failed to subscribe to topic", error);
-    });
-  }, function(error) {
-    logError("Failed to refresh token", error);
-  });
-
-  // Check permission then get token
-  FirebasePlugin.hasPermission(function(hasPermission) {
-    if (hasPermission) {
-      log("Remote notifications permission granted");
-      // Granted
-      getToken();
-    } else if (!false) {
-      // Request permission
-      log("Requesting remote notifications permission");
-      //FirebasePlugin.grantPermission(checkNotificationPermission.bind(this, true));
-    } else {
-      // Denied
-      logError("Notifications won't be shown as permission is denied");
-    }
-  });
+function onDeviceReady() {}
 
 
-}
+
 var getToken = function() {
   FirebasePlugin.getToken(function(token) {
     log("Got FCM token: " + token)
