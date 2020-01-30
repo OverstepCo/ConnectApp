@@ -64,7 +64,8 @@
   </div>
 
   <!-- Import Scripts -->
-  <script type="text/javascript" src="js/cordova.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
   <script type="text/javascript" src="js/framework7.bundle.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/chats.js"></script>
@@ -114,20 +115,22 @@
     var User; //An objects that contins the user data if the currently signed in user
     var uid; //the id of the user this is the same as User.uid // TODO: Remove this later maybe
 
-    /////////authentication section
+    //Auth section
     firebase.auth().onAuthStateChanged(function(user) { //This function runs every time the users authentication state changes (eg. the user signs in or out)
-
       if (user) { // User is signed in
         uid = user.uid;
         //TODO if user has no school redirict to school selection page//this should actuall be done on sign up. (so just cover as an edge case)
         loadUserData();
+        //        onDeviceReady();
       } else { //User is signed out.
         console.log("nobody is signed in");
-        self.app.views.main.router.navigate('/login-screen/', {
+        mainView.router.navigate('/login-screen/', {
           ignoreCache: true,
         });
       }
     });
+
+
   </script>
 
 

@@ -414,10 +414,6 @@ function signIn() { //Signs in a user
     var errorMessage = error.message;
     console.log("Failed to login: " + error.message);
     err.innerHTML = "Oops! " + error.message;
-  }).then(function() {
-    app.progressbar.hide();
-    self.app.views.main.router.navigate('/home/');
-
   });
 }
 

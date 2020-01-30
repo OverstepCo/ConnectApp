@@ -29,6 +29,7 @@ var app = new Framework7({
 
         },
       },
+      keepAlive: true,
     },
     // profile page
     {
@@ -282,6 +283,27 @@ if (false) {
   var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
   toggleDarkMode(toggle);
 }
+
+let fcmToken;
+// Init
+function onDeviceReady() {}
+
+
+
+var getToken = function() {
+  FirebasePlugin.getToken(function(token) {
+    log("Got FCM token: " + token)
+    fcmToken = token;
+    FirebasePlugin.subscribe("my_topic", function() {
+      log("Subscribed to topic");
+    }, function(error) {
+      logError("Failed to subscribe to topic", error);
+    });
+  }, function(error) {
+    logError("Failed to get FCM token", error);
+  });
+};
+
 
 function loadMainPage() { //Loads all the data on the main page//// TODO: make sure to cean all leftover data
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates

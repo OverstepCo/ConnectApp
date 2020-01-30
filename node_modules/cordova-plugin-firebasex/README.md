@@ -1,9 +1,7 @@
 cordova-plugin-firebasex [![Latest Stable Version](https://img.shields.io/npm/v/cordova-plugin-firebasex.svg)](https://www.npmjs.com/package/cordova-plugin-firebasex) [![Total Downloads](https://img.shields.io/npm/dt/cordova-plugin-firebasex.svg)](https://npm-stat.com/charts.html?package=cordova-plugin-firebasex)
 ========================
 
-This plugin is a fork of [cordova-plugin-firebase](https://github.com/arnesson/cordova-plugin-firebase) which has been rework to fix issues and add new functionality.
-
-It brings push notifications, analytics, event tracking, crash reporting and more from Google Firebase to your Cordova project.
+Brings push notifications, analytics, event tracking, crash reporting and more from Google Firebase to your Cordova project.
 
 Supported platforms: Android and iOS
 
@@ -20,19 +18,24 @@ To help ensure this plugin is kept updated, new features are added and bugfixes 
 **Table of Contents**
 
   - [Installation](#installation)
+    - [Plugin variables](#plugin-variables)
+      - [Android & iOS](#android--ios)
+      - [Android only](#android-only)
+      - [iOS only](#ios-only)
     - [Supported Cordova Versions](#supported-cordova-versions)
+    - [Supported Mobile Platform Versions](#supported-mobile-platform-versions)
     - [Migrating from cordova-plugin-firebase](#migrating-from-cordova-plugin-firebase)
       - [Breaking API changes](#breaking-api-changes)
-      - [Ionic 4](#ionic-4)
+      - [Ionic 4+](#ionic-4)
       - [Ionic 3](#ionic-3)
   - [Build environment notes](#build-environment-notes)
     - [PhoneGap Build](#phonegap-build)
     - [Android-specific](#android-specific)
-      - [Specifying dependent library versions](#specifying-dependent-library-versions)
+      - [Specifying Android library versions](#specifying-android-library-versions)
       - [AndroidX](#androidx)
     - [Google Play Services and Firebase libraries](#google-play-services-and-firebase-libraries)
     - [iOS-specific](#ios-specific)
-      - [Specifying dependent library versions](#specifying-dependent-library-versions-1)
+      - [Specifying iOS library versions](#specifying-ios-library-versions)
       - [Cocoapods](#cocoapods)
       - [Out-of-date pods](#out-of-date-pods)
       - [Strip debug symbols](#strip-debug-symbols)
@@ -54,6 +57,7 @@ To help ensure this plugin is kept updated, new features are added and bugfixes 
       - [Android Notification Color](#android-notification-color)
       - [Android Notification Sound](#android-notification-sound)
     - [iOS notifications](#ios-notifications)
+      - [iOS background notifications](#ios-background-notifications)
       - [iOS notification sound](#ios-notification-sound)
       - [iOS badge number](#ios-badge-number)
     - [Data messages](#data-messages)
@@ -68,10 +72,13 @@ To help ensure this plugin is kept updated, new features are added and bugfixes 
       - [getToken](#gettoken)
       - [onTokenRefresh](#ontokenrefresh)
       - [getAPNSToken](#getapnstoken)
+      - [onApnsTokenReceived](#onapnstokenreceived)
       - [onMessageReceived](#onmessagereceived)
       - [grantPermission](#grantpermission)
       - [hasPermission](#haspermission)
       - [unregister](#unregister)
+      - [isAutoInitEnabled](#isautoinitenabled)
+      - [setAutoInitEnabled](#setautoinitenabled)
       - [setBadgeNumber](#setbadgenumber)
       - [getBadgeNumber](#getbadgenumber)
       - [clearAllNotifications](#clearallnotifications)
@@ -98,6 +105,8 @@ To help ensure this plugin is kept updated, new features are added and bugfixes 
       - [verifyPhoneNumber](#verifyphonenumber)
         - [Android](#android-1)
         - [iOS](#ios-1)
+      - [signInWithCredential](#signinwithcredential)
+      - [linkUserWithCredential](#linkuserwithcredential)
     - [Remote Config](#remote-config)
       - [fetch](#fetch)
       - [activateFetched](#activatefetched)
@@ -115,9 +124,9 @@ To help ensure this plugin is kept updated, new features are added and bugfixes 
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-  ## Installation
+## Installation
 Install the plugin by adding it to your project's config.xml:
-```
+```xml
 <plugin name="cordova-plugin-firebasex" spec="latest" />
 ```
 or by running:
@@ -125,12 +134,45 @@ or by running:
 cordova plugin add cordova-plugin-firebasex
 ```
 
+### Plugin variables
+The following Cordova plugin variables are supported by the plugin.
+Note that these must be set at plugin installation time. If you wish to change plugin variables, you'll need to uninstall the plugin and reinstall it with the new variable values.
+
+#### Android & iOS
+- `FIREBASE_ANALYTICS_COLLECTION_ENABLED` - whether to automatically enable Firebase Analytics data collection on app startup
+- `FIREBASE_PERFORMANCE_COLLECTION_ENABLED` - whether to automatically enable Firebase Performance data collection on app startup
+- `FIREBASE_CRASHLYTICS_COLLECTION_ENABLED` - whether to automatically enable Firebase Crashlytics data collection on app startup
+See [Disable data collection on startup](#disable-data-collection-on-startup) for more info.
+
+#### Android only
+The following plugin variables are used to specify the Firebase SDK versions as Gradle dependencies on Android:
+- `ANDROID_PLAY_SERVICES_TAGMANAGER_VERSION`
+- `ANDROID_FIREBASE_ANALYTICS_VERSION`
+- `ANDROID_FIREBASE_MESSAGING_VERSION`
+- `ANDROID_FIREBASE_CONFIG_VERSION`
+- `ANDROID_FIREBASE_PERF_VERSION`
+- `ANDROID_FIREBASE_AUTH_VERSION`
+- `ANDROID_CRASHLYTICS_VERSION`
+- `ANDROID_CRASHLYTICS_NDK_VERSION`
+See [Specifying Android library versions](#specifying-android-library-versions) for more info.
+
+- `ANDROID_ICON_ACCENT` - sets the default accent color for system notifications. See [Android Notification Color](#android-notification-color) for more info.
+
+#### iOS only
+- `IOS_STRIP_DEBUG` - prevents symbolification of all libraries included via Cocoapods. See [Strip debug symbols](#strip-debug-symbols) for more info.
+- `SETUP_RECAPTCHA_VERIFICATION` - automatically sets up reCAPTCHA verification for phone authentication on iOS. See [verifyPhoneNumber](#verifyphonenumber) for more info. 
+
 ### Supported Cordova Versions
 - cordova: `>= 9`
 - cordova-android: `>= 8`
 - cordova-ios: `>= 5`
 
+### Supported Mobile Platform Versions
+- Android `>= 4.1`
+- iOS `>= 10.0`
+
 ### Migrating from cordova-plugin-firebase
+This plugin is a fork of [cordova-plugin-firebase](https://github.com/arnesson/cordova-plugin-firebase) which has been reworked to fix issues and add new functionality.
 If you already have [cordova-plugin-firebase](https://github.com/arnesson/cordova-plugin-firebase) installed in your Cordova project, you need to completely remove it before installing this plugin otherwise they will conflict and cause build errors in your project. The safest way of doing this is as follows:
 
     rm -Rf platforms/android
@@ -161,18 +203,16 @@ You should be aware of the following breaking changes compared with `cordova-plu
            });`
 * Adds support for foreground notifications and data notification messages
 
-#### Ionic 4
-[This PR](https://github.com/ionic-team/ionic-native/pull/3106) adds an [Ionic Native firebase-x Typescript wrapper](https://github.com/ionic-team/ionic-native/blob/master/src/%40ionic-native/plugins/firebase-x/index.ts) for using `cordova-plugin-firebasex` with Ionic 4. 
-The API is similar to the [Ionic Native Firebase](https://ionicframework.com/docs/native/firebase) wrapper.
+#### Ionic 4+
+Ionic Native provides a [FirebaseX Typescript wrapper](https://ionicframework.com/docs/native/firebase-x) for using `cordova-plugin-firebasex` with Ionic v4, v5 and above.
+Please see their documentation for usage.
 
-    ionic cordova plugin add cordova-plugin-firebasex
-    npm install @ionic-native/firebase-x
+**NOTE:** 
+- This plugin provides only the Javascript API as documented below.
+- The Typescript wrapper is owned and maintain by Ionic. 
+- Please [report any issues](https://github.com/ionic-team/ionic-native/issues) against the [Ionic Native repo](https://github.com/ionic-team/ionic-native/), not this one.
+- Any issues opened against this repo which relate to the Typescript wrapper **will be closed immediately**.
 
-    import { FirebaseX } from "@ionic-native/firebase-x/ngx";
-    constructor(private firebase: FirebaseX)
-     
-    this.firebase.getToken().then(token => console.log(`The token is ${token}`))
-    this.firebase.onMessageReceived().subscribe(data => console.log(`FCM message: ${data}`));
      
 #### Ionic 3
 The above PR does not work for Ionic 3 so you (currently) can't use the [Ionic Native Firebase](https://ionicframework.com/docs/native/firebase) Typescript wrapper with Ionic 3. 
@@ -197,6 +237,8 @@ If you want to make the `onMessageReceived()` JS API behave like the Ionic Nativ
     }
     ...
     this.onNotificationOpen().subscribe(data => console.log(`FCM message: ${data}`));
+    
+See the [cordova-plugin-firebasex-ionic3-test](https://github.com/dpa99c/cordova-plugin-firebasex-ionic3-test) example project for a demonstration of how to use the plugin with Ionic 3.    
 
 ## Build environment notes
 
@@ -205,46 +247,44 @@ This plugin will not work with Phonegap Build (and other remote cloud build envs
         
 ### Android-specific
 
-#### Specifying dependent library versions
+#### Specifying Android library versions
 This plugin depends on various components such as the Firebase SDK which are pulled in at build-time by Gradle on Android.
 By default this plugin pins specific versions of these in [its `plugin.xml`](https://github.com/dpa99c/cordova-plugin-firebase/blob/master/plugin.xml) where you can find the currently pinned versions as `<preference>`'s, for example:
 
-    <preference name="ANDROID_FIREBASE_CORE_VERSION" default="17.0.0" />
+    <preference name="ANDROID_FIREBASE_ANALYTICS_VERSION" default="17.0.0" />
 
 The Android defaults can be overridden at plugin installation time by specifying plugin variables as command-line arguments, for example:
 
-    cordova plugin add cordova-plugin-firebasex --variable ANDROID_FIREBASE_CORE_VERSION=17.0.0
+    cordova plugin add cordova-plugin-firebasex --variable ANDROID_FIREBASE_ANALYTICS_VERSION=17.0.0
     
 Or you can specify them as plugin variables in your `config.xml`, for example:
 
     <plugin name="cordova-plugin-firebasex" spec="latest">
-        <variable name="ANDROID_FIREBASE_CORE_VERSION" value="17.0.0" />
+        <variable name="ANDROID_FIREBASE_ANALYTICS_VERSION" value="17.0.0" />
     </plugin>
     
-The following plugin variables are use to specify the follow Gradle dependency versions on Android:
+The following plugin variables are used to specify the following Gradle dependency versions on Android:
 
 - `ANDROID_PLAY_SERVICES_TAGMANAGER_VERSION` => `com.google.android.gms:play-services-tagmanager`
-- `ANDROID_FIREBASE_CORE_VERSION` => `com.google.firebase:firebase-core`
+- `ANDROID_FIREBASE_ANALYTICS_VERSION` => `com.google.firebase:firebase-analytics`
 - `ANDROID_FIREBASE_MESSAGING_VERSION` => `com.google.firebase:firebase-messaging`
 - `ANDROID_FIREBASE_CONFIG_VERSION` => `com.google.firebase:firebase-config`
 - `ANDROID_FIREBASE_PERF_VERSION` => `com.google.firebase:firebase-perf`
 - `ANDROID_FIREBASE_AUTH_VERSION` => `com.google.firebase:firebase-auth`
 - `ANDROID_CRASHLYTICS_VERSION` => `com.crashlytics.sdk.android:crashlytics`
 - `ANDROID_CRASHLYTICS_NDK_VERSION` => `com.crashlytics.sdk.android:crashlytics-ndk`
-- `ANDROID_SHORTCUTBADGER_VERSION` => `me.leolin:ShortcutBadger`
 
 For example, to explicitly specify all the component versions at plugin install time:
 
     cordova plugin add cordova-plugin-firebasex \
         --variable ANDROID_PLAY_SERVICES_TAGMANAGER_VERSION=17.0.0 \
-        --variable ANDROID_FIREBASE_CORE_VERSION=17.0.0 \
+        --variable ANDROID_FIREBASE_ANALYTICS_VERSION=17.0.0 \
         --variable ANDROID_FIREBASE_MESSAGING_VERSION=19.0.0 \
         --variable ANDROID_FIREBASE_CONFIG_VERSION=18.0.0 \
         --variable ANDROID_FIREBASE_PERF_VERSION=18.0.0 \
         --variable ANDROID_FIREBASE_AUTH_VERSION=18.0.0 \
         --variable ANDROID_CRASHLYTICS_VERSION=2.10.1 \
         --variable ANDROID_CRASHLYTICS_NDK_VERSION=2.1.0 \
-        --variable ANDROID_SHORTCUTBADGER_VERSION=1.1.22 \
         
 #### AndroidX
 This plugin has been migrated to use [AndroidX (Jetpack)](https://developer.android.com/jetpack/androidx/migrate) which is the successor to the [Android Support Library](https://developer.android.com/topic/libraries/support-library/index).
@@ -264,7 +304,7 @@ Similarly, if your build is failing because multiple plugins are installing diff
 you can try installing [cordova-android-firebase-gradle-release](https://github.com/dpa99c/cordova-android-firebase-gradle-release) to align these.  
 
 ### iOS-specific
-#### Specifying dependent library versions
+#### Specifying iOS library versions
 This plugin depends on various components such as the Firebase SDK which are pulled in at build-time by Cocoapods on iOS.
 This plugin pins specific versions of these in [its `plugin.xml`](https://github.com/dpa99c/cordova-plugin-firebase/blob/master/plugin.xml) where you can find the currently pinned iOS versions in the  `<pod>`'s, for example:
 
@@ -386,8 +426,11 @@ Note: only notification messages can be sent via the Firebase Console - data mes
 
 ### Background notifications
 If the notification message arrives while the app is in the background/not running, it will be displayed as a system notification.
-No callback can be made by the plugin to the app when the message arrives since the display of the notification is entirely handled by the operating system.
-However if the user taps the system notification, this launches/resumes the app and the notification title, body and optional data payload is passed to the [onMessageReceived](#onMessageReceived) callback.
+
+By default, no callback is made to the plugin when the message arrives while the app is not in the foreground, since the display of the notification is entirely handled by the operating system. 
+However, there are platform-specific circumstances where a callback can be made when the message arrives and the app is in the background that don't require user interaction to receive the message payload - see [Android background notifications](#android-background-notifications) and [iOS background notifications](#ios-background-notifications) for details.
+
+If the user taps the system notification, this launches/resumes the app and the notification title, body and optional data payload is passed to the [onMessageReceived](#onMessageReceived) callback.
 
 When the `onMessageReceived` is called in response to a user tapping a system notification while the app is in the background/not running, it will be passed the property `tap: "background"`.
 
@@ -419,6 +462,10 @@ Notifications on Android can be customised to specify the sound, icon, LED colou
 
 #### Android background notifications
 If the notification message arrives while the app is in the background/not running, it will be displayed as a system notification.
+
+If a notification message arrives while the app is in the background but is still running (i.e. has not been task-killed) and the device is not in power-saving mode, the `onMessageReceived` callback will be invoked without the `tap` property, indicating the message was received without user interaction.
+
+If the user then taps the system notification, the app will be brought to the foreground and `onMessageReceived` will be invoked **again**, this time with `tap: "background"` indicating that the user tapped the system notification while the app was in the background.
 
 In addition to the title and body of the notification message, Android system notifications support specification of the following notification settings:
 - [Icon](#android-notification-icons)
@@ -471,7 +518,7 @@ On Android 7 and below, the sound setting of system notifications is specified i
         },
       "android": {
         "notification": {
-          "sound": "crystal",
+          "sound": "my_sound",
           "tag": "default"
       }
     }
@@ -482,7 +529,7 @@ By default the plugin will use the default app icon for notification messages.
 
 ##### Android Default Notification Icon
 To define a custom default notification icon, you need to create the images and deploy them to the `<projectroot>/platforms/android/app/src/main/res/<drawable-DPI>` folders.
-The easiest way to do this is using the [Image Asset Studio in Android Studio](https://developer.android.com/studio/write/image-asset-studio#create-notification) or using the [Android Asset Studio webapp](https://romannurik.github.io/AndroidAssetStudio/icons-notification.html#source.type=clipart&source.clipart=ac_unit&source.space.trim=1&source.space.pad=0&name=notification_icon).
+The easiest way to create the images is using the [Image Asset Studio in Android Studio](https://developer.android.com/studio/write/image-asset-studio#create-notification) or using the [Android Asset Studio webapp](https://romannurik.github.io/AndroidAssetStudio/icons-notification.html#source.type=clipart&source.clipart=ac_unit&source.space.trim=1&source.space.pad=0&name=notification_icon).
 
 The icons should be monochrome transparent PNGs with the following sizes:
 
@@ -493,7 +540,9 @@ The icons should be monochrome transparent PNGs with the following sizes:
 - xxxhdpi: 96x96
 
 Once you've created the images, you need to deploy them from your Cordova project to the native Android project.
-To do this, copy the `drawable-DPI` image directories into your Cordova project and add `<resource-file>` entries to the `<platform name="android">` section of your `config.xml`, for example:
+To do this, copy the `drawable-DPI` image directories into your Cordova project and add `<resource-file>` entries to the `<platform name="android">` section of your `config.xml`, where `src` specifies the relative path to the images files within your Cordova project directory. 
+
+For example, copy the`drawable-DPI` image directories to `<projectroot>/res/android/` and add the following to your `config.xml`:
 
     <platform name="android">
         <resource-file src="res/android/drawable-mdpi/notification_icon.png" target="app/src/main/res/drawable-mdpi/notification_icon.png" />
@@ -508,7 +557,7 @@ The default notification icon images **must** be named `notification_icon.png`.
 You then need to add a `<config-file>` block to the `config.xml` which will instruct Firebase to use your icon as the default for notifications:
 
     <platform name="android">
-        <config-file target="AndroidManifest.xml" parent="application">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/notification_icon" />
         </config-file>
     </platform>
@@ -575,6 +624,7 @@ You can also reference these icons in [data messages](#android-data-messages), f
 #### Android Notification Color
 On Android Lollipop (5.0/API 21) and above you can set the default accent color for the notification by adding a color setting.
 This is defined as an [ARGB colour](https://en.wikipedia.org/wiki/RGBA_color_space#ARGB_(word-order)) which the plugin sets by default to `#FF00FFFF` (cyan).
+Note: On Android 7 and above, the accent color can only be set for the notification displayed in the system tray area - the icon in the statusbar is always white.
 
 You can override this default by specifying a value using the `ANDROID_ICON_ACCENT` plugin variable during plugin installation, for example:
 
@@ -628,7 +678,7 @@ In a notification message, you specify the sound file name in the `android.notif
       },
       "android": {
         "notification": {
-          "sound": "crystal"
+          "sound": "my_sound"
         }
       }
     }
@@ -641,7 +691,7 @@ And in a data message by specifying it in the `data` section:
         "notification_foreground": "true",
         "notification_body" : "Notification body",
         "notification_title": "Notification title",
-        "notification_android_sound": "crystal"
+        "notification_android_sound": "my_sound"
       }
     } 
     
@@ -664,11 +714,18 @@ For example:
           "payload": {
             "aps": {
               "sound": "default",
-              "badge": 1
+              "badge": 1,
+              "content-available": 1
             }
           }
         }
     }
+
+#### iOS background notifications
+If the app is in the background but is still running (i.e. has not been task-killed) and the device is not in power-saving mode, the `onMessageReceived` callback can be invoked when the message arrives without requiring user interaction (i.e. tapping the system notification).
+To do this you must specify `"content-available": 1` in the `apns.payload.aps` section of the message payload - see the [Apple documentation](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/CreatingtheNotificationPayload.html#//apple_ref/doc/uid/TP40008194-CH10-SW8) for more information.
+When the message arrives, the `onMessageReceived` callback will be invoked without the `tap` property, indicating the message was received without user interaction.
+If the user then taps the system notification, the app will be brought to the foreground and `onMessageReceived` will be invoked **again**, this time with `tap: "background"` indicating that the user tapped the system notification while the app was in the background.
 
 #### iOS notification sound
 You can specify custom sounds for notifications or play the device default notification sound.
@@ -837,7 +894,7 @@ Example data message with Android notification keys:
         "notification_android_visibility": "1",
         "notification_android_color": "#ff0000",
         "notification_android_icon": "coffee",
-        "notification_android_sound": "crystal",
+        "notification_android_sound": "my_sound",
         "notification_android_vibrate": "500, 200, 500",
         "notification_android_lights": "#ffff0000, 250, 250"
       }
@@ -896,11 +953,16 @@ The plugin is capable of receiving push notifications and FCM data messages.
 See [Cloud messaging](#cloud-messaging) section for more.
 
 #### getToken
-Get the FCM device token (id):
-```
-window.FirebasePlugin.getToken(function(token) {
-    // save this server-side and use it to push notifications to this device
-    console.log(token);
+Get the current FCM token.
+Null if the token has not been allocated yet by the Firebase SDK.
+
+**Parameters**:
+- {function} success - callback function which will be passed the {string} token as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
+window.FirebasePlugin.getToken(function(fcmToken) {
+    console.log(fcmToken);
 }, function(error) {
     console.error(error);
 });
@@ -908,34 +970,68 @@ window.FirebasePlugin.getToken(function(token) {
 Note that token will be null if it has not been established yet.
 
 #### onTokenRefresh
-Register for token changes:
-```
-window.FirebasePlugin.onTokenRefresh(function(token) {
-    // save this server-side and use it to push notifications to this device
-    console.log(token);
+Registers a handler to call when the FCM token changes.
+This is the best way to get the token as soon as it has been allocated.
+This will be called on the first run after app install when a token is first allocated.
+It may also be called again under other circumstances, e.g. if `unregister()` is called or Firebase allocates a new token for other reasons.
+You can use this callback to return the token to you server to keep the FCM token associated with a given user up-to-date. 
+
+**Parameters**:
+- {function} success - callback function which will be passed the {string} token as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
+window.FirebasePlugin.onTokenRefresh(function(fcmToken) {
+    console.log(fcmToken);
 }, function(error) {
     console.error(error);
 });
 ```
-This is the best way to get a valid token for the device as soon as the token is established
 
 #### getAPNSToken
 iOS only.
-Get the APNS token.
-```
+Get the APNS token allocated for this app install.
+Note that token will be null if it has not been allocated yet.
+
+**Parameters**:
+- {function} success - callback function which will be passed the {string} APNS token as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.getAPNSToken(function(apnsToken) {
     console.log(apnsToken);
 }, function(error) {
     console.error(error);
 });
 ```
-Note that token will be null if it has not been established yet.
+
+#### onApnsTokenReceived
+iOS only.
+Registers a handler to call when the APNS token is allocated.
+This will be called once when remote notifications permission has been granted by the user at runtime. 
+
+**Parameters**:
+- {function} success - callback function which will be passed the {string} token as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
+window.FirebasePlugin.onApnsTokenReceived(function(apnsToken) {
+    console.log(apnsToken);
+}, function(error) {
+    console.error(error);
+});
+```
 
 #### onMessageReceived
 Registers a callback function to invoke when: 
 - a notification or data message is received by the app
 - a system notification is tapped by the user
-```
+
+**Parameters**:
+- {function} success - callback function which will be passed the {object} message as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.onMessageReceived(function(message) {
     console.log("Message type: " + message.messageType);
     if(message.messageType === "notification"){
@@ -944,7 +1040,7 @@ window.FirebasePlugin.onMessageReceived(function(message) {
             console.log("Tapped in " + message.tap);
         }
     }
-    console.dir(notification);
+    console.dir(message);
 }, function(error) {
     console.error(error);
 });
@@ -979,7 +1075,11 @@ Data message flow:
 Grant permission to receive push notifications (will trigger prompt) and return `hasPermission: true`.
 iOS only (Android will always return true).
 
-```
+**Parameters**:
+- {function} success - callback function which will be passed the {boolean} permission result as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.grantPermission(function(hasPermission){
     console.log("Permission was " + (hasPermission ? "granted" : "denied"));
 });
@@ -988,29 +1088,78 @@ window.FirebasePlugin.grantPermission(function(hasPermission){
 Check permission to receive push notifications and return the result to a callback function as boolean.
 On iOS, returns true is runtime permission for remote notifications is granted and enabled in Settings.
 On Android, returns true if remote notifications are enabled.
-```
+
+**Parameters**:
+- {function} success - callback function which will be passed the {boolean} permission result as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.hasPermission(function(hasPermission){
     console.log("Permission is " + (hasPermission ? "granted" : "denied"));
 });
 ```
 
 #### unregister
-Unregister from firebase, used to stop receiving push notifications. 
-Call this when you logout user from your app.
-```
+Unregisters from Firebase by deleting the current device token.
+Use this to stop receiving push notifications associated with the current token. 
+e.g. call this when you logout user from your app.
+By default, a new token will be generated as soon as the old one is removed.
+To prevent a new token being generated, by sure to disable autoinit using [`setAutoInitEnabled()`](#setautoinitenabled) before calling [`unregister()`](#unregister).
+
+**Parameters**: None
+
+```javascript
 window.FirebasePlugin.unregister();
 ```
 
+#### isAutoInitEnabled
+Indicates whether autoinit is currently enabled.
+If so, new FCM tokens will be automatically generated.
+
+**Parameters**:
+- {function} success - callback function which will be passed the {boolean} result as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+
+```javascript
+window.FirebasePlugin.isAutoInitEnabled(function(enabled){
+    console.log("Auto init is " + (enabled ? "enabled" : "disabled"));    
+});
+
+```
+
+#### setAutoInitEnabled
+Sets whether to autoinit new FCM tokens.
+By default, a new token will be generated as soon as the old one is removed.
+To prevent a new token being generated, by sure to disable autoinit using [`setAutoInitEnabled()`](#setautoinitenabled) before calling [`unregister()`](#unregister).
+
+**Parameters**:
+- {boolean} enabled - set true to enable, false to disable
+- {function} success - callback function to call on successful execution of operation.
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+
+```javascript
+window.FirebasePlugin.setAutoInitEnabled(false, function(){
+    console.log("Auto init has been disabled ");
+    window.FirebasePlugin.unregister();
+});
+
+```
 
 #### setBadgeNumber
 iOS only.
 Set a number on the icon badge:
-```
+
+**Parameters**:
+- {integer} badgeNumber - number to set for the app badge
+
+```javascript
 window.FirebasePlugin.setBadgeNumber(3);
 ```
 
 Set 0 to clear the badge
-```
+```javascript
 window.FirebasePlugin.setBadgeNumber(0);
 ```
 
@@ -1019,7 +1168,11 @@ Note: this function is no longer available on Android (see [#124](https://github
 #### getBadgeNumber
 iOS only.
 Get icon badge number:
-```
+
+**Parameters**:
+- {function} success - callback function which will be passed the {integer} current badge number as an argument
+
+```javascript
 window.FirebasePlugin.getBadgeNumber(function(n) {
     console.log(n);
 });
@@ -1029,7 +1182,10 @@ Note: this function is no longer available on Android (see [#124](https://github
 
 #### clearAllNotifications
 Clear all pending notifications from the drawer:
-```
+
+**Parameters**: None
+
+```javascript
 window.FirebasePlugin.clearAllNotifications();
 ```
 
@@ -1038,8 +1194,10 @@ Subscribe to a topic.
 
 Topic messaging allows you to send a message to multiple devices that have opted in to a particular topic.
 
+**Parameters**:
+- {string} topicName - name of topic to subscribe to
 
-```
+```javascript
 window.FirebasePlugin.subscribe("latest_news");
 ```
 
@@ -1047,7 +1205,11 @@ window.FirebasePlugin.subscribe("latest_news");
 Unsubscribe from a topic.
 
 This will stop you receiving messages for that topic
-```
+
+**Parameters**:
+- {string} topicName - name of topic to unsubscribe from
+
+```javascript
 window.FirebasePlugin.unsubscribe("latest_news");
 ```
 
@@ -1063,11 +1225,19 @@ A default channel is created by the plugin at app startup; the properties of thi
 
 Calling on Android 7 or below or another platform will have no effect.
 
-```
+**Parameters**:
+- {object} - channel configuration object (see below for object keys/values)
+- {function} success - callback function which will be call on successful channel creation
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 // Define custom  channel - all keys are except 'id' are optional.
 var channel  = {
     // channel ID - must be unique per app package
     id: "my_channel_id",
+
+    // Channel description. Default: empty string
+    description: "Channel description",
     
     // Channel name. Default: empty string
     name: "Channel name",
@@ -1090,7 +1260,7 @@ var channel  = {
     light: true,
     
     //LED color in ARGB format - this example BLUE color. If set to -1, light color will be default. Default value: -1.
-    lightColor: "0xFF0000FF",
+    lightColor: parseInt("FF0000FF", 16).toString(),
     
     //Importance - integer from 0 to 4. Default value: 4
     //0 - none - no sound, does not show in the shade
@@ -1112,9 +1282,9 @@ var channel  = {
 };
 
 // Create the channel
-window.FirebasePlugin.createChannel(options,
+window.FirebasePlugin.createChannel(channel,
 function(){
-    console.log('Channel created: ' + options.id);
+    console.log('Channel created: ' + channel.id);
 },
 function(error){
    console.log('Create channel error: ' + error);
@@ -1123,13 +1293,13 @@ function(error){
 
 Example FCM v1 API notification message payload for invoking the above example channel:
 
-```
+```json
 
 {
  "notification":
  {
       "title":"Notification title",
-      "body":"Notification body",
+      "body":"Notification body"
  },
  "android": {
      "notification": {
@@ -1148,25 +1318,31 @@ Any options not specified will not be overridden.
 Should be called as soon as possible (on app start) so default notifications will work as expected. 
 Calling on Android 7 or below or another platform will have no effect.
 
-```
-var options = {
+**Parameters**:
+- {object} - channel configuration object
+- {function} success - callback function which will be call on successfully setting default channel
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
+var channel = {
   id: "my_default_channel",
   name: "My Default Name",
+  description: "My Default Description",
   sound: "ringtone",
   vibration: [500, 200, 500],
   light: true,
-  lightColor: "0xFF0000FF",
+  lightColor: parseInt("FF0000FF", 16).toString(),
   importance: 4,
   badge: false,
   visibility: -1
 };
 
-window.FirebasePlugin.setDefaultChannel(options,
+window.FirebasePlugin.setDefaultChannel(channel,
 function(){
-    console.log('Channel created: ' + options.id);
+    console.log('Default channel set');
 },
 function(error){
-   console.log('Create channel error: ' + error);
+   console.log('Set default channel error: ' + error);
 });
 ```
 
@@ -1177,6 +1353,7 @@ The default channel is initialised at app startup with the following default set
 {
     id: "fcm_default_channel",
     name: "Default",
+    description: "",
     sound: "default",
     vibration: true,
     light: true,
@@ -1192,7 +1369,12 @@ Android 8+ only.
 Removes a previously defined channel.
 Calling on Android 7 or below or another platform will have no effect.
 
-```
+**Parameters**:
+- {string} - id of channel to delete
+- {function} success - callback function which will be call on successfully deleting channel
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.deleteChannel("my_channel_id",
 function(){
     console.log('Channel deleted');
@@ -1208,7 +1390,11 @@ Android 8+ only.
 Gets a list of all channels.
 Calling on Android 7 or below or another platform will have no effect.
 
-```
+**Parameters**:
+- {function} success - callback function which will be passed the {array} of channel objects as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.listChannels(
 function(channels){
      if(typeof channels == "undefined")
@@ -1238,7 +1424,10 @@ Note that until you set this up, all fine-grain event-level data is discarded by
 #### setAnalyticsCollectionEnabled
 Manually enable/disable analytics data collection, e.g. if [disabled on app startup](#disable-data-collection-on-startup).
 
-```
+**Parameters**:
+- {boolean} setEnabled - whether to enable or disable analytics data collection 
+
+```javascript
 window.FirebasePlugin.setAnalyticsCollectionEnabled(true); // Enables analytics data collection
 
 window.FirebasePlugin.setAnalyticsCollectionEnabled(false); // Disables analytics data collection
@@ -1246,25 +1435,43 @@ window.FirebasePlugin.setAnalyticsCollectionEnabled(false); // Disables analytic
 
 #### logEvent
 Log an event using Analytics:
-```
+
+**Parameters**:
+- {string} eventName - name of event to log to Firebase Analytics
+- {object} eventProperties - key/value object of event properties (must be serializable)
+
+```javascript
 window.FirebasePlugin.logEvent("select_content", {content_type: "page_view", item_id: "home"});
 ```
 
 #### setScreenName
 Set the name of the current screen in Analytics:
-```
+
+**Parameters**:
+- {string} screenName - name of screen to log to Firebase Analytics
+
+```javascript
 window.FirebasePlugin.setScreenName("Home");
 ```
 
 #### setUserId
 Set a user id for use in Analytics:
-```
+
+**Parameters**:
+- {string} userName - name of user to set in Firebase Analytics
+
+```javascript
 window.FirebasePlugin.setUserId("user_id");
 ```
 
 #### setUserProperty
 Set a user property for use in Analytics:
-```
+
+**Parameters**:
+- {string} userName - name of user property to set in Firebase Analytics
+- {string} userName - value of user property to set in Firebase Analytics
+
+```javascript
 window.FirebasePlugin.setUserProperty("name", "value");
 ```
 
@@ -1276,7 +1483,9 @@ Note that for iOS you may need to [upload the dSYM](https://firebase.google.com/
 #### setCrashlyticsCollectionEnabled
 Manually enable Crashlytics data collection if [disabled on app startup](#disable-data-collection-on-startup).
 
-```
+**Parameters**: None
+
+```javascript
 window.FirebasePlugin.setCrashlyticsCollectionEnabled();
 ```
 
@@ -1290,12 +1499,20 @@ To add user IDs to your reports, assign each user a unique identifier in the for
 
 See [the Firebase docs for more](https://firebase.google.com/docs/crashlytics/customize-crash-reports?authuser=0#set_user_ids).
 
+**Parameters**:
+- {string} userId - User ID to associate with Crashlytics reports
+
+```javascript
+window.FirebasePlugin.setCrashlyticsUserId("user_id");
+```
+
 
 #### sendCrash
 Simulates (causes) a fatal native crash which causes a crash event to be sent to Crashlytics (useful for testing).
 See [the Firebase documentation](https://firebase.google.com/docs/crashlytics/force-a-crash?authuser=0#force_a_crash_to_test_your_implementation) regarding crash testing.
 Crashes will appear under `Event type = "Crashes"` in the Crashlytics console.
 
+**Parameters**: None
 
 ```javascript
 window.FirebasePlugin.sendCrash();
@@ -1305,6 +1522,9 @@ window.FirebasePlugin.sendCrash();
 Sends a crash-related log message that will appear in the `Logs` section of the next native crash event.
 Note: if you don't then crash, the message won't be sent!
 Also logs the message to the native device console.
+
+**Parameters**:
+- {string} message - message to associate with next native crash event
 
 ```javascript
 window.FirebasePlugin.logMessage("about to send a crash for testing!");
@@ -1319,82 +1539,234 @@ The event will appear under `Event type = "Non-fatals"` in the Crashlytics conso
 The error message will appear in the `Logs` section of the non-fatal error event.
 Also logs the error message to the native device console.
 
+**Parameters**:
+- {string} errorMessage - non-fatal error message to log to Crashlytics
+- {object} stackTrace - (optional) a stack trace generated by [stacktrace.js](http://www.stacktracejs.com/)
+- {function} success - (optional) callback function which will be invoked on success
+- {function} error - (optional) callback function which will be passed a {string} error message as an argument
+
 ```javascript
-window.FirebasePlugin.logError("something bad happened, but at least we didn't crash!");
+    // Send an unhandled JS exception
+    var appRootURL = window.location.href.replace("index.html",'');
+    window.onerror = function(errorMsg, url, line, col, error) {
+        var logMessage = errorMsg;
+        var stackTrace = null;
+
+        var sendError = function(){
+            FirebasePlugin.logError(logMessage, stackTrace, function(){
+                console.log("Sent JS exception");
+            },function(error){
+                console.error("Failed to send JS exception", error);
+            });
+        };
+
+        logMessage += ': url='+url.replace(appRootURL, '')+'; line='+line+'; col='+col;
+
+        if(typeof error === 'object'){
+            StackTrace.fromError(error).then(function(trace){
+                stackTrace = trace;
+                sendError()
+            });
+        }else{
+            sendError();
+        }
+    };
+    
+    // Send a non-fatal error
+    FirebasePlugin.logError("A non-fatal error", function(){
+        console.log("Sent non-fatal error");
+    },function(error){
+        console.error("Failed to send non-fatal error", error);
+    });
 ```
+
+An example of how the error entry will appear in the Crashlytics console:
+
+<br/>
+<b>Android</b>
+<br/>
+<img src="https://user-images.githubusercontent.com/2345062/68016874-5e0cdb80-fc8d-11e9-9a26-97b448039cf5.png"/>
+
+<br/><br/>
+<b>iOS</b>
+<br/>
+<img src="https://user-images.githubusercontent.com/2345062/68041597-d1800e80-fcc8-11e9-90e1-eeeedf9cc43f.png"/>
+
+
 
 ### Authentication
 
 #### verifyPhoneNumber
-Request a verification ID and send a SMS with a verification code. Use them to construct a credential to sign in the user (in your app).
-- https://firebase.google.com/docs/auth/android/phone-auth
-- https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInWithCredential
-- https://firebase.google.com/docs/reference/js/firebase.User#linkWithCredential
+Requests verification of a phone number in order to authenticate a user and sign then into Firebase in your app.
 
-**NOTE: This will only work on physical devices.**
+**NOTE: This will only work on physical devices with a SIM card (not iOS Simulator or Android Emulator)**
 
-iOS will return: credential (string)
+In response to your request, you'll receive a verification ID which you can use in conjunction with the verification code to sign the user in.
 
-Android will return:
-credential.verificationId (object and with key verificationId)
-credential.instantVerification (boolean)
-credential.code (string) (note that this key only exists if instantVerification is true)
+On iOS and some Android devices, the user will receive and SMS containing the verification code which they must manually enter into your app.
 
-You need to use device plugin in order to access the right key.
+Some Android devices support "instant verfication", in which case an SMS will not be send and you will be returned the verification code along with the verification ID.
+In this case, the user doesn't need to do anything in order for you to sign them in.  
 
-IMPORTANT NOTE: Android supports auto-verify and instant device verification. Therefore in that case it doesn't make sense to ask for an sms code as you won't receive one. In this case you'll get a credential.verificationId and a credential.code where code is the auto received verification code that would normally be sent via sms. To log in using this procedure you must pass this code to PhoneAuthProvider.credential(verificationId, code). You'll find an implementation example further below.
+**Parameters**:
+- {function} success - callback function to pass {object} credentials to as an argument
+- {function} error - callback function which will be passed a {string} error message as an argument
+- {string} phoneNumber - phone number to verify
+- {integer} timeOutDuration - (optional) time to wait in seconds before timing out
+- {string} fakeVerificationCode - (optional) to test instant verification on Android ,specify a fake verification code to return for whitelisted phone numbers.
+    - See [Firebase SDK Phone Auth Android Integration Testing](https://firebase.google.com/docs/auth/android/phone-auth#integration-testing) for more info.
 
-When using node.js Firebase Admin-SDK, follow this tutorial:
-- https://firebase.google.com/docs/auth/admin/create-custom-tokens
+The success callback will be passed a credential object with the following properties:
+- instantVerification {boolean} - true if the Android device supports instant verification, in which case the verification code will be included in the credential object.
+If this is false, the device will be sent an SMS containing the verification code for the user to manually enter into your app.
+Always false on iOS.
+- verificationId {string} - the verification ID you'll need to pass along with the verification code to sign the user in.
+Always returned on both Android & iOS.
+- code {string} - verification code. Will only be present if `instantVerification` is true. Always undefined on iOS.
 
-Pass back your custom generated token and call
-```js
-firebase.auth().signInWithCustomToken(customTokenFromYourServer);
-```
-instead of
-```
-firebase.auth().signInWithCredential(credential)
-```
-**YOU HAVE TO COVER THIS PROCESS, OR YOU WILL HAVE ABOUT 5% OF USERS STICKING ON YOUR SCREEN, NOT RECEIVING ANYTHING**
-If this process is too complex for you, use this awesome plugin
-- https://github.com/chemerisuk/cordova-plugin-firebase-authentication
+Example usage:
 
-It's not perfect but it fits for the most use cases and doesn't require calling your endpoint, as it has native phone auth support.
+```javascript
+var number = '+441234567890';
+var timeOutDuration = 60;
+var fakeVerificationCode = '123456';
+var verificationId;
+window.FirebasePlugin.verifyPhoneNumber(function(credential) {
 
-```
-window.FirebasePlugin.verifyPhoneNumber(number, timeOutDuration, function(credential) {
-    console.log(credential);
-
-    // if instant verification is true use the code that we received from the firebase endpoint, otherwise ask user to input verificationCode:
-    var code = credential.instantVerification ? credential.code : inputField.value.toString();
-
-    var verificationId = credential.verificationId;
-
-    var credential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
-
-    // sign in with the credential
-    firebase.auth().signInWithCredential(credential);
-
-    // OR link to an account
-    firebase.auth().currentUser.linkWithCredential(credential)
+    verificationId = credential.verificationId;
+    if(credential.instantVerification){
+        signInWithCredential(credential.code);
+    }else{
+        promptUserToInputCode() // you need to implement this
+            .then(function(userEnteredCode){
+               signInWithCredential(userEnteredCode); 
+            });
+    }
 }, function(error) {
-    console.error(error);
-});
-```
+    console.error("Failed to verify phone number: " + JSON.stringify(error));
+}, number, timeOutDuration, fakeVerificationCode);
 
+function signInWithCredential(code){
+    FirebasePlugin.signInWithCredential(verificationId, code, function() {
+        console.log("Successfully signed in");
+    }, function(error) {
+        console.error("Failed to sign in", error);
+    });
+}
+```
 
 ##### Android
-To use this auth you need to configure your app SHA hash in the android app configuration in the firebase console.
-See https://developers.google.com/android/guides/client-auth to know how to get SHA app hash.
+To use phone auth with your Android app, you need to configure your app SHA-1 hash in the android app configuration in the Firebase console.
+See [this guide](https://developers.google.com/android/guides/client-auth) to find how to your SHA-1 app hash.
+See the [Firebase phone auth integration guide for native Android](https://firebase.google.com/docs/auth/android/phone-auth) for more information.
 
 ##### iOS
-Setup your push notifications first, and verify that they are arriving on your physical device before you test this method. Use the APNs auth key to generate the .p8 file and upload it to firebase.  When you call this method, FCM sends a silent push to the device to verify it.
+When you call this method on iOS, FCM sends a silent push notification to the iOS device to verify it.
+So to use phone auth with your Android app, you need to:
+- [setup your iOS app for push notifications](https://firebase.google.com/docs/cloud-messaging/ios/certs)
+- Verify that push notifications are arriving on your physical device
+- [Upload your APNs auth key to the Firebase console](https://firebase.google.com/docs/cloud-messaging/ios/client#upload_your_apns_authentication_key).
+
+You can [set up reCAPTCHA verification for iOS](https://firebase.google.com/docs/auth/ios/phone-auth#set-up-recaptcha-verification) automatically by specifying the `SETUP_RECAPTCHA_VERIFICATION` plugin variable at plugin install time:
+  
+    cordova plugin add cordova-plugin-firebasex --variable SETUP_RECAPTCHA_VERIFICATION=true
+
+This adds the `REVERSED_CLIENT_ID` from the `GoogleService-Info.plist` to the list of custom URL schemes in your Xcode project, so you don't need to do this manually.
+
+#### signInWithCredential
+Signs the user into Firebase with credentials obtained using `verifyPhoneNumber()`.
+See the [Android-](https://firebase.google.com/docs/auth/android/phone-auth#sign-in-the-user) and [iOS](https://firebase.google.com/docs/auth/ios/phone-auth#sign-in-the-user-with-the-verification-code)-specific Firebase documentation for more info.
+
+**Parameters**:
+- {string} verificationId - the verification ID returned in the credentials object to the `verifyPhoneNumber()` success callback.
+- {string} code - the activation code, either returned in the credentials object to the `verifyPhoneNumber()` success callback if using Instant Verification on Android, or the activation code as entered by the user from the received SMS message. 
+- {function} success - callback function to call on successful sign-in using credentials
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+Example usage:
+
+```javascript
+var number = '+441234567890';
+var timeOutDuration = 60;
+var fakeVerificationCode = '123456';
+var verificationId;
+window.FirebasePlugin.verifyPhoneNumber(function(credential) {
+
+    verificationId = credential.verificationId;
+    if(credential.instantVerification){
+        signInWithCredential(credential.code);
+    }else{
+        promptUserToInputCode() // you need to implement this
+            .then(function(userEnteredCode){
+               signInWithCredential(userEnteredCode); 
+            });
+    }
+}, function(error) {
+    console.error("Failed to verify phone number: " + JSON.stringify(error));
+}, number, timeOutDuration, fakeVerificationCode);
+
+function signInWithCredential(code){
+    FirebasePlugin.signInWithCredential(verificationId, code, function() {
+        console.log("Successfully signed in");
+    }, function(error) {
+        console.error("Failed to sign in", error);
+    });
+}
+```
+
+#### linkUserWithCredential
+Links the user account to an existing Firebase user account with credentials obtained using `verifyPhoneNumber()`.
+See the [Android-](https://firebase.google.com/docs/auth/android/account-linking) and [iOS](https://firebase.google.com/docs/auth/ios/account-linking)-specific Firebase documentation for more info.
+
+**Parameters**:
+- {string} verificationId - the verification ID returned in the credentials object to the `verifyPhoneNumber()` success callback.
+- {string} code - the activation code, either returned in the credentials object to the `verifyPhoneNumber()` success callback if using Instant Verification on Android, or the activation code as entered by the user from the received SMS message. 
+- {function} success - callback function to call on successful linking using credentials
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+Example usage:
+
+```javascript
+var number = '+441234567890';
+var timeOutDuration = 60;
+var fakeVerificationCode = '123456';
+var verificationId;
+window.FirebasePlugin.verifyPhoneNumber(function(credential) {
+
+    verificationId = credential.verificationId;
+    if(credential.instantVerification){
+        linkUserWithCredential(credential.code);
+    }else{
+        promptUserToInputCode() // you need to implement this
+            .then(function(userEnteredCode){
+               linkUserWithCredential(userEnteredCode); 
+            });
+    }
+}, function(error) {
+    console.error("Failed to verify phone number: " + JSON.stringify(error));
+}, number, timeOutDuration, fakeVerificationCode);
+
+function linkUserWithCredential(code){
+    FirebasePlugin.linkUserWithCredential(verificationId, code, function() {
+        console.log("Successfully linked");
+    }, function(error) {
+        console.error("Failed to link", error);
+    });
+}
+```
+
 
 ### Remote Config
 
 #### fetch
 Fetch Remote Config parameter values for your app:
-```
+
+**Parameters**:
+- {integer} cacheExpirationSeconds (optional) - cache expiration in seconds
+- {function} success - callback function on successfully fetching remote config
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.fetch(function () {
     // success callback
 }, function () {
@@ -1410,7 +1782,12 @@ window.FirebasePlugin.fetch(600, function () {
 
 #### activateFetched
 Activate the Remote Config fetched config:
-```
+
+**Parameters**:
+- {function} success - callback function which will be passed a {boolean} argument indicating whether fetched config was successfully activated
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.activateFetched(function(activated) {
     // activated will be true if there was a fetched config activated,
     // or false if no fetched config was found, or the fetched config was already activated.
@@ -1422,7 +1799,13 @@ window.FirebasePlugin.activateFetched(function(activated) {
 
 #### getValue
 Retrieve a Remote Config value:
-```
+
+**Parameters**:
+- {string} key - key for which to fetch associated value
+- {function} success - callback function which will be passed a {any} argument containing the value stored against the specified key.
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.getValue("key", function(value) {
     console.log(value);
 }, function(error) {
@@ -1433,7 +1816,13 @@ window.FirebasePlugin.getValue("key", function(value) {
 #### getByteArray
 Android only.
 Retrieve a Remote Config byte array:
-```
+
+**Parameters**:
+- {string} key - key for which to fetch associated value
+- {function} success - callback function which will be passed a {string} argument containing the Base64 encoded string that represents the value stored against the specified key.
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.getByteArray("key", function(bytes) {
     // a Base64 encoded string that represents the value for "key"
     console.log(bytes.base64);
@@ -1447,7 +1836,12 @@ window.FirebasePlugin.getByteArray("key", function(bytes) {
 #### getInfo
 Android only.
 Get the current state of the FirebaseRemoteConfig singleton object:
-```
+
+**Parameters**:
+- {function} success - callback function which will be passed an {object} argument containing the state info
+- {function} error - callback function which will be passed a {string} error message as an argument
+
+```javascript
 window.FirebasePlugin.getInfo(function(info) {
     // the status of the developer mode setting (true/false)
     console.log(info.configSettings.developerModeEnabled);
@@ -1467,6 +1861,12 @@ window.FirebasePlugin.getInfo(function(info) {
 #### setConfigSettings
 Android only.
 Change the settings for the FirebaseRemoteConfig object's operations:
+
+**Parameters**:
+- {object} configSettings - object specifying the remote config settings
+- {function} success - callback function to be call on successfully setting the remote config settings
+- {function} error - callback function which will be passed a {string} error message as an argument
+
 ```
 var settings = {
     developerModeEnabled: true
@@ -1477,6 +1877,12 @@ window.FirebasePlugin.setConfigSettings(settings);
 #### setDefaults
 Android only.
 Set defaults in the Remote Config:
+
+**Parameters**:
+- {object} defaultSettings - object specifying the default remote config settings
+- {function} success - callback function to be call on successfully setting the remote config setting defaults
+- {function} error - callback function which will be passed a {string} error message as an argument
+
 ```
 // define defaults
 var defaults = {
@@ -1501,6 +1907,9 @@ window.FirebasePlugin.setDefaults(defaults);
 #### setPerformanceCollectionEnabled
 Manually enable/disable performance data collection, e.g. if [disabled on app startup](#disable-data-collection-on-startup).
 
+**Parameters**:
+- {boolean} setEnabled - whether to enable or disable performance data collection
+
 ```
 window.FirebasePlugin.setPerformanceCollectionEnabled(true); // Enables performance data collection
 
@@ -1511,6 +1920,11 @@ window.FirebasePlugin.setPerformanceCollectionEnabled(false); // Disables perfor
 
 Start a trace.
 
+**Parameters**:
+- {string} name - name of trace to start 
+- {function} success - callback function to call on successfully starting trace
+- {function} error - callback function which will be passed a {string} error message as an argument
+
 ```
 window.FirebasePlugin.startTrace("test trace", success, error);
 ```
@@ -1519,6 +1933,12 @@ window.FirebasePlugin.startTrace("test trace", success, error);
 
 To count the performance-related events that occur in your app (such as cache hits or retries), add a line of code similar to the following whenever the event occurs, using a string other than retry to name that event if you are counting a different type of event:
 
+**Parameters**:
+- {string} name - name of trace
+- {string} counterName - name of counter to increment 
+- {function} success - callback function to call on successfully incrementing counter
+- {function} error - callback function which will be passed a {string} error message as an argument
+
 ```
 window.FirebasePlugin.incrementCounter("test trace", "retry", success, error);
 ```
@@ -1526,6 +1946,11 @@ window.FirebasePlugin.incrementCounter("test trace", "retry", success, error);
 #### stopTrace
 
 Stop the trace
+
+**Parameters**:
+- {string} name - name of trace to stop 
+- {function} success - callback function to call on successfully stopping trace
+- {function} error - callback function which will be passed a {string} error message as an argument
 
 ```
 window.FirebasePlugin.stopTrace("test trace");

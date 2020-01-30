@@ -1,8 +1,8 @@
 {
   "_from": "cordova-plugin-firebasex",
-  "_id": "cordova-plugin-firebasex@6.1.0",
+  "_id": "cordova-plugin-firebasex@7.0.2",
   "_inBundle": false,
-  "_integrity": "sha512-MsnMjvSbNWGkuXV5CZjzgD/A+st41tzEY2Y3IIC/i0D8IboDdqZ7EfOuv32UDAd26iOfhWvHdemtPQ7xFti8pA==",
+  "_integrity": "sha512-xEZvcJC/8jwfz0Dr9XSi6NQaUyv34SSLzF04Pa0HWRM+CZ788pvGXRjWjpNe7n9eirpB9HDNZ92i18T81tovBQ==",
   "_location": "/cordova-plugin-firebasex",
   "_phantomChildren": {},
   "_requested": {
@@ -19,10 +19,10 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-firebasex/-/cordova-plugin-firebasex-6.1.0.tgz",
-  "_shasum": "9859d31ad5e5e6a73ee91c1c92f55dac6ff0b21a",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-firebasex/-/cordova-plugin-firebasex-7.0.2.tgz",
+  "_shasum": "8b32ae825aeb85b53a84f490a3ac163e92d24784",
   "_spec": "cordova-plugin-firebasex",
-  "_where": "C:\\Users\\Ethan\\Documents\\Programing projects\\ConnectApp\\connect",
+  "_where": "C:\\Users\\Ethan\\Desktop\\Programing\\Notifications\\sitwithus",
   "author": {
     "name": "Dave Alden"
   },
@@ -39,9 +39,8 @@
   },
   "dependencies": {
     "plist": "^3.0.1",
-    "q": "^1.5.1",
     "xcode": "^2.0.0",
-    "xml2js": "^0.4.16"
+    "xml-js": "^1.6.11"
   },
   "deprecated": false,
   "description": "Cordova plugin for Google Firebase",
@@ -68,5 +67,6 @@
     "test:ios": "bash ./test/test-default.sh 9.0.0 ios 5.0.1",
     "version": "node ./bump-version.js && git add -A plugin.xml"
   },
-  "version": "6.1.0"
+  "types": "./types/index.d.ts",
+  "version": "7.0.2"
 }
