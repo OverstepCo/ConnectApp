@@ -171,51 +171,55 @@ function closePreview() { //This closes the profile preveiw card
 }
 
 
-function loadUserData() {
+async function loadUserData() {
   console.log("loading User data");
-  db.collection("users").doc(uid).get().then(function(userData) {
-    //If the user data exists load the user data
+  let userData = db.collection("users").doc(uid).get();
+  let profilePic = storageRef.child('profile-pictures').child(uid).getDownloadURL();
+
+  //Get the users profile picture
+  userData = await userData;
+
+  profilePic.then(function(url) {
+    profilePic = url;
+  }).catch(function(error) {
+    //Iff there is a error l;oading the picture the set it to the anonymous profile picture
+    profilePic = anonymousProfilePic;
+  }).then(function() {
+
+    console.log(profilePic);
+    console.log(userData);
+
     if (userData.exists) {
+      //Store the user data in the User Object
+      User = {
+        uid: uid,
+        firstName: userData.get("firstName"),
+        lastName: userData.get("lastName"),
+        school: userData.get("school") ? userData.get("school") : null,
+        fullName: function() {
+          return "" + this.firstName + " " + this.lastName;
+        },
+        tagline: userData.get("tagline"),
+        bio: userData.get("bio"),
+        chats: userData.get("chatrooms") ? userData.get("chatrooms") : [],
+        freinds: userData.get("freinds") ? userData.get("freinds") : [],
+        profilePic: profilePic,
+        picURL: profilePic,
+      };
+
       //Check to see if they have a bio and tagline, if not direct them to the welcome page
       if (userData.get("bio") && userData.get("tagline")) {
         console.log("the user has a bio and a tagline");
-        //Get the users profile picture
-        var profilePic = "";
-        var profilePictureRef = storageRef.child('profile-pictures').child(uid);
-        profilePictureRef.getDownloadURL().then(function(url) {
-          profilePic = url;
-        }).catch(function(error) {
-          //Iff there is a error l;oading the picture the set it to the anonymous profile picture
-          profilePic = anonymousProfilePic;
-        }).then(function() {
-          //Store the user data in the User Object
-          User = {
-            uid: uid,
-            firstName: userData.get("firstName"),
-            lastName: userData.get("lastName"),
-            school: userData.get("school"),
-            fullName: function() {
-              return "" + this.firstName + " " + this.lastName;
-            },
-            tagline: userData.get("tagline"),
-            bio: userData.get("bio"),
-            chats: userData.get("chatrooms") ? userData.get("chatrooms") : [],
-            freinds: userData.get("freinds") ? userData.get("freinds") : [],
-            profilePic: profilePic,
-            picURL: profilePic,
-          };
-
-          //If the user has selected a valid school
-          if (userData.get("school")) {
-            loadMainPage();
-            app.preloader.hide();
-          } else {
-            app.preloader.hide();
-            //The users school is invalid so go to the school selection page
-            console.log("the user needs to select a school");
-            self.app.views.main.router.navigate('/school-search-page/', {});
-          }
-        });
+        //If the user has selected a valid school load the main page
+        if (User.school) {
+          loadMainPage();
+          app.preloader.hide();
+        } else {
+          //The users school is invalid so go to the school selection page
+          app.preloader.hide();
+          console.log("the user needs to select a school");
+          self.app.views.main.router.navigate('/school-search-page/', {});
+        }
       } else {
         app.preloader.hide();
         //Go to the welcome page
@@ -235,7 +239,7 @@ function loadUserData() {
           firstName: firstName,
           lastName: lastName,
         }).then(function() {
-          self.app.views.main.router.navigate('/home/', {});
+          //self.app.views.main.router.navigate('/home/', {});
           //and then we should load them.
           loadUserData();
         });
@@ -245,37 +249,29 @@ function loadUserData() {
         //// TODO: we should probably display a page that says"sorry there has been an error please try again" then we should ethier delete the account and then have them signup again or just redirect them to the signup page
       }
     }
+
   });
 
   app.preloader.hide();
 }
 
 //This replaces editUserData as it is robust
-function setUserData(data, callback) {
+async function setUserData(data, callback) {
   console.log('setting the users data');
   app.preloader.show();
   //If the data is not empty set it here
   if (data.bio && data.tagline) {
     console.log("updating user bio");
-    db.collection("users").doc(uid).update({
+    await db.collection("users").doc(uid).update({
       bio: data.bio,
       tagline: data.tagline
-    }).then(function() {
-      app.preloader.hide();
-      if (callback)
-        callback();
     });
   }
-
   //update names
   if (data.firstName && data.lastName) {
-    db.collection("users").doc(uid).update({
+    await db.collection("users").doc(uid).update({
       firstName: data.firstName,
       lastName: data.lastName
-    }).then(function() {
-      app.preloader.hide();
-      if (callback)
-        callback();
     });
   }
   //If the pic is not empty set it here
@@ -301,6 +297,9 @@ function setUserData(data, callback) {
       console.log("Failed to update password", error);
     });
   }
+
+  if (callback)
+    callback();
 
 }
 //Edits the users profile data.

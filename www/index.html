@@ -119,7 +119,7 @@
         uid = user.uid;
         //TODO if user has no school redirict to school selection page//this should actuall be done on sign up. (so just cover as an edge case)
         loadUserData();
-        //        onDeviceReady();
+        //onDeviceReady();
       } else { //User is signed out.
         console.log("nobody is signed in");
         mainView.router.navigate('/login-screen/', {
@@ -127,6 +127,7 @@
         });
       }
     });
+
   </script>
 
 

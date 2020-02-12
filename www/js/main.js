@@ -312,13 +312,12 @@ var getToken = function() {
 };
 
 
-function loadMainPage() { //Loads all the data on the main page//// TODO: make sure to cean all leftover data
+function loadMainPage() { //Chacks to m,ake sure we have loaded the users data then and loads the main page//// TODO: make sure to cean all leftover data
   //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
   //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded.////this may be fixed
   console.log(User);
-
-  if (User && User != '') //Only run this if we have loaded the user
-  {
+  //Only run this if we have loaded the user and they have valid data. If not then loadLserData
+  if (User && User.school != null && User.tagline != '') {
     console.log("wooo");
     console.log(mainView.router);
     if (mainView.router.currentRoute.path != "/home/") { //Disabled for now//If we are not on the main page Navigate to the main page then load the data. // NOTE: Beware infinte loops
@@ -329,9 +328,8 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       mainView.router.navigate('/home/', {
         clearPreviousHistory: true, // Makes sure we cant go back to previous pages
       });
-
     } else {
-      console.log("loading main page");
+      console.log("loading main page data");
       //Set the users profile icon
       document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
       //This loop runs once for every chat room the current user is subscribed to
@@ -459,7 +457,8 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
         });
       });
     }
-
+  } else {
+    loadUserData();
   }
 }
 
