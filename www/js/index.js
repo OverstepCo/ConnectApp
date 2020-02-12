@@ -1,37 +1,16 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var app = {
+//Init cordovaApp
+let cordovaApp = {
   // Application Constructor
   initialize: function() {
     document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
   },
-
-  // deviceready Event Handler
-  //
   // Bind any cordova events here. Common events are:
   // 'pause', 'resume', etc.
-  onDeviceReady: function() {
+  onDeviceReady: function() { //Setup the onDeviceReady event. THis runs once the cordova app is ready to start
     console.log("device onDeviceReady");
     setupFBplugin();
     //this.receivedEvent('deviceready');
   },
-
   // Update DOM on a Received Event
   receivedEvent: function(id) {
     var parentElement = document.getElementById(id);
@@ -45,18 +24,18 @@ var app = {
   }
 };
 
-app.initialize();
+cordovaApp.initialize();
 
 
 //notifications
 var FirebasePlugin;
 
 // UI logging
-function log(msg, opts) {
+function log(msg) {
   console.log(msg);
 }
 
-function logError(msg, error) {
+function logError(msg) {
   console.log(msg);
 
 }
@@ -108,7 +87,8 @@ function setupFBplugin() {
   }
 }
 
-var initIos = function() { //initialize ios notifications
+//Initialize ios notifications
+var initIos = function() {
   FirebasePlugin.onApnsTokenReceived(function(token) {
     log("APNS token received: " + token)
   }, function(error) {
@@ -116,14 +96,9 @@ var initIos = function() { //initialize ios notifications
   });
 };
 
-var initAndroid = function() { //Initialize android notification
-
-  // Custom FCM receiver plugin
-  // cordova.plugin.customfcmreceiver.registerReceiver(function(message) {
-  //   log("Received custom message: " + message);
-  // });
-
-  // Define custom  channel - all keys are except 'id' are optional.
+//Initialize android notification
+var initAndroid = function() {
+  // Define custom  channel - all keys are except 'id' are optional. this is for setting stuff like sound,vibration,etc.
   var customChannel = {
     // channel ID - must be unique per app package
     id: "my_channel_id",
@@ -136,7 +111,7 @@ var initAndroid = function() { //Initialize android notification
     //'default' - plays the default notification sound
     //'ringtone' - plays the currently set ringtone
     //filename - the filename of the sound file located in '/res/raw' without file extension (mysound.mp3 -> mysound)
-    sound: "blackberry",
+    sound: "default",
 
     //Vibrate on new notification. Default value: true
     //Possible values:
@@ -168,7 +143,7 @@ var initAndroid = function() { //Initialize android notification
     //1 - public - Show the notification in its entirety on all lockscreens.
     visibility: 1
   };
-
+  //Add our custom channel to the android device
   FirebasePlugin.createChannel(customChannel,
     function() {
       log("Created custom channel: " + customChannel.id);
@@ -190,8 +165,8 @@ var initAndroid = function() { //Initialize android notification
   );
 };
 
-// Notifications
-function checkNotificationPermission(requested) {
+//Check for notification permission. // NOTE: This is only needed on ios in androif it eill always have permission
+function checkNotificationPermission(requested) { //
   FirebasePlugin.hasPermission(function(hasPermission) {
     if (hasPermission) {
       log("Remote notifications permission granted");
@@ -211,7 +186,6 @@ function checkNotificationPermission(requested) {
 var checkAutoInit = function() {
   FirebasePlugin.isAutoInitEnabled(function(enabled) {
     log("Auto init is " + (enabled ? "enabled" : "disabled"));
-
   }, function(error) {
     logError("Failed to check auto init", error);
   });
@@ -235,7 +209,8 @@ var disableAutoInit = function() {
   });
 };
 
-var getID = function() {
+//Gets the fcm id
+function getId() {
   FirebasePlugin.getId(function(id) {
     log("Got FCM ID: " + id)
   }, function(error) {
@@ -243,6 +218,7 @@ var getID = function() {
   });
 };
 
+//Get an fcm token for sending messages
 function getToken() {
   FirebasePlugin.getToken(function(token) {
     log("Got FCM token: " + token)
@@ -251,7 +227,8 @@ function getToken() {
   });
 };
 
-var getAPNSToken = function() {
+//Get an APNS token. This is for IOS only
+function getAPNSToken() {
   FirebasePlugin.getAPNSToken(function(token) {
     log("Got APNS token: " + token)
   }, function(error) {
@@ -297,7 +274,7 @@ var handleDataMessage = function(message) {
   log("Data message received: " + JSON.stringify(message));
 };
 
-
+//This clears all notificatoins for this device
 function clearNotifications() {
   FirebasePlugin.clearAllNotifications(function() {
     log("Cleared all notifications");
@@ -332,7 +309,7 @@ function unregister() {
 
 
 
-// Remote config // NOTE:  Dunno what this is most likly useless? <--Ethan
+// Remote config // NOTE:  Dunno what this is.... Most likly useless? <--Ethan
 function fetch() {
   FirebasePlugin.fetch(function() {
     log("Remote config fetched");
