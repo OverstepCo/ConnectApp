@@ -119,7 +119,7 @@ function loadFriends() { //Loads the current users freinds
         loadUserpage(freind);
       }
       a.innerHTML =
-        '<li class="item-content">' +
+        '<li class="item-content user-' + user.uid + '">' +
         '<div class="item-media"><div class="profile-pic-icon" style="background-image: url(' + user.picURL +
         ')"></div></div>' +
         '<div class="item-inner">' + user.username + '</div>' +
@@ -133,6 +133,10 @@ function addFreind(userID) { //Add the specified user to the freinds list
   db.collection("users").doc(User.uid).update({ //Updates the user freinds list
     freinds: firebase.firestore.FieldValue.arrayUnion(userID),
   }).then(function() { //After we sucessfully update the sever we update the local data
+
+    //show if on profile page
+    var userEl = $$('.user-' + userID);
+    if (userEl) userEl.show();
     console.log("Added friend");
     loadedUsers[userID].isFreind = true; //Update the local user object
     User.freinds.unshift(userID); //Add this freind to the local User freinds list
@@ -145,6 +149,10 @@ function removeFreind(userID) { //Removes the specified user to the freinds list
     freinds: firebase.firestore.FieldValue.arrayRemove(userID) //Remove
   }).then(function() { //After we sucessfully update the sever we update the local dat
     console.log("Removed friend");
+
+    //hide if on profile page
+    var userEl = $$('.user-' + userID);
+    if (userEl) userEl.hide();
     loadedUsers[userID].isFreind = false; //Update the local user object
     const index = User.freinds.indexOf(userID);
     if (index > -1) {
@@ -200,13 +208,16 @@ function loadUserData() {
           //If the user has selected a valid school
           if (userData.get("school")) {
             loadMainPage();
+            app.preloader.hide();
           } else {
+            app.preloader.hide();
             //The users school is invalid so go to the school selection page
             console.log("the user needs to select a school");
             self.app.views.main.router.navigate('/school-search-page/', {});
           }
         });
       } else {
+        app.preloader.hide();
         //Go to the welcome page
         console.log("the user needs a bio or tagline");
         self.app.views.main.router.navigate('/welcome-page/', {
@@ -214,6 +225,7 @@ function loadUserData() {
         });
       }
     } else {
+      app.preloader.hide();
       //if the user has no data they were just made or an error happened when setting there data//// TODO: this is an edge case and it should redirect the user to sign up page
       console.log("this user has no data");
       //If we just made this user then we should...
@@ -241,7 +253,7 @@ function loadUserData() {
 //This replaces editUserData as it is robust
 function setUserData(data, callback) {
   console.log('setting the users data');
-  app.progressbar.show(localStorage.getItem("themeColor"));
+  app.preloader.show();
   //If the data is not empty set it here
   if (data.bio && data.tagline) {
     console.log("updating user bio");
@@ -249,7 +261,7 @@ function setUserData(data, callback) {
       bio: data.bio,
       tagline: data.tagline
     }).then(function() {
-      app.progressbar.hide();
+      app.preloader.hide();
       if (callback)
         callback();
     });
@@ -261,7 +273,7 @@ function setUserData(data, callback) {
       firstName: data.firstName,
       lastName: data.lastName
     }).then(function() {
-      app.progressbar.hide();
+      app.preloader.hide();
       if (callback)
         callback();
     });
@@ -271,9 +283,9 @@ function setUserData(data, callback) {
     var profilePictureRef = storageRef.child('profile-pictures').child(User.uid);
     profilePictureRef.put(data.profilePic).then(function(snapshot) {
       //Updated the picture successfully
-      app.progressbar.hide();
+      app.preloader.hide();
     }).catch(function(error) {
-      app.progressbar.hide();
+      app.preloader.hide();
       errorMessage += "Oops! " + error;
     });
   }
@@ -285,7 +297,7 @@ function setUserData(data, callback) {
       console.log("updated password");
     }).catch(function(error) {
       // An error happened.
-      app.progressbar.hide();
+      app.preloader.hide();
       console.log("Failed to update password", error);
     });
   }
@@ -294,7 +306,7 @@ function setUserData(data, callback) {
 //Edits the users profile data.
 function editUserData() {
 
-  app.progressbar.show(localStorage.getItem("themeColor"));
+  app.preloader.show();
 
   var updatedUserInfo = false;
   var updatedUserPic = false;
@@ -317,7 +329,7 @@ function editUserData() {
         self.app.views.main.router.navigate('/school-search-page/');
       }
 
-      app.progressbar.hide();
+      app.preloader.hide();
       app.toast.show({
         text: 'User info sucessfully updated!',
         closeTimeout: 2000,
@@ -327,7 +339,7 @@ function editUserData() {
   }).catch(function(error) {
     errorMessage.innerHTML += "Oops! " + error;
     console.error("Error updating user data: ", error);
-    app.progressbar.hide();
+    app.preloader.hide();
   });
 
   var file = document.getElementById('profile-pic-input').files[0];
@@ -337,17 +349,19 @@ function editUserData() {
     if (updatedUserInfo) {
 
       if (pageName == "/welcome-page/") {
-        self.app.views.main.router.navigate('/school-search-page/');
+        self.app.views.main.router.navigate('/school-search-page/', {
+          clearPreviousHistory: true,
+        });
       }
 
-      app.progressbar.hide();
+      app.preloader.hide();
       app.toast.show({
         text: 'User info sucessfully updated!',
         closeTimeout: 2000,
       });
     }
   }).catch(function(error) {
-    app.progressbar.hide();
+    app.preloader.hide();
     errorMessage += "Oops! " + error;
   });
 
@@ -359,7 +373,7 @@ function editUserData() {
       console.log("updated password");
     }).catch(function(error) {
       // An error happened.
-      app.progressbar.hide();
+      app.preloader.hide();
 
       console.log("Failed to update password", error);
     });
@@ -367,34 +381,30 @@ function editUserData() {
 
 }
 
-function previewPic(event, location) {
-  document.getElementById(location + '-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
-  document.getElementById(location + '-pic-icon').innerHTML = "edit";
+function previewPic(event, el) {
+  $$(el).parent().css("background-image", "url(" + URL.createObjectURL(event.target.files[0]) + ")");
+  $$(el).next().html("edit");
 };
 
 
-
-
 function signUp() { //signs up a new user
-  app.progressbar.show(localStorage.getItem("themeColor"));
+  app.preloader.show();
   console.log("signing up a new user");
 
   var email = document.getElementById("email").value;
   var password = document.getElementById("newpword").value;
   firstName = document.getElementById("firstName").value;
   lastName = document.getElementById("lastName").value;
-  err = document.getElementById("newerrmsg");
-  err.innerHTML = "";
   if (document.getElementById("age").value < 13) {
-    err.innerHTML = "Oops! You must be 13 years of age or older to sign up.";
-    app.progressbar.hide();
+    showToast("You must be 13 years of age or older to sign up.");
+    app.preloader.hide();
     return;
   }
   console.log(firstName);
 
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-    app.progressbar.hide();
-    err.innerHTML = "Oops! " + error.message;
+    app.preloader.hide();
+    showToast(error.message);
     return;
   }).then(function() {
     madeNewUser = true;
@@ -402,18 +412,16 @@ function signUp() { //signs up a new user
 }
 
 function signIn() { //Signs in a user
-  app.progressbar.show(localStorage.getItem("themeColor"));
+  app.preloader.show();
   var username = document.getElementById("uname").value;
   var password = document.getElementById("pword").value;
-  var err = document.getElementById("errmsg");
-  err.innerHTML = "";
   firebase.auth().signInWithEmailAndPassword(username, password).catch(function(error) {
-    app.progressbar.hide();
+    app.preloader.hide();
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log("Failed to login: " + error.message);
-    err.innerHTML = "Oops! " + error.message;
+    showToast(error.message);
   });
 }
 
@@ -424,13 +432,6 @@ function signOut() { //Signs out the user
     console.log("Failed to sign out: " + error.message);
   });
 }
-
-function previewPic(event) {
-  document.getElementById('profile-pic-preview').style.backgroundImage = "url(" + URL.createObjectURL(event.target.files[0]) + ")";
-  document.getElementById('profile-pic-icon').innerHTML = "edit";
-
-  console.log("url(" + URL.createObjectURL(event.target.files[0]) + ")");
-};
 
 //Changes the users school //Maybe merge this with setUserData?
 function changeSchool(newSchoolID) {
@@ -479,7 +480,7 @@ function changeSchool(newSchoolID) {
 }
 
 function searchSchools() { //Loads the schools from the database
-  app.progressbar.show(localStorage.getItem("themeColor"));
+  app.preloader.show();
 
   var query = document.getElementById("school-zip").value;
   var schoolsList = document.getElementById("schools-list");
@@ -488,7 +489,7 @@ function searchSchools() { //Loads the schools from the database
   //check for a valid zip code before search
   if (isNaN(query)) {
     schoolsList.innerHTML = '<div class="text-align-center">Please enter a valid zip code</div>';
-    app.progressbar.hide();
+    app.preloader.hide();
     return;
   } else {
     var zip = parseInt(query);
@@ -513,10 +514,10 @@ function searchSchools() { //Loads the schools from the database
     });
   }).catch(function(error) {
     schoolsList.innerHTML += '<div class="text-align-center">Oops! ' + error + '</div>';
-    app.progressbar.hide();
+    app.preloader.hide();
   }).then(function() {
     schoolsList.innerHTML += '<div class="text-align-center">Don\'t see your school?</div><div class="display-flex justify-content-center"><a class="text-align-center" href="/new-school-page/">Add a new school</a></div>';
-    app.progressbar.hide();
+    app.preloader.hide();
   });
 }
 
@@ -558,24 +559,24 @@ function forgotPassword() {
   });
 }
 
-var progressbarPercent = 0;
+var preloaderPercent = 0;
 
-function setProgressbar(percent) {
+function setpreloader(percent) {
 
-  if (progressbarPercent == 0) app.progressbar.show(0, localStorage.getItem("themeColor"));
+  if (preloaderPercent == 0) app.preloader.show(0, localStorage.getItem("themeColor"));
 
-  progressbarPercent += percent;
+  preloaderPercent += percent;
 
 
-  console.log("progress: " + progressbarPercent + "%");
+  console.log("progress: " + preloaderPercent + "%");
 
-  if (progressbarPercent >= 100) {
-    app.progressbar.hide();
-    progressbarPercent = 0;
-    console.log("Progressbar Complete!");
+  if (preloaderPercent >= 100) {
+    app.preloader.hide();
+    preloaderPercent = 0;
+    console.log("preloader Complete!");
     return;
   }
 
-  app.progressbar.show(progressbarPercent, localStorage.getItem("themeColor"));
+  app.preloader.show(preloaderPercent, localStorage.getItem("themeColor"));
 
 }

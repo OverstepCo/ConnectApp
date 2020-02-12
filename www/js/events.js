@@ -15,35 +15,49 @@ function addNewEvent() { //Gets the data we need from the ui and posts it to the
 }
 
 function createNewEvent() {
-  app.progressbar.show(localStorage.getItem("themeColor"));
 
   var name = document.getElementById("event-name").value;
   var time = document.getElementById("event-time").value;
   var location = document.getElementById("event-location").value;
   var description = document.getElementById("event-description").innerHTML;
-  addSchoolEvent(name, time, location, description, '');
+  var pic = document.getElementById('event-pic').files[0];
+  addSchoolEvent({
+    name: name,
+    time: time,
+    location: location,
+    description: description,
+    picture: pic,
+  });
 }
 
-function addSchoolEvent(name, time, location, description, guests) { //Adds a event to the school database with the provided data
+function addSchoolEvent(event) { //Adds a event to the school database with the provided data
+
+  if (!event.name || !event.time || !event.location || !event.description || !event.picture) {
+    showToast("Please fill in all fields to create an event.");
+    return;
+  }
+  app.preloader.show();
   db.collection("school").doc(User.school).collection("event").add({
-    name: name,
-    time,
-    location,
-    description,
-    guests,
-    owner: User.uid
+    name: event.name,
+    time: event.time,
+    location: event.location,
+    description: event.description,
+    guests: !event.guests ? "" : event.guests,
+    owner: User.uid,
   }).catch(function(error) {
-    showError(error);
+    app.preloader.hide();
+    showToast("There was an error creating your event. Please try again later.");
   }).then(function(doc) {
-    var pic = document.getElementById('event-pic').files[0];
-    storageRef.child('event-pictures').child(doc.id).put(pic).then(function(snapshot) {
-      app.progressbar.hide();
+    storageRef.child('event-pictures').child(doc.id).put(event.picture).then(function(snapshot) {
+      app.preloader.hide();
       loadUserData();
-      var toastBottom = app.toast.create({
-        text: 'Your event was created!',
-        closeTimeout: 2000,
-      });
-      toastBottom.open();
+      loadMainPage();
+      showToast('Your event was created!');
+    }).catch(function(error) {
+      app.preloader.hide();
+      loadUserData();
+      loadMainPage();
+      showToast("There was an error creating your event. Please try again later.");
     });
   });
 }
@@ -215,7 +229,7 @@ function addListener(eventID) {
 }
 
 function showToast(msg) {
-  app.progressbar.hide();
+  app.preloader.hide();
   app.toast.show({
     text: msg,
     closeTimeout: 2000,

@@ -22,6 +22,7 @@
   }
 
   function joinChat(chatID, chatSchool) { //Subscribes a user to the specified chat
+    app.preloader.show();
     console.log("subscribing User to chat: " + chatID);
     db.collection("school").doc(chatSchool).collection("chats").doc(chatID).collection("users").doc(User.uid).set({ //Adds the user to the chat members
       subscribed: true
@@ -30,10 +31,13 @@
     db.collection("users").doc(User.uid).update({ //Adds the chatroom to the users chat list
       chatrooms: firebase.firestore.FieldValue.arrayUnion(chatID + "," + chatSchool),
     }).then(function() {
-      loadMainPage();
+      app.preloader.show();
+      loadUserData(); //Reload the user data so the app reflects the changes in the chats
+    }).catch(function() {
+      app.preloader.show();
+      loadUserData(); //Reload the user data so the app reflects the changes in the chats
     });
 
-    loadUserData(); //Reload the user data so the app reflects the changes in the chats
   }
 
 
@@ -47,7 +51,9 @@
     db.collection("users").doc(User.uid).update({ //Removes the chatroom from the users chat list
       chatrooms: firebase.firestore.FieldValue.arrayRemove(chatID + "," + chatSchool),
     }).then(function() {
-      loadMainPage();
+      loadUserData();
+    }).catch(function() {
+      loadUserData();
     });
   }
 
@@ -55,10 +61,16 @@
   function createChat() {
     var chatName = document.getElementById("chat-name");
     var chatDescription = document.getElementById("chat-description");
+
+    if (chatName.value == "" || chatDescription.value == "") {
+      showToast("Please fill in all fields to create a chat.");
+      return;
+    }
     //chatMembers is an array
     var chatMembers = document.querySelectorAll('[data-uid]');
     console.log(chatMembers.length);
     console.log("new chat");
+    app.preloader.show();
     //create chat on database
     db.collection('school').doc(User.school).collection("chats").doc(chatName.value).set({
         description: chatDescription.value,
@@ -67,6 +79,10 @@
       })
       .then(function() {
         console.log("Chat written with ID: ", chatName.value);
+
+        app.preloader.hide();
+        joinChat(chatName.value, User.school);
+        showToast("Your chat was created!");
         //  addMessage(User.school, chatName.value, User.firstName + " " + User.lastName + " created this room");
 
         db.collection("school").doc(User.school).collection("chats").doc(chatName.value).collection("messages").add({
@@ -79,14 +95,12 @@
         })
       })
       .catch(function(error) {
+        app.preloader.hide();
+        showToast("There was an error creating your chat. Please try again later.").
         console.error("Error adding chat: ", error);
       });
 
-    //subscribe added users to chat
-    for (var i = 0; i < chatMembers.length; i++) {
-      //// TODO: send a notification instead of just subscribing them to chat
-      subscribeToChat(chatMembers[i], User.school);
-    }
+    //// TODO: invite other users
   }
 
   function loadChat(chatID, chatSchool) {

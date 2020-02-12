@@ -244,12 +244,24 @@ var app = new Framework7({
           app.progressbar.hide();
 
           $$('#welcome-button').click(function() {
+
+            var bio = $$('#bio').val();
+            var tagline = $$('#tagline').val();
+            var picture = $$('#profile-pic-input')[0].files[0];
+
+            if (!bio || !tagline || !picture) {
+              showToast("Please fill in all fields to continue.");
+              return;
+            }
             setUserData({
-                bio: $$('#bio').val(),
-                tagline: $$('#tagline').val(),
-                profilePic: $$('#profile-pic-input')[0].files[0],
+                bio: bio,
+                tagline: tagline,
+                profilePic: picture,
               },
-              loadMainPage());
+              function() {
+                console.log("NEXT SCREEN");
+                loadMainPage();
+              });
           });
         },
         pageBeforeRemove: function(e, page) {
@@ -266,18 +278,13 @@ var mainView = app.views.create('.view-main', {
   url: '/home/',
 });
 var events = [];
-// create searchbar
-var searchbar = app.searchbar.create({
-  el: '#school-searchbar',
-  searchContainer: '#members-list',
-  searchIn: '.item-inner',
-});
+
 
 // TODO: check for premium user
-if (false) {
+if (true) {
   //set theme color
   var storedThemeColor = localStorage.getItem("themeColor");
-  var color = storedThemeColor != null ? storedThemeColor : 'red';
+  var color = storedThemeColor != null ? storedThemeColor : 'blue';
   document.documentElement.classList.add('color-theme-' + color);
 
   var toggle = localStorage.getItem("darkMode") == "true" ? true : false;
@@ -328,6 +335,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       //Set the users profile icon
       document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
       //This loop runs once for every chat room the current user is subscribed to
+      $$('#subscribed-chats').html('');
       if (User.chats.length > 0) {
         for (var i = 0; i < User.chats.length; i++) {
           var roomName = User.chats[i].split(",")[0];
@@ -335,8 +343,9 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           loadSubscribedChat(roomName, roomSchool);
         }
       } else {
-        console.log("this user isnt subscribed to any chats. this should be displayed on the main page");
-        // TODO: Display that the user isnt subscribed to any chats
+        //if no subscribed chats
+        $$('#subscribed-chats-skeleton').hide();
+        $$('#subscribed-chats').append('<p class="text-align-center">You aren\'t subscribed to any chats. <a href="#" onclick="$$(\'.unsubscribed\').click();" class="link">Click here</a> to join a new one.</p>');
       }
       var userChats = [];
       if (User.chats.length > 0) {
@@ -346,6 +355,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
       }
       //Loads all the chats in the users current school that they are not subscribed to
       db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
+        $$('#school-group-chats').html('');
         querySnapshot.forEach(function(doc) {
           if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
             console.log("User is already subscribed to " + doc.id);
@@ -361,7 +371,10 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
             //if any of these dont exist in the database they return null or undefined
           }
         });
-
+        //if no group chats are found
+        if ($$('#school-group-chats').html() == "") {
+          $$('#school-group-chats').append('<p class="text-align-center">No unsubscribed chats found. <a href="/new-chat-screen/" class="link">Click here</a> to create a new chat.</p>');
+        }
         $$('#school-group-chats-skeleton').hide();
       });
 
@@ -374,6 +387,11 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           day: 'numeric',
           hour: 'numeric',
         };
+
+        //remove old swiper
+        app.swiper.destroy('.swiper-container');
+        $$('.event-slide').remove();
+
         querySnapshot.forEach(function(doc) {
           //this loop runs once for every event in the current school
           var event = {
@@ -389,6 +407,7 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           var newEvent = document.createElement('div');
           var date = new Date(doc.get("time"));
           newEvent.classList.add("swiper-slide");
+          newEvent.classList.add("event-slide");
           newEvent.innerHTML = '<div class="slide-content event-pic-' + doc.id + '" onclick="openCard(' + (events.length - 1) + ')"><div class="event-description">' +
             '<h1>' + doc.get("name") + '</h1>' +
             '<p>' + date.toLocaleString('en-us', options) + '</p>' +
@@ -403,13 +422,16 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
             console.error(error.message);
           });
         });
-        app.swiper.create('.swiper-container');
         $$('#skeleton-event').hide();
+        app.swiper.create('.swiper-container');
       });
 
       //////////////Loads the users attending this school
       db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
         //  var membersList = document.getElementById("members-list");
+
+        //clear old list
+        $$("#members-list").html("");
         querySnapshot.forEach(function(doc) {
           //This loop runs once for every user in the current school
           getUserData(doc.id, function(user) {
@@ -428,6 +450,13 @@ function loadMainPage() { //Loads all the data on the main page//// TODO: make s
           });
         });
         $$('#members-list-skeleton').hide();
+
+        // create searchbar
+        var searchbar = app.searchbar.create({
+          el: '#school-searchbar',
+          searchContainer: '#members-list',
+          searchIn: '.item-inner',
+        });
       });
     }
 
