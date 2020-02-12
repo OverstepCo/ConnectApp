@@ -264,6 +264,10 @@ img {
   width: 50%;
 }
 
+.popup {
+  background-color: var(--f7-page-bg-color);
+}
+
 /********** PANEL **********/
 .panel {
   background-color: var(--f7-page-bg-color);
