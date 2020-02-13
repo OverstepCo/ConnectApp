@@ -279,7 +279,6 @@ var mainView = app.views.create('.view-main', {
 });
 var events = [];
 
-
 // TODO: check for premium user
 if (true) {
   //set theme color
@@ -292,10 +291,6 @@ if (true) {
 }
 
 let fcmToken;
-// Init
-function onDeviceReady() {}
-
-
 
 var getToken = function() {
   FirebasePlugin.getToken(function(token) {
@@ -312,53 +307,54 @@ var getToken = function() {
 };
 
 
-function loadMainPage() { //Chacks to m,ake sure we have loaded the users data then and loads the main page//// TODO: make sure to cean all leftover data
-  //Loads the chats that the user is subscribed to.////TODO: listen and display realtime updates
-  //Note the html of the main page is sometimes not immedeatly accesable due to it not being loaded.////this may be fixed
-  console.log(User);
-  //Only run this if we have loaded the user and they have valid data. If not then loadLserData
+function loadMainPage() { //Chacks to make sure we have loaded the users data then and loads the main page
+
+  //If we have loaded the user and they have valid data load the main page else loadUserData
   if (User && User.school != null && User.tagline != '') {
-    console.log("wooo");
-    console.log(mainView.router);
-    if (mainView.router.currentRoute.path != "/home/") { //Disabled for now//If we are not on the main page Navigate to the main page then load the data. // NOTE: Beware infinte loops
-      console.log("not on main page");
+
+    //If we are not on the main page navigate to it before loading the data// NOTE: Beware infinte loops
+    if (mainView.router.currentRoute.path != "/home/") {
+      console.log("Not on main page");
       mainView.once("pageBeforeIn", function(event, page) {
         loadMainPage();
       });
       mainView.router.navigate('/home/', {
         clearPreviousHistory: true, // Makes sure we cant go back to previous pages
       });
-    } else {
+    } else { //We are on the main page so load tha data
       console.log("loading main page data");
+
       //Set the users profile icon
-      document.getElementById("profile-icon").innerHTML = '<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>';
-      //This loop runs once for every chat room the current user is subscribed to
-      $$('#subscribed-chats').html('');
+      $$("#profile-icon").html('<div class="profile-pic-icon" style="background-image: url(' + User.profilePic + ')"></div>');
+
+      $$('#subscribed-chats').html(''); //clear
+
+      var userChats = [];
+      //If the user is subscribed to any chats load them
       if (User.chats.length > 0) {
+        //For every chat room the current user is subscribed to load it into the html
         for (var i = 0; i < User.chats.length; i++) {
           var roomName = User.chats[i].split(",")[0];
           var roomSchool = User.chats[i].split(",")[1];
+          userChats.push(roomName); //Add the chats id to the userChats array
           loadSubscribedChat(roomName, roomSchool);
         }
-      } else {
-        //if no subscribed chats
+      } else { //The user isnt subsribed to any chat so show the message
         $$('#subscribed-chats-skeleton').hide();
         $$('#subscribed-chats').append('<p class="text-align-center">You aren\'t subscribed to any chats. <a href="#" onclick="$$(\'.unsubscribed\').click();" class="link">Click here</a> to join a new one.</p>');
       }
-      var userChats = [];
-      if (User.chats.length > 0) {
-        for (var i = 0; i < User.chats.length; i++) {
-          userChats.push(User.chats[i].split(",")[0]);
-        }
-      }
-      //Loads all the chats in the users current school that they are not subscribed to
+
+      $$('#school-group-chats').html(''); //clear
+
+      //Load all the chats in the users current school that they are not subscribed to
       db.collection("school").doc(User.school).collection("chats").get().then(function(querySnapshot) {
-        $$('#school-group-chats').html('');
+
+        //Foreach chat room in the school
         querySnapshot.forEach(function(doc) {
+          //Check to see if the user is subscribed to this chat if not add it to the UI
           if (userChats.length > 0 && userChats.indexOf(doc.id) != -1) {
             console.log("User is already subscribed to " + doc.id);
-          } else {
-            //this loop runs once for every chat room in the school
+          } else { //User is not subsribed to this chat so add it to the unsubscribed chats html
             var ul = document.getElementById("school-group-chats");
             var li = document.createElement('li')
             li.innerHTML = '<a onclick="(previewChat(\'' + doc.id + '\',\'' + User.school + '\'))"  href="#" class="item-link item-content">' +
@@ -366,19 +362,21 @@ function loadMainPage() { //Chacks to m,ake sure we have loaded the users data t
               '</div><div class="item-after">' + doc.get("numberOfMembers") +
               ' Members</div></div><div class="item-text">' + doc.get("description") + '</div></div></a>';
             ul.appendChild(li);
-            //if any of these dont exist in the database they return null or undefined
           }
         });
-        //if no group chats are found
+
+        //If no group chats are found add create chat text
         if ($$('#school-group-chats').html() == "") {
           $$('#school-group-chats').append('<p class="text-align-center">No unsubscribed chats found. <a href="/new-chat-screen/" class="link">Click here</a> to create a new chat.</p>');
         }
+
+        //Hide skeleton
         $$('#school-group-chats-skeleton').hide();
       });
 
-      //////////Loads the events in the current school
+      //Load the events in the current school
       db.collection("school").doc(User.school).collection("event").get().then(function(querySnapshot) {
-        //date format
+        //Date format options
         var options = {
           year: 'numeric',
           month: 'short',
@@ -386,12 +384,12 @@ function loadMainPage() { //Chacks to m,ake sure we have loaded the users data t
           hour: 'numeric',
         };
 
-        //remove old swiper
+        //Remove old swiper
         app.swiper.destroy('.swiper-container');
         $$('.event-slide').remove();
 
+        //Foreach event in the current school
         querySnapshot.forEach(function(doc) {
-          //this loop runs once for every event in the current school
           var event = {
             eventID: doc.id,
             name: doc.get("name"),
@@ -402,6 +400,7 @@ function loadMainPage() { //Chacks to m,ake sure we have loaded the users data t
           };
           events.push(event);
           var swiper = document.getElementById('event-swiper');
+          //Setup event html
           var newEvent = document.createElement('div');
           var date = new Date(doc.get("time"));
           newEvent.classList.add("swiper-slide");
@@ -411,27 +410,32 @@ function loadMainPage() { //Chacks to m,ake sure we have loaded the users data t
             '<p>' + date.toLocaleString('en-us', options) + '</p>' +
             '</div></div>';
 
+          //Add event html to the swiper
           swiper.appendChild(newEvent);
 
-          // Create a reference to the file we want to download
+          //Get the event's picture and set it
           storageRef.child('event-pictures').child(doc.id).getDownloadURL().then(function(url) {
             $$(".event-pic-" + doc.id).css("background-image", ("url(" + url + ")"));
           }).catch(function(error) {
             console.error(error.message);
           });
         });
+
+        //Hide skeletons
         $$('#skeleton-event').hide();
+
+        //Start event swiper
         app.swiper.create('.swiper-container');
       });
 
-      //////////////Loads the users attending this school
+      //Load the users attending this school
       db.collection("school").doc(User.school).collection("users").get().then(function(querySnapshot) {
-        //  var membersList = document.getElementById("members-list");
 
-        //clear old list
+        //Clear old list
         $$("#members-list").html("");
+
+        //Foreach user in the current school
         querySnapshot.forEach(function(doc) {
-          //This loop runs once for every user in the current school
           getUserData(doc.id, function(user) {
             var membersList = document.getElementById("members-list");
             var a = document.createElement('a');
@@ -447,14 +451,16 @@ function loadMainPage() { //Chacks to m,ake sure we have loaded the users data t
             membersList.appendChild(a);
           });
         });
+
         $$('#members-list-skeleton').hide();
 
-        // create searchbar
+        //Create user searchbar
         var searchbar = app.searchbar.create({
           el: '#school-searchbar',
           searchContainer: '#members-list',
           searchIn: '.item-inner',
         });
+
       });
     }
   } else {
@@ -462,22 +468,9 @@ function loadMainPage() { //Chacks to m,ake sure we have loaded the users data t
   }
 }
 
-// TODO: turn this into an async function
-function getProfilePicUrl(uid) {
-
-  // Create a reference to the file we want to download
-  var profilePictureRef = storageRef.child('profile-pictures').child(uid);
-
-  // Get the download URL
-  profilePictureRef.getDownloadURL().then(function(url) {
-    return url;
-  }).catch(function(error) {
-    return "";
-  });
-}
-
 function loadSubscribedChat(chatroomName, chatroomSchool) {
-  //console.log("chatName: " + chatroomName + " chatroomSchool: " + chatroomSchool +
+
+  //Get the chats data and add it to eh html
   db.collection("school").doc(chatroomSchool).collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "desc").limit(1).get().then(function(messages) {
     messages.forEach(function(message) { ///This lop runs once for the latest message in the chat room.
       console.log(message.data());
@@ -492,7 +485,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
           '<div class="item-text"><b>' + message.get("name") + ': </b>' + message.get("text") + '</div></div></a>';
         ls.appendChild(li);
 
-        //Listens to the chat room for any new messages.
+        //Listens to the chat room for any new messages.// TODO: maybe remove this
         listener = db.collection("school").doc(chatroomSchool + "").collection("chats").doc(chatroomName).collection("messages").orderBy("timestamp", "asc")
           .onSnapshot(function(snapshot) {
             snapshot.docChanges().forEach(function(change) {
@@ -508,6 +501,7 @@ function loadSubscribedChat(chatroomName, chatroomSchool) {
               });
             });
           });
+
       });
     });
   }).then(function() {
@@ -664,4 +658,19 @@ function comingSoon() {
     closeTimeout: 2000,
   });
   toastBottom.open();
+}
+
+// QUESTION: Is this needed/used
+// TODO: turn this into an async function
+function getProfilePicUrl(uid) {
+
+  // Create a reference to the file we want to download
+  var profilePictureRef = storageRef.child('profile-pictures').child(uid);
+
+  // Get the download URL
+  profilePictureRef.getDownloadURL().then(function(url) {
+    return url;
+  }).catch(function(error) {
+    return "";
+  });
 }
